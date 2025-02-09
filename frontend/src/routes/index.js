@@ -1,7 +1,7 @@
 import Home from "@pages/website/Home";
 
 const PUBLIC_ROUTES = [
-    { path : '/', component: Home}
+    { path : '/', component: Home }
 ];
 
 const PRIVATE_ROUTES = [];
