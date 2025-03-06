@@ -1,8 +1,75 @@
 @import "./base/variables.scss";
 
 .header {
+    background: linear-gradient(to right, #2c7d59, #1a5e3b);
+    padding: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     height: 100px;
-}
+    z-index: 1000;
+  }
+  
+  .search-bar input {
+    background-color: #fff;
+    border-radius: 0;
+  }
+  
+  .nav-link {
+    font-weight: 500;
+  }
+  
+
 .footer {
-    height: 100px;
-}
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer .col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card-container {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card-background {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 130px; /* Tăng chiều cao để hình ảnh rõ hơn */
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .card-overlay {
+    background: rgba(0, 0, 0, 0.3); /* Mờ nhẹ, không quá tối */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 10px 15px;
+  }
+
+  .p-auto {
+    padding-top: 100px;
+  }
+
+  .fs-14 {
+    font-size: 14px;
+  }
+  
+  .fs-12 {
+    font-size: 12px;
+  }
+  .h-100{
+    height: 100%;
+  }
+  
+  
