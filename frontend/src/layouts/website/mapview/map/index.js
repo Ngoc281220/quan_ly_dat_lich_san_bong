@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
+// https://react-leaflet.js.org/docs/example-tooltips/
 const DaNangCoords = [16.0544, 108.2022]; // Tọa độ của Đà Nẵng
 
 function MapComponent() {
