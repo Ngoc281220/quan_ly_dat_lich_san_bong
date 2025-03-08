@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Container, Card, Button } from "react-bootstrap";
+import OffCanvasRegister from "../../../../components/register";
 
 function AccountHeader() {
+  const [isShow, setIsShow] = useState(false);
   return (
     <Container fluid className="bg-header-ac">
       <Card className="text-white bg-transparent border-0 mt-3">
@@ -11,10 +14,13 @@ function AccountHeader() {
             <Button variant="light" className="me-2">
               Đăng nhập
             </Button>
-            <Button variant="outline-light">Đăng ký</Button>
+            <Button variant="outline-light" onClick={() => setIsShow(true)}>
+              Đăng ký
+            </Button>
           </div>
         </Card.Body>
       </Card>
+      <OffCanvasRegister isShow={isShow} handleClose={() => setIsShow(false)} />
     </Container>
   );
 }
