@@ -1,18 +1,9 @@
-import React from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Navbar,
-  Nav,
-} from "react-bootstrap";
+import { Container, Card, Button } from "react-bootstrap";
 
 function AccountHeader() {
   return (
-    <Container>
-      <Card className="text-white bg-transparent border-0 text-center mt-3">
+    <Container fluid className="bg-header-ac">
+      <Card className="text-white bg-transparent border-0 mt-3">
         <Card.Body>
           <Card.Title>ALoBO - Đặt lịch online sân thể thao</Card.Title>
           <Card.Text>Tạo tài khoản để dễ dàng quản lý lịch đặt</Card.Text>
@@ -27,3 +18,5 @@ function AccountHeader() {
     </Container>
   );
 }
+
+export default AccountHeader;

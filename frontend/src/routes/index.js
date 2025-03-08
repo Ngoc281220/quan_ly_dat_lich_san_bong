@@ -2,6 +2,7 @@ import Home from "@pages/website/Home";
 import Map from "../pages/website/map";
 import MapLayout from "../layouts/website/mapview";
 import AccountPage from "../pages/website/account/index";
+import AccountLayout from "../layouts/website/account";
 
 const WEBSITE_ROUTES = [
     { 
@@ -11,7 +12,7 @@ const WEBSITE_ROUTES = [
         path:'/map', component: Map, layout: MapLayout
     },
     {
-        path:'/accout', component: AccountPage
+        path:'/accout', component: AccountPage, layout: AccountLayout
     }
 ];
 
