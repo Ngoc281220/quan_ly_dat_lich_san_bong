@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Providers;
+use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\ServiceProvider;
-use App\Repositories\IBaseRepository;
-use App\Repositories\BaseRepository;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,13 +13,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $singletons = [
-            IBaseRepository::class => BaseRepository::class
-        ];
-
-        foreach ($singletons as $interface => $repository) {
-            $this->app->singleton($interface, $repository);
-        }
     }
 
     /**
@@ -27,6 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Schema::defaultStringLength(191);
     }
 }
