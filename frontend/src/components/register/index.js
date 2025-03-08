@@ -76,6 +76,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
               <Form.Control
                 type="text"
                 name="email"
+                placeholder="Nhập email"
                 value={formData.email}
                 onChange={handleChange}
                 isInvalid={!!errors.email}
@@ -90,6 +91,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
               <Form.Control
                 type="text"
                 name="full_name"
+                placeholder="Nhập họ và tên"
                 value={formData.full_name}
                 onChange={handleChange}
                 isInvalid={!!errors.full_name}
@@ -104,6 +106,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
               <Form.Control
                 type="text"
                 name="phone"
+                placeholder="Nhập số điện thoại"
                 value={formData.phone}
                 onChange={handleChange}
                 isInvalid={!!errors.phone}
@@ -119,6 +122,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
               <Form.Control
                 type="password"
                 name="password"
+                placeholder="Nhập mật khẩu"
                 value={formData.password}
                 onChange={handleChange}
                 isInvalid={!!errors.password}
@@ -133,6 +137,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
               <Form.Control
                 type="password"
                 name="confirm_password"
+                placeholder="Nhập lại mật khẩu"
                 value={formData.confirm_password}
                 onChange={handleChange}
                 isInvalid={!!errors.confirm_password}
