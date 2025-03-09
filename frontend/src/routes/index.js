@@ -4,6 +4,8 @@ import MapLayout from "../layouts/website/mapview";
 import AccountPage from "../pages/website/account/index";
 import AccountLayout from "../layouts/website/account";
 import VerifyEmail from "../components/verify";
+import BookingLayout from "../layouts/website/booking";
+import BookingSchedule from "../pages/website/Booking";
 
 const WEBSITE_ROUTES = [
     { 
@@ -13,10 +15,13 @@ const WEBSITE_ROUTES = [
         path:'/map', component: Map, layout: MapLayout
     },
     {
-        path:'/accout', component: AccountPage, layout: AccountLayout
+        path:'/account', component: AccountPage, layout: AccountLayout
     },
     {
         path:'/verify-email', component: VerifyEmail
+    },
+    {
+        path: '/booking', component: BookingSchedule, layout:  BookingLayout
     }
 ];
 

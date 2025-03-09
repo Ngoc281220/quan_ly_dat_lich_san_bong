@@ -73,6 +73,24 @@
     height: 100%;
   }
 
+  .h-150-px {
+    height: 100px;
+  }
+  .booking-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+  .booking-table {
+    margin-top: 200px;
+  }
+  .booking-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
   /* Navbar chính */
 .header-navbar {
     position: fixed;
