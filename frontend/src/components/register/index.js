@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Form, Button } from "react-bootstrap";
+import { register } from "../../services/website/auth";
 import "../../assets/styles/RegisterForm.scss";
 
 function OffCanvasRegister({ isShow, handleClose }) {
@@ -21,28 +22,38 @@ function OffCanvasRegister({ isShow, handleClose }) {
   const validate = () => {
     let newErrors = {};
     if (!formData.email) {
-        newErrors.email = "Vui lòng nhập email";
+      newErrors.email = "Vui lòng nhập email";
     }
     if (!formData.full_name) {
-        newErrors.full_name = "Vui lòng nhập họ tên";
+      newErrors.full_name = "Vui lòng nhập họ tên";
     }
     if (!formData.phone) {
-        newErrors.phone = "Vui lòng số điện thoại";
+      newErrors.phone = "Vui lòng số điện thoại";
     }
     if (!formData.password) {
-        newErrors.password = "Vui lòng nhập mật khẩu";
+      newErrors.password = "Vui lòng nhập mật khẩu";
     }
     if (!formData.confirm_password) {
-        newErrors.confirm_password = "Vui lòng xác nhận mật khẩu";
+      newErrors.confirm_password = "Vui lòng xác nhận mật khẩu";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
       console.log("Đăng ký thành công", formData);
+    }
+    try {
+      const data = await register(formData);
+      if(data) {
+        console.log("Đăng ký thành công", formData);
+      }
+    } catch (error) {
+      if (error.errors) {
+        setErrors(error.errors);
+      }
     }
   };
   useEffect(() => {
@@ -72,21 +83,6 @@ function OffCanvasRegister({ isShow, handleClose }) {
             <h2 className="text-header fs-3">Đăng ký</h2>
             <p className="text-title">ALOBO - Đặt lịch online sân thể thao</p>
             <Form.Group className="mt-5">
-              <Form.Label className="lable-color">Email</Form.Label>
-              <Form.Control
-                type="text"
-                name="email"
-                placeholder="Nhập email"
-                value={formData.email}
-                onChange={handleChange}
-                isInvalid={!!errors.email}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.email}
-              </Form.Control.Feedback>
-            </Form.Group>
-
-            <Form.Group className="mt-3">
               <Form.Label className="lable-color">Tên đầy đủ</Form.Label>
               <Form.Control
                 type="text"
@@ -100,7 +96,20 @@ function OffCanvasRegister({ isShow, handleClose }) {
                 {errors.full_name}
               </Form.Control.Feedback>
             </Form.Group>
-
+            <Form.Group className="mt-3">
+              <Form.Label className="lable-color">Email</Form.Label>
+              <Form.Control
+                type="text"
+                name="email"
+                placeholder="Nhập email"
+                value={formData.email}
+                onChange={handleChange}
+                isInvalid={!!errors.email}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
+            </Form.Group>
             <Form.Group className="mt-3">
               <Form.Label className="lable-color">Số điện thoại</Form.Label>
               <Form.Control
@@ -151,7 +160,10 @@ function OffCanvasRegister({ isShow, handleClose }) {
               Đăng ký
             </Button>
             <p className="mt-4 text-center">
-              Bạn đã có tài khoản? <a href="/login" className="text-login">Đăng nhập</a>
+              Bạn đã có tài khoản?{" "}
+              <a href="/login" className="text-login">
+                Đăng nhập
+              </a>
             </p>
           </Form>
         </div>

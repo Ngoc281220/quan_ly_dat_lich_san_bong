@@ -36,3 +36,8 @@ php artisan key:generate
 - php artisan make:request RegisterRequest
 php artisan make:request LoignRequesthp 
 php artisan make:model User
+php artisan make:request LoginPostRequest
+
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate

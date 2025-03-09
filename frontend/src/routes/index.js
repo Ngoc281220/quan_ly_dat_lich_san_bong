@@ -3,6 +3,7 @@ import Map from "../pages/website/map";
 import MapLayout from "../layouts/website/mapview";
 import AccountPage from "../pages/website/account/index";
 import AccountLayout from "../layouts/website/account";
+import VerifyEmail from "../components/verify";
 
 const WEBSITE_ROUTES = [
     { 
@@ -13,6 +14,9 @@ const WEBSITE_ROUTES = [
     },
     {
         path:'/accout', component: AccountPage, layout: AccountLayout
+    },
+    {
+        path:'/verify-email', component: VerifyEmail
     }
 ];
 

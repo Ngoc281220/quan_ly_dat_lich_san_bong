@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('phone', 10)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->unsignedBigInteger('role')->default(0);
+            $table->string('email_verification_token')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
