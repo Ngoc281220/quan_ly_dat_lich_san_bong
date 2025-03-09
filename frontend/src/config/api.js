@@ -29,7 +29,6 @@ class API {
       (response) => response,
       async (error) => {
         const originalRequest = error.config;
-
         if (
           error.response &&
           error.response.status === 401 &&
@@ -55,7 +54,15 @@ class API {
             }
           }
         }
-        return Promise.reject(error);
+        if (error.response.status === 422 || error.response.status === 400) {
+          return Promise.reject({
+            errors: error.response.data.errors || "Dữ liệu không hợp lệ",
+          });
+        }
+
+        return Promise.reject({
+          message: "Có lỗi xảy ra, vui lòng thử lại.",
+        });
       }
     );
   }

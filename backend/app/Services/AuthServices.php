@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Enums\UserEnum;
 use App\Mail\VerifyEmail;
+use App\Exceptions\HttpApiException;
 
 class AuthServices extends BaseService
 {
@@ -62,7 +63,17 @@ class AuthServices extends BaseService
 
     public function login($request)
     {
-        $credentials = $request->only(['email','password']);
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            throw new HttpApiException("Email không tồn tại!",'email', 400);
+        }
+
+        // Kiểm tra mật khẩu có tồn tại không
+        if (!Hash::check($request->password, $user->password)) {
+            throw new HttpApiException("Mật khẩu không đúng!",'password', 400);
+        }
+
+        $credentials = $request->only(['email', 'password']);
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
