@@ -11,7 +11,9 @@ function DefaultLayoutAdmin({ children }) {
       {/* Nội dung chính */}
       <div className="admin-main">
         <Header />
-        <div className="admin-content">{children}</div>
+        <div className="admin-content">
+          <div className="p-3 shadow-lg bg-white rounded-lg">{children}</div>
+        </div>
       </div>
     </div>
   );

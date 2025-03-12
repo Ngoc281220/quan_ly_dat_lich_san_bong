@@ -8,32 +8,45 @@ import VerifyEmail from "../components/verify";
 import BookingLayout from "../layouts/website/booking";
 import BookingSchedule from "../pages/website/Booking";
 
-
 // admin route
 import Dashboard from "@pages/admin/Dashboard";
+import FieldList from "@pages/admin/Field";
 
 const WEBSITE_ROUTES = [
-    { 
-        path : '/', component: Home 
-    },
-    {
-        path:'/map', component: Map, layout: MapLayout
-    },
-    {
-        path:'/account', component: AccountPage, layout: AccountLayout
-    },
-    {
-        path:'/verify-email', component: VerifyEmail
-    },
-    {
-        path: '/booking', component: BookingSchedule, layout:  BookingLayout
-    }
+  {
+    path: "/",
+    component: Home,
+  },
+  {
+    path: "/map",
+    component: Map,
+    layout: MapLayout,
+  },
+  {
+    path: "/account",
+    component: AccountPage,
+    layout: AccountLayout,
+  },
+  {
+    path: "/verify-email",
+    component: VerifyEmail,
+  },
+  {
+    path: "/booking",
+    component: BookingSchedule,
+    layout: BookingLayout,
+  },
 ];
 
 const ADMIN_ROUTES = [
-    {
-        path: '/dashboard', component: Dashboard
-    }
+  {
+    path: "/admin/dashboard",
+    component: Dashboard,
+  },
+  {
+    path: "/admin/fields",
+    component: FieldList,
+  },
 ];
 
 export { WEBSITE_ROUTES, ADMIN_ROUTES };

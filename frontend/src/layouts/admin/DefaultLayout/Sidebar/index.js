@@ -6,15 +6,17 @@ import {
   FaTable,
   FaEnvelope,
   FaChartBar,
+  FaFutbol 
 } from "react-icons/fa";
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
-  { name: "Bảng điều khiển", icon: <FaHome />, path: "/dashboard" },
+  { name: "Bảng điều khiển", icon: <FaHome />, path: "/admin/dashboard" },
+  { name: "Quản lý sân bóng", icon: <FaFutbol />, path: "/admin/fields" },
   { name: "Calendar", icon: <FaCalendar />, path: "/calendar" },
   { name: "User Profile", icon: <FaUser />, path: "/profile" },
-  { name: "Task", icon: <FaTasks />, path: "/tasks" },
+  { name: "Quản lý người dùng", icon: <FaTasks />, path: "/tasks" },
   { name: "Tables", icon: <FaTable />, path: "/tables" },
   { name: "Email", icon: <FaEnvelope />, path: "/email" },
   { name: "Charts", icon: <FaChartBar />, path: "/charts" },
