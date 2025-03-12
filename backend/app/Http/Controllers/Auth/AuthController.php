@@ -4,24 +4,24 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Services\AuthServices;
+use App\Services\AuthService;
 use App\Http\Requests\RegisterFormRequest;
 use App\Http\Requests\FormLoginRequest;
 
 
 class AuthController extends Controller
 {
-    protected $authServices;
-    public function __construct(AuthServices $authServices)
+    protected $authService;
+    public function __construct(AuthService $authService)
     {
-        // $this->middleware('auth:api', ['except' => ['login', 'register']]);
-        $this->authServices = $authServices;
+        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->authService = $authService;
     }
 
     // Đăng nhập tài khoản người dùng
     public function login(FormLoginRequest $request)
     {
-        $data = $this->authServices->login($request);
+        $data = $this->authService->login($request);
         return response()->json($data);
     }
 
@@ -30,17 +30,17 @@ class AuthController extends Controller
     // Đăng ký tài khoản người dùng
     public function register(RegisterFormRequest $request)
     {
-        return $this->authServices->register($request);
+        return $this->authService->register($request);
     }
 
     // Xác thực tài khoản người dùng sau khi đăng ký
     public function verify(Request $request)
     {
-        return $this->authServices->verify($request);
+        return $this->authService->verify($request);
     }
 
     public function refreshToken()
     {
-        return $this->authServices->refresh();
+        return $this->authService->refresh();
     }
 }

@@ -10,7 +10,7 @@ use App\Enums\UserEnum;
 use App\Mail\VerifyEmail;
 use App\Exceptions\HttpApiException;
 
-class AuthServices extends BaseService
+class AuthService extends BaseService
 {
 
     public function __construct() {}
