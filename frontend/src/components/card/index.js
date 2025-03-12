@@ -7,7 +7,7 @@ import {
   FaHeart,
   FaShareAlt,
 } from "react-icons/fa";
-import OffcanvasBookingCard from "../BookingCard";
+// import OffcanvasBookingCard from "../BookingCard";
 function CommonCard({
   image,
   title,

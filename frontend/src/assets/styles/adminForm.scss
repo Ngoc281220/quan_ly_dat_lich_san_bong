@@ -1,0 +1,260 @@
+/* Định dạng cho layout admin */
+.admin-layout {
+    display: flex;
+    height: 100vh; /* Chiếm toàn bộ chiều cao màn hình */
+  
+    /* Sidebar */
+    .admin-sidebar {
+      width: 260px;
+      background-color: #1e293b; /* Màu xanh đậm */
+      color: white;
+      padding: 20px;
+      height: 100vh;
+      overflow-y: auto; /* Cuộn nếu nội dung dài */
+      
+        .admin-sidebar:hover {
+            width: 250px; /* Mở rộng sidebar khi hover */
+        }
+        
+        .admin-sidebar h2 {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .admin-sidebar:hover h2 {
+            opacity: 1;
+        }
+        
+        .admin-sidebar nav a {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+
+        }
+        
+        .admin-sidebar nav a span {
+            opacity: 0;
+            width: 0;
+            transition: opacity 0.3s ease, width 0.3s ease;
+        }
+        
+        .admin-sidebar:hover nav a span {
+            opacity: 1;
+            width: auto;
+            margin-left: 10px;
+        }
+        
+        .admin-sidebar nav a:hover {
+            background: #2d3748;
+        }
+        
+        .admin-sidebar nav a.active {
+            background: #2563eb; /* Màu xanh khi active */
+        }
+    }
+  
+    /* Phần chính */
+    .admin-main {
+      flex: 1;
+      background-color: #f8fafc; /* Màu nền nhạt */
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+  
+      .admin-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        background: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 20px;
+            width: 340px;
+          }
+          
+         .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            padding-left: 8px;
+            font-size: 14px;
+          }
+          
+          /* Icon nhóm phải */
+           .icon-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+          }
+          
+         .icon-group svg {
+            color: #4b5563;
+            font-size: 18px;
+            transition: color 0.3s ease;
+          }
+          
+          .icon-group svg:hover {
+            color: #2563eb; /* Màu xanh khi hover */
+          }
+      }
+  
+      .admin-content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+      }
+    }
+  }
+  
+  /* Sidebar menu */
+  .sidebar-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  
+    li {
+      margin-bottom: 10px;
+  
+      a {
+        display: block;
+        padding: 10px 15px;
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        transition: background 0.3s;
+  
+        &:hover {
+          background: rgba(255, 255, 255, 0.2);
+        }
+      }
+  
+      .active {
+        background: #64748b; /* Màu nhấn */
+      }
+    }
+  }
+
+  /* Container chính */
+.data-table-container {
+    padding: 16px;
+  }
+  
+  .data-table-container h2 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+  
+  /* Bảng */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .data-table thead {
+    background: #f3f4f6;
+    text-align: left;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .data-table tbody tr:hover {
+    background: #f9fafb;
+  }
+  
+  /* Phân trang */
+  .pagination {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+  }
+  
+  .pagination button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+  }
+  
+  .pagination button:hover {
+    background: #2563eb;
+    color: white;
+  }
+  
+  .pagination .active {
+    background: #2563eb;
+    color: white;
+    font-weight: bold;
+  }
+  .text-gray-500 {
+    color: #667085
+  }
+  .bg-gray-50 {
+    background:  #f9fafb;
+  }
+//   .br-gray-100 {
+//     border: #f2f4f7;
+//   }
+  
+
+.custom-form {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .custom-form .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  .custom-form .form-label {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .custom-form .form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .custom-form .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(128, 189, 255, 0.5);
+  }
+  
+  .custom-form .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color: #007bff;
+    border: none;
+  }
+  
+  .custom-form .btn-primary:hover {
+    background-color: #0056b3;
+  }

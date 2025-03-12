@@ -1,5 +1,4 @@
 import { Container, Navbar, Form, FormControl, Button } from "react-bootstrap";
-import { FaSearch } from "react-icons/fa";
 
 function HeaderMap() {
   return (

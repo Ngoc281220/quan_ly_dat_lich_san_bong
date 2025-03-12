@@ -1,3 +1,4 @@
+// website rote
 import Home from "@pages/website/Home";
 import Map from "../pages/website/map";
 import MapLayout from "../layouts/website/mapview";
@@ -6,6 +7,10 @@ import AccountLayout from "../layouts/website/account";
 import VerifyEmail from "../components/verify";
 import BookingLayout from "../layouts/website/booking";
 import BookingSchedule from "../pages/website/Booking";
+
+
+// admin route
+import Dashboard from "@pages/admin/Dashboard";
 
 const WEBSITE_ROUTES = [
     { 
@@ -25,6 +30,10 @@ const WEBSITE_ROUTES = [
     }
 ];
 
-const PRIVATE_ROUTES = [];
+const ADMIN_ROUTES = [
+    {
+        path: '/dashboard', component: Dashboard
+    }
+];
 
-export { WEBSITE_ROUTES, PRIVATE_ROUTES };
+export { WEBSITE_ROUTES, ADMIN_ROUTES };

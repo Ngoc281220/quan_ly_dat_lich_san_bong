@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { verify } from "../../services/website/auth";
-import axios from "axios";
 
 function VerifyEmail() {
   const [searchParams] = useSearchParams();
   const [message, setMessage] = useState("Đang xác thực email...");
 
-  useEffect(async () => {
+  useEffect(() => {
     const token = searchParams.get("token");
     const apiVerify = async () => {
       if (!token) {
