@@ -5,13 +5,13 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
   switch (type) {
     case "select":
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
-          <Form.Control as="select" onChange={onChange}>
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
+          <Form.Control as="select" onChange={onChange} size="lg">
             <option>{placeholder}</option>
             {options.map((option, index) => (
-              <option key={index} value={option}>
-                {option}
+              <option key={index} value={option.id ?? option}>
+                {option.name ?? option}
               </option>
             ))}
           </Form.Control>
@@ -19,8 +19,8 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
       );
     case "date":
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
           <Form.Control
             type="date"
             value={value}
@@ -31,8 +31,8 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
       );
     case "password":
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
           <Form.Control
             type="password"
             placeholder={placeholder}
@@ -43,8 +43,8 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
       );
     case "email":
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
           <Form.Control
             type="email"
             placeholder={placeholder}
@@ -55,20 +55,34 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
       );
     case "file":
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
-          <Form.Control value={value} type="file" onChange={onChange} />
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
+          <Form.Control value={value}  size="lg" type="file" onChange={onChange} />
+        </Form.Group>
+      );
+    case "textarea":
+      return (
+        <Form.Group className="my-2">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
+          <Form.Control
+            as="textarea"
+            value={value}
+            placeholder={placeholder}
+            style={{ height: "150px" }}
+          />
         </Form.Group>
       );
     default:
       return (
-        <Form.Group>
-          {label && <Form.Label>{label}</Form.Label>}
+        <Form.Group className="my-2 fs-08">
+          {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
           <Form.Control
             type="text"
             placeholder={placeholder}
             onChange={onChange}
             value={value}
+            size="lg"
+            className="fs-08"
           />
         </Form.Group>
       );

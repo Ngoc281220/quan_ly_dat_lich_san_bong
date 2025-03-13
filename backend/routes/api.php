@@ -22,7 +22,7 @@ Route::prefix("auth")->group(function () {
     Route::post("/refresh-token", [AuthController::class, "refreshToken"])->name("refreshToken");
 });
 
-Route::prefix("admin")->middleware('auth:api')->group(function () {
+Route::prefix("admin")->group(function () {
     Route::prefix("fields")->group(function () {
         Route::get("/list-category", [FieldsController::class, "getListCategory"])->name("admin.fields.category");
     });

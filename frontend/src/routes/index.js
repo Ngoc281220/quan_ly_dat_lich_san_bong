@@ -11,6 +11,7 @@ import BookingSchedule from "../pages/website/Booking";
 // admin route
 import Dashboard from "@pages/admin/Dashboard";
 import FieldList from "@pages/admin/Field";
+import CreateFields from "@pages/admin/Field/create";
 
 const WEBSITE_ROUTES = [
   {
@@ -47,6 +48,10 @@ const ADMIN_ROUTES = [
     path: "/admin/fields",
     component: FieldList,
   },
+  {
+    path:"/admin/fields/create",
+    component: CreateFields
+  }
 ];
 
 export { WEBSITE_ROUTES, ADMIN_ROUTES };

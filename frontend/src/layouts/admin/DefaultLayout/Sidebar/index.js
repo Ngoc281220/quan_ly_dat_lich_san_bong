@@ -8,7 +8,6 @@ import {
   FaChartBar,
   FaFutbol 
 } from "react-icons/fa";
-import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
@@ -23,13 +22,10 @@ const menuItems = [
 ];
 
 function AdminSidebar() {
-  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div
       className={`bg-gray-900 text-white min-h-screen p-4 transition-all admin-sidebar`}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
     >
       {/* Logo */}
       <h2
