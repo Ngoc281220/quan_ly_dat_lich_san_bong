@@ -13,4 +13,6 @@ class FieldsService extends BaseService
     {
         return Category::all(["id", "name", "description"]);
     }
+
+    public function createField($request) {}
 }

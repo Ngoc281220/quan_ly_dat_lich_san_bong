@@ -1,7 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-function CommonInput({ type, placeholder, options, label, value, onChange }) {
+function CommonInput({ type, placeholder, options, label, value, onChange, max }) {
   switch (type) {
     case "select":
       return (
@@ -83,6 +83,7 @@ function CommonInput({ type, placeholder, options, label, value, onChange }) {
             value={value}
             size="lg"
             className="fs-08"
+            maxLength={max}
           />
         </Form.Group>
       );
