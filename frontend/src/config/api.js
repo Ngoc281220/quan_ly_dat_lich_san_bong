@@ -4,12 +4,14 @@ const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
 
 class API {
   constructor() {
+    this.config = {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    };
+
     this.api = axios.create({
       baseURL: API_URL,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
+      headers: this.config,
     });
 
     // ✅ Thêm token vào mỗi request nếu có

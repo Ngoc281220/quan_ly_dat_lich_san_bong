@@ -3,7 +3,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Row, Col } from "react-bootstrap";
 import CommonInput from "../../../components/input";
-import { getListCategory } from "../../../services/admin/fields";
+import { getListCategory, createField } from "../../../services/admin/fields";
 
 function CreateFields() {
   const [categoryFields, setCategoryFields] = useState([]);
@@ -14,8 +14,9 @@ function CreateFields() {
     price: "",
     contact_phone: "",
     description: "",
-    image: null,
+    images: [], // Chọn nhiều ảnh
   });
+
   const fetchCategories = useCallback(async () => {
     try {
       const { data } = await getListCategory();
@@ -24,6 +25,7 @@ function CreateFields() {
       console.error("Lỗi khi lấy danh sách loại sân:", error);
     }
   }, []);
+
   useEffect(() => {
     fetchCategories();
   }, [fetchCategories]);
@@ -33,7 +35,8 @@ function CreateFields() {
   };
 
   const handleFileChange = (event) => {
-    setFormData({ ...formData, image: event.target.files[0] });
+    const selectedFiles = Array.from(event.target.files); // Chuyển FileList thành mảng
+    setFormData({ ...formData, images: selectedFiles });
   };
 
   const handleSubmit = async (event) => {
@@ -41,28 +44,30 @@ function CreateFields() {
 
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
-      formDataToSend.append(key, formData[key]);
+      if (key === "images") {
+        
+        formData.images.forEach((item, index) => {
+          formDataToSend.append("images[]", item)
+        });
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
     });
-
     try {
-      // Giả sử có API `createField` để gửi dữ liệu lên server
-      const response = await fetch("/api/fields", {
-        method: "POST",
-        body: formDataToSend,
-      });
-
-      const result = await response.json();
-      console.log("Kết quả:", result);
+      console.log("Kết quả:", formDataToSend);
+      const data = await createField(formDataToSend);
+      console.log("Kết quả:", data);
     } catch (error) {
       console.error("Lỗi khi gửi dữ liệu:", error);
     }
   };
+
   return (
     <div>
       <Row>
         <Col className="mx-auto" md={8}>
           <h3 className="py-3 text-center">Thêm sân</h3>
-          <Form className="p-4 br-radius">
+          <Form className="p-4 br-radius" onSubmit={handleSubmit}>
             <CommonInput
               type="text"
               max={50}
@@ -100,11 +105,33 @@ function CreateFields() {
               value={formData.description}
               onChange={handleChange("description")}
             />
-            <CommonInput
-              type="file"
-              label="Hình ảnh"
-              onChange={handleFileChange}
-            />
+
+            {/* Input chọn nhiều ảnh */}
+            <Form.Group className="my-2">
+              <Form.Label className="text-gray-700">Hình ảnh</Form.Label>
+              <Form.Control type="file" multiple onChange={handleFileChange} />
+            </Form.Group>
+
+            {/* Hiển thị danh sách ảnh đã chọn */}
+            {formData.images.length > 0 && (
+              <div className="mt-3">
+                <h5>Hình ảnh đã chọn:</h5>
+                <div className="d-flex flex-wrap gap-2">
+                  {formData.images.map((file, index) => (
+                    <div key={index} className="border p-2">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="preview"
+                        width="100"
+                        height="100"
+                      />
+                      <p className="text-center small">{file.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <Button type="submit" variant="primary" className="my-3 w-100">
               Thêm
             </Button>

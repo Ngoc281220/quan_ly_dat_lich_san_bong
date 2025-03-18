@@ -57,7 +57,7 @@ function CommonInput({ type, placeholder, options, label, value, onChange, max }
       return (
         <Form.Group className="my-2">
           {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
-          <Form.Control value={value}  size="lg" type="file" onChange={onChange} />
+          <Form.Control value={value} multiple  size="lg" type="file" onChange={onChange} />
         </Form.Group>
       );
     case "textarea":

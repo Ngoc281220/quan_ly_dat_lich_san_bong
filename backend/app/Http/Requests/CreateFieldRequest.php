@@ -29,7 +29,7 @@ class CreateFieldRequest extends FormRequest
             'contact_phone' => 'required|string|regex:/^0[0-9]{9}$/',
             'description' => 'nullable|string',
             'images' => 'nullable|array', // Chấp nhận mảng ảnh
-            'images.*' => 'image|mimes:jpg,png,jpeg,gif|max:2048'
+            // 'images.*' => 'image|mimes:jpg,png,jpeg,gif|max:2048'
         ];
     }
 
@@ -58,8 +58,8 @@ class CreateFieldRequest extends FormRequest
             'description.string' => 'Mô tả phải là chuỗi ký tự.',
 
             'images.array' => 'Hình ảnh phải là một danh sách file.',
-            'images.*.image' => 'Tất cả các file phải là hình ảnh.',
-            'images.*.mimes' => 'Hình ảnh chỉ được có định dạng jpg, png, jpeg, gif.',
+            // 'images.*.image' => 'Tất cả các file phải là hình ảnh.',
+            // 'images.*.mimes' => 'Hình ảnh chỉ được có định dạng jpg, png, jpeg, gif.',
             'images.*.max' => 'Mỗi hình ảnh không được vượt quá 2MB.',
         ];
     }
