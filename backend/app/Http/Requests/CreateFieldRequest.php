@@ -58,8 +58,8 @@ class CreateFieldRequest extends FormRequest
             'description.string' => 'Mô tả phải là chuỗi ký tự.',
 
             'images.array' => 'Hình ảnh phải là một danh sách file.',
-            // 'images.*.image' => 'Tất cả các file phải là hình ảnh.',
-            // 'images.*.mimes' => 'Hình ảnh chỉ được có định dạng jpg, png, jpeg, gif.',
+            'images.*.image' => 'Tất cả các file phải là hình ảnh.',
+            'images.*.mimes' => 'Hình ảnh chỉ được có định dạng jpg, png, jpeg, gif.',
             'images.*.max' => 'Mỗi hình ảnh không được vượt quá 2MB.',
         ];
     }

@@ -57,6 +57,7 @@ class API {
           }
         }
         if (error.response.status === 422 || error.response.status === 400) {
+          
           return Promise.reject({
             errors: error.response.data.errors || "Dữ liệu không hợp lệ",
           });

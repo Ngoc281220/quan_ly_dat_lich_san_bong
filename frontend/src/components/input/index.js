@@ -1,13 +1,13 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 
-function CommonInput({ type, placeholder, options, label, value, onChange, max }) {
+function CommonInput({ type, placeholder, options, label, value, onChange, max, error }) {
   switch (type) {
     case "select":
       return (
         <Form.Group className="my-2">
           {label && <Form.Label className="text-gray-700">{label}</Form.Label>}
-          <Form.Control as="select" onChange={onChange} size="lg">
+          <Form.Control isInvalid={!!error} as="select" onChange={onChange} size="lg">
             <option>{placeholder}</option>
             {options.map((option, index) => (
               <option key={index} value={option.id ?? option}>
@@ -84,6 +84,7 @@ function CommonInput({ type, placeholder, options, label, value, onChange, max }
             size="lg"
             className="fs-08"
             maxLength={max}
+            isInvalid={!!error}
           />
         </Form.Group>
       );

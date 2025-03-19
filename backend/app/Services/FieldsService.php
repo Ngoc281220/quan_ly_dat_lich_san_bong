@@ -16,18 +16,21 @@ class FieldsService extends BaseService
         return Category::all(["id", "name", "description"]);
     }
 
-    public function createField($request) 
+    // Tạo sân thể thao
+    public function createField($request)
     {
         $data = $request->all();
-        Log::info('data', $data);
         if ($request->hasFile('images')) {
-         $data['images'] = $this->saveFile($request->file('images'), 'fields');
+            $data['images'] = $this->saveFile($request->file('images'), 'fields');
         }
-
-        // Chuyển danh sách file thành JSON để lưu DB
         $data['image'] = json_encode($data['images']);
+        $data['open_time'] = "6:00";
+        $data['close_time'] = "22:00";
+        return Field::create($data);
+    }
 
-        $field = Field::create($data);
-        return $field;
+    public function getListField($request) 
+    {
+
     }
 }

@@ -23,6 +23,6 @@ class FieldsController extends Controller
 
     public function createField(CreateFieldRequest $request)  {
         $data = $this->fieldsService->createField($request);
-        return $data;
+        return response()->json($data);
     }
 }

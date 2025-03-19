@@ -11,6 +11,6 @@ export async function createField(params) {
     headers: {
       "Content-Type": "multipart/form-data", // XÓA "application/json"
     },
-  });
+  })
   // return await api.post("admin/fields/create", params);
 }
