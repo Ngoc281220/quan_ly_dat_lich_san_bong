@@ -24,6 +24,7 @@ Route::prefix("auth")->group(function () {
 
 Route::prefix("admin")->group(function () {
     Route::prefix("fields")->group(function () {
+        Route::get('/', [FieldsController::class, 'getListField'])->name("admin.fields");
         Route::get("/list-category", [FieldsController::class, "getListCategory"])->name("admin.fields.category");
         Route::post("/create", [FieldsController::class, "createField"])->name("admin.fields.createField");
     });

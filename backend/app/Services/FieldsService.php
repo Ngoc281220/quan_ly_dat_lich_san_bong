@@ -29,8 +29,31 @@ class FieldsService extends BaseService
         return Field::create($data);
     }
 
-    public function getListField($request) 
+    public function getListField($request)
     {
+        $search = $request->search ?? '';
+        $perPage = 10;
+        
+        $query = Field::select(
+            'fields.id',
+            'fields.name',
+            'fields.category_id',
+            'fields.location',
+            'fields.price',
+            'fields.status',
+            'fields.image',
+            'fields.open_time',
+            'fields.close_time',
+            'fields.contact_phone',
+            'categories.name as category_name'
+        )
+        ->join('categories', 'categories.id', '=', 'fields.category_id');
 
+        if (!empty($search)) {
+            $query->where('fields.name', 'like', "%{$search}%")
+                ->orWhere('fields.location', 'like', "%{$search}%");
+        }
+
+        return $query->paginate($perPage);
     }
 }
