@@ -20,7 +20,7 @@ function CreateFields() {
   const [errors, setErrors] = useState({});
   const fetchCategories = useCallback(async () => {
     try {
-      const { data } = await getListCategory();
+      const data = await getListCategory();
       setCategoryFields(data);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách loại sân:", error);

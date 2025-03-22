@@ -3,6 +3,7 @@
 namespace App\Transformers;
 
 use League\Fractal\TransformerAbstract;
+use App\Models\Category;
 
 class FieldTransformer extends TransformerAbstract
 {
@@ -16,7 +17,7 @@ class FieldTransformer extends TransformerAbstract
         return [
             'id'            => $field->id,
             'name'          => $field->name,
-            'category_name' => $field->category_name,
+            'category_name' => $field->category_name ?? $this->getNameCategoryByID($field->category_id),
             'location'      => $field->location,
             'price'         => $field->price,
             'status'        => $field->status,
@@ -35,5 +36,10 @@ class FieldTransformer extends TransformerAbstract
                 'path' => is_object($image) && !empty($image) ? asset($image->path) : null
             ];
         });
+    }
+
+    public function getNameCategoryByID($id) 
+    {
+        return Category::find($id)->name;
     }
 }
