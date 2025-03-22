@@ -112,7 +112,7 @@ function CreateFields() {
             />
             
             <Form.Control.Feedback type="invalid">
-              {errors.price[0]}
+              {errors.price}
             </Form.Control.Feedback>
             <CommonInput
               type="text"

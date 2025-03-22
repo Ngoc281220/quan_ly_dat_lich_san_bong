@@ -201,9 +201,10 @@
   }
   
   .pagination .active {
-    background: #2563eb;
-    color: white;
+    background: #2563eb !important;
+    color: white !important;
     font-weight: bold;
+    border: none !important;
   }
   .text-gray-500 {
     color: #667085

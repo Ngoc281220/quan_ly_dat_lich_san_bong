@@ -9,8 +9,16 @@ export async function createField(params) {
   
   return axios.post("http://127.0.0.1:8000/api/admin/fields/create", params, {
     headers: {
-      "Content-Type": "multipart/form-data", // XÓA "application/json"
+      "Content-Type": "multipart/form-data",
     },
   })
-  // return await api.post("admin/fields/create", params);
+
+}
+
+export async function getListField(page) {
+  return await api.get(`admin/fields?page=${page}`);
+}
+
+export async function detaiField(id) {
+  return await api.get(`admin/fields/${id}`);
 }

@@ -28,7 +28,7 @@ class API {
 
     // ✅ Xử lý refresh token khi accessToken hết hạn
     this.api.interceptors.response.use(
-      (response) => response,
+      (response) => response.data,
       async (error) => {
         const originalRequest = error.config;
         if (

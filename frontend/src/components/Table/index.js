@@ -52,7 +52,7 @@ const users = [
   },
 ];
 
-const DataTable = () => {
+const DataTable = ({ columns, data }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 

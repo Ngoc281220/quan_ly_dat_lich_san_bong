@@ -29,6 +29,7 @@ class FieldsService extends BaseService
         return Field::create($data);
     }
 
+    // Get danh sách sân
     public function getListField($request)
     {
         $search = $request->search ?? '';
@@ -55,5 +56,10 @@ class FieldsService extends BaseService
         }
 
         return $query->paginate($perPage);
+    }
+
+    public function getFiledByID($id) 
+    {
+        return Field::find($id);
     }
 }

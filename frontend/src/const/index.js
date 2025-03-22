@@ -2,4 +2,11 @@ const PERMISSION = {
   ROLE_USER: 0,
   ROLE_ADMIN: 1,
 };
-export { PERMISSION };
+
+const STATUS_FIELD = {
+  ACTIVE: 0,
+  MAINTENANCE: 1,
+  INACTIVE: 2
+};
+
+export { PERMISSION, STATUS_FIELD };

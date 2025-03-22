@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\FieldsService;
 use App\Http\Requests\CreateFieldRequest;
-use App\Http\Resources\ApiResourceCollection;
-
+use App\Utils\ApiResponder;
+use App\Transformers\FieldTransformer;
+use App\Models\Field;
 class FieldsController extends Controller
 {
     protected $fieldsService;
@@ -32,6 +33,12 @@ class FieldsController extends Controller
     public function getListField(Request $request)
     {
         $data = $this->fieldsService->getListField($request);
-        // return new ApiResourceCollection($data, 'Danh sách sân thể thao', 200);
+        return (new ApiResponder($data, new FieldTransformer()))->pagination();
+    }
+
+    public function getFieldByID($id) 
+    {
+        $data = $this->fieldsService->getFiledByID($id);
+        return (new ApiResponder($data, new FieldTransformer()))->data();
     }
 }
