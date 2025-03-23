@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaArrowLeft } from "react-icons/fa";
-import { getSchedule } from "../../../services/website/booking";
+import { getSchedule, bookCourt } from "../../../services/website/booking";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
 const times = [
   "06:00",
@@ -48,16 +49,29 @@ function BookingLayout() {
   const [courts, setCourts] = useState([]);
   const [totalHours, setTotalHours] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const { id } = useParams();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    loadData();
+  }, [selectedDate]);
+
+  const loadData = async () => {
+    const { data } = await getSchedule(
+      id,
+      selectedDate.toISOString().split("T")[0]
+    );
+    setCourts(data);
+  };
 
   const toggleSlot = (subFieldId, time, pricePerHour) => {
     const slot = `${subFieldId}-${time}`;
-    let updatedSlots = [...selectedSlots];
-
-    if (updatedSlots.includes(slot)) {
-      updatedSlots = updatedSlots.filter((s) => s !== slot);
-    } else {
-      updatedSlots.push(slot);
-    }
+    let updatedSlots = selectedSlots.includes(slot)
+      ? selectedSlots.filter((s) => s !== slot)
+      : [...selectedSlots, slot];
 
     setSelectedSlots(updatedSlots);
     calculateTotal(updatedSlots, pricePerHour);
@@ -70,57 +84,63 @@ function BookingLayout() {
       return;
     }
 
-    // Tạo một đối tượng lưu thời gian theo từng sân
     const courtsMap = {};
-
     selectedSlots.forEach((slot) => {
       const [courtId, time] = slot.split("-");
-      if (!courtsMap[courtId]) {
-        courtsMap[courtId] = new Set();
-      }
+      if (!courtsMap[courtId]) courtsMap[courtId] = new Set();
       courtsMap[courtId].add(time);
     });
 
     let totalHours = 0;
-
-    // Lặp qua từng sân và tính tổng giờ
     Object.values(courtsMap).forEach((timeSet) => {
-      const times = [...timeSet];
+      const timesArray = [...timeSet].sort();
+      const startTime = timesArray[0];
+      const endTime = timesArray[timesArray.length - 1];
 
-      // Sắp xếp thời gian theo thứ tự
-      times.sort((a, b) => {
-        const [ha, ma] = a.split(":").map(Number);
-        const [hb, mb] = b.split(":").map(Number);
-        return ha * 60 + ma - (hb * 60 + mb);
-      });
-
-      // Lấy thời gian đầu và cuối
-      const startTime = times[0];
-      const endTime = times[times.length - 1];
-
-      // Hàm chuyển thời gian thành phút
       const timeToMinutes = (time) => {
         const [h, m] = time.split(":").map(Number);
         return h * 60 + m;
       };
 
-      const totalMinutes = timeToMinutes(endTime) - timeToMinutes(startTime);
-      totalHours += totalMinutes / 60; // Chuyển thành giờ và cộng vào tổng
+      totalHours += (timeToMinutes(endTime) - timeToMinutes(startTime)) / 60;
     });
 
     setTotalHours(totalHours);
     setTotalPrice(totalHours * pricePerHour);
   };
 
-  const { id } = useParams();
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
-  const loadData = async () => {
-    const { data } = await getSchedule(id, date);
-    setCourts(data);
+  const handleBooking = async () => {
+    if (selectedSlots.length === 0) {
+      alert("Vui lòng chọn ít nhất một khung giờ!");
+      return;
+    }
+
+    const bookingData = {};
+    selectedSlots.forEach((slot) => {
+      const [subFieldId, time] = slot.split("-");
+      if (!bookingData[subFieldId]) bookingData[subFieldId] = [];
+      bookingData[subFieldId].push(time);
+    });
+
+    const formattedBookings = Object.entries(bookingData).map(
+      ([subFieldId, times]) => {
+        times.sort();
+        return {
+          sub_field_id: parseInt(subFieldId),
+          date: selectedDate.toISOString().split("T")[0],
+          start_time: times[0],
+          end_time: times[times.length - 1],
+        };
+      }
+    );
+    console.log("xxx", formattedBookings);
+    // const response = await bookCourt(formattedBookings);
+    // if (response.success) {
+    //   alert("Đặt sân thành công!");
+    // } else {
+    //   alert(response.message);
+    // }
   };
-  useEffect(() => {
-    loadData();
-  }, []);
 
   return (
     <Container fluid className="mt-3 px-0">
@@ -129,24 +149,13 @@ function BookingLayout() {
           <Button variant="outline-success">
             <FaArrowLeft color="white" />
           </Button>
-          <h4 className="text-center flex-grow-1 text-white">
-            Đặt lịch ngày trực quan
-          </h4>
+          <h4 className="text-center flex-grow-1 text-white">Đặt lịch</h4>
           <DatePicker
             selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
+            onChange={setSelectedDate}
             dateFormat="dd/MM/yyyy"
             className="form-control w-auto"
           />
-        </div>
-        <div className="d-flex justify-content-start mb-2 py-4 px-2">
-          <Badge bg="light" className="text-dark border me-2">
-            Trống
-          </Badge>
-          <Badge bg="danger" className="me-2">
-            Đã đặt
-          </Badge>
-          <Badge bg="secondary">Khóa</Badge>
         </div>
       </div>
       <Table bordered className="text-center booking-table">
@@ -154,25 +163,27 @@ function BookingLayout() {
           <tr>
             <th></th>
             {times.map((time) => (
-              <th key={time}>{time}</th>
+              <th className="fs-13" key={time}>
+                {time}
+              </th>
             ))}
           </tr>
         </thead>
         <tbody>
           {courts.map((item, idx) => (
             <tr key={idx}>
-              <td className="fs-12 px-3">{item.sub_field_name}</td>
+              <td>{item.sub_field_name}</td>
               {times.map((time) => {
                 const slot = `${item.sub_field_id}-${time}`;
-                const isSelected = selectedSlots.includes(slot);
                 return (
                   <td
                     key={slot}
-                    className={isSelected ? "bg-warning" : "bg-light"}
+                    className={
+                      selectedSlots.includes(slot) ? "bg-warning" : "bg-light"
+                    }
                     onClick={() =>
                       toggleSlot(item.sub_field_id, time, item.price)
                     }
-                    style={{ cursor: "pointer" }}
                   ></td>
                 );
               })}
@@ -182,13 +193,35 @@ function BookingLayout() {
       </Table>
       <div className="booking-footer py-5 bg-success">
         <div className="summary p-2">
-          <h4 className="fs-5">Tổng giờ: {totalHours}h</h4>
-          <h4 className="fs-5">Tổng tiền: {totalPrice.toLocaleString()} VNĐ</h4>
+          <h4>Tổng giờ: {totalHours}h</h4>
+          <h4>Tổng tiền: {totalPrice.toLocaleString()} VNĐ</h4>
         </div>
-        <Button variant="warning" size="lg" className="w-100">
+        <Button
+          variant="warning"
+          size="lg"
+          className="w-100"
+          // onClick={handleBooking}
+          onClick={handleShow}
+        >
           TIẾP THEO
         </Button>
       </div>
+      <Offcanvas
+        show={show}
+        onHide={handleClose}
+        placement="top"
+        className="full-height-offcanvas bg-success"
+      >
+        <div className="text-start px-2 py-2">
+          <Button variant="link" onClick={handleClose} className="p-0 border-0">
+            <FaArrowLeft color="white" />
+          </Button>
+        </div>
+        <Offcanvas.Body>
+          Some text as placeholder. In real life you can have the elements you
+          have chosen. Like, text, images, lists, etc.
+        </Offcanvas.Body>
+      </Offcanvas>
     </Container>
   );
 }
