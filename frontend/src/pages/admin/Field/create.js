@@ -16,6 +16,7 @@ function CreateFields() {
     contact_phone: "",
     description: "",
     images: [], // Chọn nhiều ảnh
+    quantity: 0
   });
   const [errors, setErrors] = useState({});
   const fetchCategories = useCallback(async () => {
@@ -137,6 +138,17 @@ function CreateFields() {
             </Form.Control.Feedback>
             {/* Input chọn nhiều ảnh */}
 
+            <CommonInput
+              type="text"
+              label="Số lượng sân cho thuê"
+              value={formData.quantity}
+              onChange={handleChange("quantity")}
+              error={!!errors.quantity}
+              max={2}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.quantity}
+            </Form.Control.Feedback>
             <Form.Group className="my-2">
               <Form.Label className="text-gray-700">Hình ảnh</Form.Label>
               <Form.Control type="file" multiple onChange={handleFileChange} />

@@ -5,6 +5,7 @@ namespace App\Utils;
 use League\Fractal\TransformerAbstract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 
 class ApiResponder
 {
@@ -19,8 +20,8 @@ class ApiResponder
 
     private function success(int $statusCode = 200, string $message = "Yêu cầu thành công!")
     {
-        if (isset($this->data)) {
-            $data = $this->data instanceof LengthAwarePaginator ? fractal()
+        if (!empty($this->data)) {
+            $data = $this->data instanceof LengthAwarePaginator || $this->data instanceof Collection ? fractal()
                 ->collection($this->data)
                 ->transformWith($this->transformerAbstract)
                 ->toArray() : fractal()->item($this->data)->transformWith($this->transformerAbstract)->toArray();
@@ -63,14 +64,7 @@ class ApiResponder
 
     public function collection(): JsonResponse
     {
-        return response()->json([
-            'status'  => 200,
-            'message' => 'Lấy danh sách thành công!',
-            'data'    => fractal()
-                ->collection($this->data)
-                ->transformWith($this->transformerAbstract)
-                ->toArray(),
-        ]);
+       return  response()->json($this->success(200, "Lấy dữ liệu thành công"));;
     }
 
     public function pagination(): JsonResponse

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bookings', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id(); // ID đặt sân
             $table->unsignedBigInteger('sub_field_id'); // ID sân con
             $table->unsignedBigInteger('user_id'); // ID người dùng

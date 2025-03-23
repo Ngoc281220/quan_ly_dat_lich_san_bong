@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\DB;
+
 use App\Models\Category;
 use App\Models\Field;
-use Illuminate\Support\Facades\Log;
+use App\Models\SubField;
 
 class FieldsService extends BaseService
 {
@@ -19,14 +21,39 @@ class FieldsService extends BaseService
     // Tạo sân thể thao
     public function createField($request)
     {
+
         $data = $request->all();
+
         if ($request->hasFile('images')) {
             $data['images'] = $this->saveFile($request->file('images'), 'fields');
         }
-        $data['image'] = json_encode($data['images']);
+
+        $data['image'] = json_encode($data['images'] ?? []);
         $data['open_time'] = "6:00";
         $data['close_time'] = "22:00";
-        return Field::create($data);
+
+        DB::beginTransaction();
+        try {
+            // Tạo sân
+            $field = Field::create($data);
+
+            // Tạo sân con nếu có số lượng
+            if (!empty($data['quantity'])) {
+                for ($i = 0; $i < $data['quantity']; $i++) {
+                    SubField::create([
+                        'field_id' => $field->id,
+                        'name' => 'Sân-' . ($i + 1),
+                        'status' => 0
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return $field;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Lỗi khi tạo sân: ' . $e->getMessage()], 500);
+        }
     }
 
     // Get danh sách sân
@@ -34,7 +61,7 @@ class FieldsService extends BaseService
     {
         $search = $request->search ?? '';
         $perPage = 10;
-        
+
         $query = Field::select(
             'fields.id',
             'fields.name',
@@ -48,7 +75,7 @@ class FieldsService extends BaseService
             'fields.contact_phone',
             'categories.name as category_name'
         )
-        ->join('categories', 'categories.id', '=', 'fields.category_id');
+            ->join('categories', 'categories.id', '=', 'fields.category_id');
 
         if (!empty($search)) {
             $query->where('fields.name', 'like', "%{$search}%")
@@ -58,8 +85,14 @@ class FieldsService extends BaseService
         return $query->paginate($perPage);
     }
 
-    public function getFiledByID($id) 
+    public function getFiledByID($id)
     {
         return Field::find($id);
+    }
+
+    // Hiển danh sách sân thể thao bên website
+    public function loadListField()
+    {
+        return Field::with('category')->get();
     }
 }

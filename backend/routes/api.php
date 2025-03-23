@@ -1,32 +1,4 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\admin\FieldsController;
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-Route::prefix("auth")->group(function () {
-    Route::post("/login", [AuthController::class, "login"])->name("login");
-    Route::post("/register", [AuthController::class, "register"])->name("register");
-    Route::get("/verify", [AuthController::class, "verify"])->name("verify");
-    Route::post("/refresh-token", [AuthController::class, "refreshToken"])->name("refreshToken");
-});
-
-Route::prefix("admin")->group(function () {
-    Route::prefix("fields")->group(function () {
-        Route::get('/', [FieldsController::class, 'getListField'])->name("admin.fields");
-        Route::get("/list-category", [FieldsController::class, "getListCategory"])->name("admin.fields.category");
-        Route::post("/create", [FieldsController::class, "createField"])->name("admin.fields.createField");
-        Route::get('/{id}', [FieldsController::class, "getFieldByID"])->name("admin.fields.ID");
-    });
-});
+require_once __DIR__ . '/website.php';
+require_once __DIR__ . '/admin.php';
