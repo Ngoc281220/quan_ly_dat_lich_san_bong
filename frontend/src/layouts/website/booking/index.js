@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Button, Table, Badge } from "react-bootstrap";
+import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaArrowLeft } from "react-icons/fa";
+import { getSchedule } from "../../../services/website/booking";
 
 const times = [
-  "6:00",
-  "6:30",
-  "7:00",
-  "7:30",
-  "8:00",
-  "8:30",
-  "9:00",
-  "9:30",
+  "06:00",
+  "06:30",
+  "07:00",
+  "07:30",
+  "08:00",
+  "08:30",
+  "09:00",
+  "09:30",
   "10:00",
   "10:30",
   "11:00",
@@ -39,23 +41,91 @@ const times = [
   "21:30",
   "22:00",
 ];
-const courts = ["A", "B", "C", "D", "E", "F"];
 
 function BookingLayout() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSlots, setSelectedSlots] = useState([]);
+  const [courts, setCourts] = useState([]);
+  const [totalHours, setTotalHours] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
-  const toggleSlot = (court, time) => {
-    const slot = `${court}-${time}`;
-    setSelectedSlots((prev) =>
-      prev.includes(slot) ? prev.filter((s) => s !== slot) : [...prev, slot]
-    );
+  const toggleSlot = (subFieldId, time, pricePerHour) => {
+    const slot = `${subFieldId}-${time}`;
+    let updatedSlots = [...selectedSlots];
+
+    if (updatedSlots.includes(slot)) {
+      updatedSlots = updatedSlots.filter((s) => s !== slot);
+    } else {
+      updatedSlots.push(slot);
+    }
+
+    setSelectedSlots(updatedSlots);
+    calculateTotal(updatedSlots, pricePerHour);
   };
+
+  const calculateTotal = (selectedSlots, pricePerHour) => {
+    if (selectedSlots.length === 0) {
+      setTotalHours(0);
+      setTotalPrice(0);
+      return;
+    }
+
+    // Tạo một đối tượng lưu thời gian theo từng sân
+    const courtsMap = {};
+
+    selectedSlots.forEach((slot) => {
+      const [courtId, time] = slot.split("-");
+      if (!courtsMap[courtId]) {
+        courtsMap[courtId] = new Set();
+      }
+      courtsMap[courtId].add(time);
+    });
+
+    let totalHours = 0;
+
+    // Lặp qua từng sân và tính tổng giờ
+    Object.values(courtsMap).forEach((timeSet) => {
+      const times = [...timeSet];
+
+      // Sắp xếp thời gian theo thứ tự
+      times.sort((a, b) => {
+        const [ha, ma] = a.split(":").map(Number);
+        const [hb, mb] = b.split(":").map(Number);
+        return ha * 60 + ma - (hb * 60 + mb);
+      });
+
+      // Lấy thời gian đầu và cuối
+      const startTime = times[0];
+      const endTime = times[times.length - 1];
+
+      // Hàm chuyển thời gian thành phút
+      const timeToMinutes = (time) => {
+        const [h, m] = time.split(":").map(Number);
+        return h * 60 + m;
+      };
+
+      const totalMinutes = timeToMinutes(endTime) - timeToMinutes(startTime);
+      totalHours += totalMinutes / 60; // Chuyển thành giờ và cộng vào tổng
+    });
+
+    setTotalHours(totalHours);
+    setTotalPrice(totalHours * pricePerHour);
+  };
+
+  const { id } = useParams();
+  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
+  const loadData = async () => {
+    const { data } = await getSchedule(id, date);
+    setCourts(data);
+  };
+  useEffect(() => {
+    loadData();
+  }, []);
 
   return (
     <Container fluid className="mt-3 px-0">
       <div className="bg-success booking-header">
-        <div className="d-flex justify-content-between align-items-center mb-3 h-100-px py-3  pe-5">
+        <div className="d-flex justify-content-between align-items-center mb-3 h-100-px py-3 pe-5">
           <Button variant="outline-success">
             <FaArrowLeft color="white" />
           </Button>
@@ -89,17 +159,19 @@ function BookingLayout() {
           </tr>
         </thead>
         <tbody>
-          {courts.map((court) => (
-            <tr key={court}>
-              <td>{court}</td>
+          {courts.map((item, idx) => (
+            <tr key={idx}>
+              <td className="fs-12 px-3">{item.sub_field_name}</td>
               {times.map((time) => {
-                const slot = `${court}-${time}`;
+                const slot = `${item.sub_field_id}-${time}`;
                 const isSelected = selectedSlots.includes(slot);
                 return (
                   <td
                     key={slot}
                     className={isSelected ? "bg-warning" : "bg-light"}
-                    onClick={() => toggleSlot(court, time)}
+                    onClick={() =>
+                      toggleSlot(item.sub_field_id, time, item.price)
+                    }
                     style={{ cursor: "pointer" }}
                   ></td>
                 );
@@ -109,6 +181,10 @@ function BookingLayout() {
         </tbody>
       </Table>
       <div className="booking-footer py-5 bg-success">
+        <div className="summary p-2">
+          <h4 className="fs-5">Tổng giờ: {totalHours}h</h4>
+          <h4 className="fs-5">Tổng tiền: {totalPrice.toLocaleString()} VNĐ</h4>
+        </div>
         <Button variant="warning" size="lg" className="w-100">
           TIẾP THEO
         </Button>

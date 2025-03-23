@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Website\FieldsController;
+use App\Http\Controllers\Website\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,4 +18,7 @@ use App\Http\Controllers\Website\FieldsController;
 // Route bên website
 Route::prefix('web')->group(function(){
     Route::get('/home', [FieldsController::class, 'loadListField']);
+    Route::prefix('booking')->group(function() {
+        Route::get('/get-schedule', [BookingController::class, 'getSchedule']);
+    });
 });

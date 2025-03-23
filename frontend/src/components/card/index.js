@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Card, Button } from "react-bootstrap";
 import {
   FaStar,
@@ -8,15 +9,9 @@ import {
   FaShareAlt,
 } from "react-icons/fa";
 // import OffcanvasBookingCard from "../BookingCard";
-function CommonCard({
-  id,
-  image,
-  title,
-  location,
-  time,
-  phone,
-  rating,
-}) {
+function CommonCard({ id, image, title, location, time, phone, rating }) {
+  const navigate = useNavigate();
+
   return (
     <Card className="mb-3 shadow-sm card-container">
       <div
@@ -55,7 +50,15 @@ function CommonCard({
                   <FaPhone /> {phone} | ⏰ {time}
                 </Card.Text>
               </div>
-              <Button variant="warning" className="fs-14 fw-bold text-white">ĐẶT LỊCH</Button>
+              <Button
+                variant="warning"
+                className="fs-14 fw-bold text-white"
+                onClick={() => {
+                  navigate(`/booking/${id}`);
+                }}
+              >
+                ĐẶT LỊCH
+              </Button>
             </div>
           </div>
         </div>
