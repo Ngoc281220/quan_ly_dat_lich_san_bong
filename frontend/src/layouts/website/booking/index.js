@@ -4,8 +4,9 @@ import { useParams } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaArrowLeft } from "react-icons/fa";
-import { getSchedule, bookCourt } from "../../../services/website/booking";
+import { getSchedule } from "../../../services/website/booking";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import Card from "react-bootstrap/Card";
 
 const times = [
   "06:00",
@@ -109,7 +110,7 @@ function BookingLayout() {
     setTotalPrice(totalHours * pricePerHour);
   };
 
-  const handleBooking = async () => {
+  const handleBooking = () => {
     if (selectedSlots.length === 0) {
       alert("Vui lòng chọn ít nhất một khung giờ!");
       return;
@@ -133,6 +134,7 @@ function BookingLayout() {
         };
       }
     );
+    setShow(true);
     console.log("xxx", formattedBookings);
     // const response = await bookCourt(formattedBookings);
     // if (response.success) {
@@ -201,7 +203,7 @@ function BookingLayout() {
           size="lg"
           className="w-100"
           // onClick={handleBooking}
-          onClick={handleShow}
+          onClick={handleBooking}
         >
           TIẾP THEO
         </Button>
@@ -218,8 +220,20 @@ function BookingLayout() {
           </Button>
         </div>
         <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
+          <h4 className="text-center text-white fw-bold mb-0 py-1">
+            Đặt lịch ngày trực quan
+          </h4>
+          <Card>
+            <Card.Header>Thông tin đặt lịch</Card.Header>
+            <Card.Body>
+              <Card.Text className="py-1 mb-0">Tên sân: Sân bóng đại học vinh</Card.Text>
+              <Card.Text className="mb-0">Địa chỉ: 181 Lê Duẩn</Card.Text>
+              <Card.Text className="py-1 mb-0">Ngày: 20/03/2024</Card.Text>
+              <Card.Text className="py-1 mb-0">Tổng giờ: 1h</Card.Text>
+              <Card.Text className="py-1 mb-0">Tổng tiền: 75.000 VNĐ</Card.Text>
+              <Button variant="primary">Go somewhere</Button>
+            </Card.Body>
+          </Card>
         </Offcanvas.Body>
       </Offcanvas>
     </Container>
