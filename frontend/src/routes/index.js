@@ -34,7 +34,7 @@ const WEBSITE_ROUTES = [
     component: VerifyEmail,
   },
   {
-    path: "/booking",
+    path: "/booking/:id",
     component: BookingSchedule,
     layout: BookingLayout,
   },

@@ -9,14 +9,13 @@ import {
 } from "react-icons/fa";
 // import OffcanvasBookingCard from "../BookingCard";
 function CommonCard({
+  id,
   image,
   title,
   location,
-  distance,
   time,
   phone,
   rating,
-  tags,
 }) {
   return (
     <Card className="mb-3 shadow-sm card-container">
@@ -37,12 +36,6 @@ function CommonCard({
                     <FaStar /> {rating}
                   </span>
                 )}
-                {tags &&
-                  tags.map((tag, index) => (
-                    <span key={index} className="badge bg-success me-1">
-                      {tag}
-                    </span>
-                  ))}
               </div>
               <div>
                 <FaHeart className="text-light me-2" />
@@ -56,7 +49,7 @@ function CommonCard({
                   {title}
                 </Card.Title>
                 <Card.Text className="text-light fs-14 mb-2">
-                  <FaMapMarkerAlt /> {distance} - {location}
+                  <FaMapMarkerAlt /> {location}
                 </Card.Text>
                 <Card.Text className="text-light fs-12 mb-2">
                   <FaPhone /> {phone} | ⏰ {time}

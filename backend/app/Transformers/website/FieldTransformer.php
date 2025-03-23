@@ -1,6 +1,9 @@
 <?php
+
 namespace App\Transformers\Website;
+
 use League\Fractal\TransformerAbstract;
+
 class FieldTransformer extends TransformerAbstract
 {
     /**
@@ -10,18 +13,18 @@ class FieldTransformer extends TransformerAbstract
      */
     public function transform($field): array
     {
-        
+        $images = $this->getImages($field->image);
         return [
             'id'            => $field->id,
-            'name'          => $field->name,
+            'title'          => $field->name,
             'category_name' => $field->category->name,
             'location'      => $field->location,
             'price'         => $field->price,
             'status'        => $field->status,
-            'image'         => $this->getImages($field->image),
-            'open_time'     => $field->open_time,
-            'close_time'    => $field->close_time,
-            'contact_phone' => $field->contact_phone,
+            'rating'        => 5,
+            'image'         =>  !empty($images) ? $images[0]['path'] : null,
+            'time'          => $this->getTime($field->open_time) . '-'.  $this->getTime($field->close_time),
+            'phone' => $field->contact_phone,
         ];
     }
 
@@ -33,5 +36,10 @@ class FieldTransformer extends TransformerAbstract
                 'path' => is_object($image) && !empty($image) ? asset($image->path) : null
             ];
         });
+    }
+
+    public function getTime(string $time)
+    {
+        return date("H:i", strtotime($time));
     }
 }
