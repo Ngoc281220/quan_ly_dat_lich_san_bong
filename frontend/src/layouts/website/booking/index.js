@@ -56,6 +56,7 @@ function BookingLayout() {
   const [nameField, setNameField] = useState(null);
   const [generalPrice, setGeneralPrice] = useState(null);
   const [location, setLocation] = useState(null);
+  const [listBooing, setListBooking] = useState([]);
 
   const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
@@ -162,6 +163,7 @@ function BookingLayout() {
       }
     );
     setShow(true);
+    setListBooking(formattedBookings);
     console.log("xxx", formattedBookings);
     // const response = await bookCourt(formattedBookings);
     // if (response.success) {
@@ -253,14 +255,34 @@ function BookingLayout() {
           <Card>
             <Card.Header>Thông tin đặt lịch</Card.Header>
             <Card.Body>
-              <Card.Text className="py-1 mb-0">
-                Tên sân: {nameField}
-              </Card.Text>
+              <Card.Text className="py-1 mb-0">Tên sân: {nameField}</Card.Text>
               <Card.Text className="mb-0">Địa chỉ: {location}</Card.Text>
-              <Card.Text className="py-1 mb-0">Ngày: {formatDateCurrent()}</Card.Text>
-              
-              <Card.Text className="py-1 mb-0">Tổng giờ: 1h</Card.Text>
-              <Card.Text className="py-1 mb-0">Tổng tiền: 75.000 VNĐ</Card.Text>
+              <Card.Text className="py-1 mb-0">
+                Ngày: {formatDateCurrent()}
+              </Card.Text>
+              {listBooing.length > 0 ? (
+                listBooing.map((item, idx) => (
+                  <tr key={idx}>
+                    <td>{`Sân-${item.sub_field_id}: `}</td> 
+                    {/* Ngày đặt */}
+                    <td className="px-2">
+                      {item.start_time} - {item.end_time} |
+                    </td>
+                    <td>
+                        {(item.total_hours * generalPrice).toLocaleString()} VNĐ
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="5" className="text-center">
+                    
+                  </td>
+                </tr>
+              )}
+
+              <Card.Text className="py-1 mb-0">Tổng giờ: {totalHours}h</Card.Text>
+              <Card.Text className="py-1 mb-0">Tổng tiền: {totalPrice.toLocaleString()} VNĐ</Card.Text>
               <Button variant="primary">Go somewhere</Button>
             </Card.Body>
           </Card>
