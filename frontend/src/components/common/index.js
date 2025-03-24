@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { format } from "date-fns";
 
 export const showToast = (message, type = "success") => {
   // "⚠️ Cảnh báo!", "warning"
@@ -26,4 +27,8 @@ export const formatCurrencyVND = (amount) => {
 
 export const formatTime = (time) => {
   return time.split(":").slice(0, 2).join(":");
+}
+
+export const formatDateCurrent = () => {
+  return format(new Date(), "dd/MM/yyyy")
 }
