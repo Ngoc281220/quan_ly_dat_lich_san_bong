@@ -19,7 +19,9 @@ class BookingTransformer extends TransformerAbstract
             'sub_field_name' => $data->sub_field_name,
             'start_time' => $data->start_time,
             'end_time' => $data->end_time,
-            'price' => (int)$data->Field->price
+            'name_field' => $data->Field->name,
+            'price' => (int)$data->Field->price,
+            'location' => $data->Field->location
         ];
     }
 }
