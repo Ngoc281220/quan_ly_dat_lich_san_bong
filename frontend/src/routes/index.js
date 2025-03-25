@@ -14,6 +14,9 @@ import FieldList from "@pages/admin/Field";
 import CreateFields from "@pages/admin/Field/create";
 import FieldDetail from "@pages/admin/Field/detail";
 
+// admin quản lý người dùng
+import ListUser from "@pages/admin/user";
+
 const WEBSITE_ROUTES = [
   {
     path: "/",
@@ -56,6 +59,10 @@ const ADMIN_ROUTES = [
   {
     path:"/admin/fields/:id",
     component: FieldDetail
+  },
+  {
+    path:"/admin/user",
+    component: ListUser
   }
 ];
 

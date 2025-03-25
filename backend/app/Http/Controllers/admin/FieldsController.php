@@ -8,7 +8,6 @@ use App\Services\FieldsService;
 use App\Http\Requests\CreateFieldRequest;
 use App\Utils\ApiResponder;
 use App\Transformers\FieldTransformer;
-use App\Models\Field;
 class FieldsController extends Controller
 {
     protected $fieldsService;
@@ -36,7 +35,7 @@ class FieldsController extends Controller
         return (new ApiResponder($data, new FieldTransformer()))->pagination();
     }
 
-    public function getFieldByID($id) 
+    public function getFieldByID($id)
     {
         $data = $this->fieldsService->getFiledByID($id);
         return (new ApiResponder($data, new FieldTransformer()))->data();

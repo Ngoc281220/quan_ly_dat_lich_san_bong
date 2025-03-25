@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\FieldsController;
+use App\Http\Controllers\admin\UserController;
 
 
 /*
@@ -29,5 +30,9 @@ Route::prefix("admin")->group(function () {
         Route::get("/list-category", [FieldsController::class, "getListCategory"])->name("admin.fields.category");
         Route::post("/create", [FieldsController::class, "createField"])->name("admin.fields.createField");
         Route::get('/{id}', [FieldsController::class, "getFieldByID"])->name("admin.fields.ID");
+    });
+
+    Route::prefix("users")->group(function() {
+        Route::get('/', [UserController::class, 'listUser'])->name("admin.users");
     });
 });

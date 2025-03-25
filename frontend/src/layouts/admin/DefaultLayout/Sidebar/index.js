@@ -15,7 +15,7 @@ const menuItems = [
   { name: "Quản lý sân bóng", icon: <FaFutbol />, path: "/admin/fields" },
   { name: "Calendar", icon: <FaCalendar />, path: "/calendar" },
   { name: "User Profile", icon: <FaUser />, path: "/profile" },
-  { name: "Quản lý người dùng", icon: <FaTasks />, path: "/tasks" },
+  { name: "Quản lý người dùng", icon: <FaTasks />, path: "/admin/user" },
   { name: "Tables", icon: <FaTable />, path: "/tables" },
   { name: "Email", icon: <FaEnvelope />, path: "/email" },
   { name: "Charts", icon: <FaChartBar />, path: "/charts" },
