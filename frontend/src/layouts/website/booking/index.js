@@ -8,6 +8,8 @@ import { getSchedule } from "../../../services/website/booking";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import Card from "react-bootstrap/Card";
 import { formatDateCurrent } from "../../../components/common";
+import Form from "react-bootstrap/Form";
+import { showToast } from "../../../components/common";
 
 const times = [
   "06:00",
@@ -57,6 +59,12 @@ function BookingLayout() {
   const [generalPrice, setGeneralPrice] = useState(null);
   const [location, setLocation] = useState(null);
   const [listBooing, setListBooking] = useState([]);
+  // xét thông tin người thuê sân
+  const [userIn, setUserIn] = useState({
+    name: "",
+    phone: "",
+    note: "",
+  });
 
   const handleClose = () => setShow(false);
   // const handleShow = () => setShow(true);
@@ -164,13 +172,17 @@ function BookingLayout() {
     );
     setShow(true);
     setListBooking(formattedBookings);
-    console.log("xxx", formattedBookings);
-    // const response = await bookCourt(formattedBookings);
-    // if (response.success) {
-    //   alert("Đặt sân thành công!");
-    // } else {
-    //   alert(response.message);
-    // }
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserIn((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+  const paymentConfirmation = () => {
+    showToast('Vui lòng nhập số điện thoại', 'warning');
   };
 
   return (
@@ -249,11 +261,11 @@ function BookingLayout() {
           </Button>
         </div>
         <Offcanvas.Body>
-          <h4 className="text-center text-white fw-bold mb-0 py-1">
+          <h4 className="text-center text-white fw-bold mb-0 py-3">
             Đặt lịch ngày trực quan
           </h4>
           <Card>
-            <Card.Header>Thông tin đặt lịch</Card.Header>
+            <Card.Header className="py-3">Thông tin đặt lịch</Card.Header>
             <Card.Body>
               <Card.Text className="py-1 mb-0">Tên sân: {nameField}</Card.Text>
               <Card.Text className="mb-0">Địa chỉ: {location}</Card.Text>
@@ -263,28 +275,50 @@ function BookingLayout() {
               {listBooing.length > 0 ? (
                 listBooing.map((item, idx) => (
                   <tr key={idx}>
-                    <td>{`Sân-${item.sub_field_id}: `}</td> 
+                    <td>{`Sân-${item.sub_field_id}: `}</td>
                     {/* Ngày đặt */}
                     <td className="px-2">
                       {item.start_time} - {item.end_time} |
                     </td>
                     <td>
-                        {(item.total_hours * generalPrice).toLocaleString()} VNĐ
+                      {(item.total_hours * generalPrice).toLocaleString()} VNĐ
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="5" className="text-center">
-                    
-                  </td>
+                  <td colSpan="5" className="text-center"></td>
                 </tr>
               )}
 
-              <Card.Text className="py-1 mb-0">Tổng giờ: {totalHours}h</Card.Text>
-              <Card.Text className="py-1 mb-0">Tổng tiền: {totalPrice.toLocaleString()} VNĐ</Card.Text>
-              <Button variant="primary">Go somewhere</Button>
+              <Card.Text className="py-1 mb-0">
+                Tổng giờ: {totalHours}h
+              </Card.Text>
+              <Card.Text className="py-1 mb-0">
+                Tổng tiền: {totalPrice.toLocaleString()} VNĐ
+              </Card.Text>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>TÊN CỦA BẠN</Form.Label>
+                <Form.Control type="text" value={userIn.name} />
+              </Form.Group>
+              <Form.Group
+                className="mb-3"
+                controlId="exampleForm.ControlInput1"
+              >
+                <Form.Label>SỐ ĐIỆN THOẠI</Form.Label>
+                <Form.Control type="text" value={userIn.phone} maxLength={10} />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>GHI CHÚ CHO CHỦ SÂN</Form.Label>
+                <Form.Control as="textarea" value={userIn.note} rows={3} />
+              </Form.Group>
             </Card.Body>
+            <Button variant="warning" onClick={paymentConfirmation} className="my-3">
+              XÁC NHẬN & THANH TOÁN
+            </Button>
           </Card>
         </Offcanvas.Body>
       </Offcanvas>
