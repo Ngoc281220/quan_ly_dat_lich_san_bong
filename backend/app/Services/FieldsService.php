@@ -95,4 +95,9 @@ class FieldsService extends BaseService
     {
         return Field::with('category')->get();
     }
+
+    public function loadCategory()
+    {
+       return Category::all(['id', 'name']);
+    }
 }

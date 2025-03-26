@@ -1,6 +1,23 @@
+import { useEffect, useState } from "react";
 import { Container, Navbar, Form, FormControl, Button } from "react-bootstrap";
+import { loadCategory } from "../../../../services/website/header";
 
 function HeaderMap() {
+  const [category, setCategory] = useState([]);
+
+  const loadData = async () => {
+      try {
+        const data = await loadCategory();
+        setCategory(data);
+      } catch (error) {
+        console.error('Lỗi load danh mục sân', error);
+      }
+  }
+
+  useEffect(() => {
+    loadData();
+  },[])
+
   return (
     <Navbar expand="lg" className="header-navbar">
       <Container  fluid className="header-container">
@@ -11,18 +28,9 @@ function HeaderMap() {
 
         {/* Các button filter */}
         <div className="filter-buttons">
-          {[
-            "Sân pickleball",
-            "Sân cầu lông",
-            "Sân bóng đá",
-            "Sân tennis",
-            "Sân bóng chuyền",
-            "Sân bóng rổ",
-            "Sân phức hợp",
-            "Sân golf",
-          ].map((item, index) => (
+          {category.map((item, index) => (
             <Button key={index} variant="outline-primary" className="filter-button">
-              {item}
+              {item.name}
             </Button>
           ))}
         </div>

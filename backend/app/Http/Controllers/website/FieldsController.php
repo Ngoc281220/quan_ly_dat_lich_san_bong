@@ -20,4 +20,11 @@ class FieldsController extends Controller
         $data = $this->fieldService->loadListField();
         return (new ApiResponder($data, new FieldTransformer()))->collection();
     }
+
+    // load tên category
+    public function loadCategory()
+    {
+        $data = $this->fieldService->loadCategory();
+        return response()->json($data);
+    }
 }

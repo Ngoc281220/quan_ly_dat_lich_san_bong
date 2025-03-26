@@ -16,6 +16,7 @@ use App\Http\Controllers\Website\BookingController;
 */
 
 // Route bên website
+Route::get('load-category',  [FieldsController::class, 'loadCategory']);
 Route::prefix('web')->group(function(){
     Route::get('/home', [FieldsController::class, 'loadListField']);
     Route::prefix('booking')->group(function() {
