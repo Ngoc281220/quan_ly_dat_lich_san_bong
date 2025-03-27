@@ -7,6 +7,8 @@ import { login } from "../../services/website/auth";
 import useAuthStore from "../../store";
 import { showToast } from "../common";
 import "../../assets/styles/RegisterForm.scss";
+import { PERMISSION } from "../../const";
+
 
 function OffCanvasLoign({ isShow, handleClose }) {
   const navigate = useNavigate();
@@ -43,12 +45,17 @@ function OffCanvasLoign({ isShow, handleClose }) {
     setShowLoading(true);
     try {
       const { data } = await login(formData);
-      if (data.original) {
-        const { user, access_token } = data.original;
+      if (data) {
+        const { user, access_token } = data;
         setUser(user, access_token);
         showToast("🚀 Đăng nhập thành công!", "success");
         setTimeout(() => {
-          navigate("/");
+          if (user && user.role === PERMISSION.ROLE_ADMIN) {
+            navigate("/admin/dashboard");
+          }
+          else {
+            navigate("/");
+          }
         }, 2000);
       }
     } catch (error) {

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Services\AuthService;
 use App\Http\Requests\RegisterFormRequest;
 use App\Http\Requests\FormLoginRequest;
+use App\Utils\ApiResponder;
+use App\Transformers\Website\LoginTransformer;
 
 
 class AuthController extends Controller
@@ -22,7 +24,7 @@ class AuthController extends Controller
     public function login(FormLoginRequest $request)
     {
         $data = $this->authService->login($request);
-        return response()->json($data);
+        return(new ApiResponder($data, new LoginTransformer()))->data();
     }
 
     public function logout(Request $request) {}

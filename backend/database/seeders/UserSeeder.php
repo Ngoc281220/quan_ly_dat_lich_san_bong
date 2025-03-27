@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
                 'full_name' => 'Nguyễn Văn A ' . $i,
                 'email' => 'user' . $i . '@gmail.com', // Để tránh trùng email
                 'phone' => '0' . rand(100000000, 999999999),
-                'password' => Hash::make('123'),
+                'password' => Hash::make('123456'),
                 'role' => $i == 0 ? 1 : 0,
                 'created_at' => now(),
                 'updated_at' => now(),

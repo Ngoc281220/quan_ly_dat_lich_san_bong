@@ -65,12 +65,12 @@ class AuthService extends BaseService
     {
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            throw new HttpApiException("Email không tồn tại!",'email', 400);
+            throw new HttpApiException("Email không tồn tại!", 'email', 400);
         }
 
         // Kiểm tra mật khẩu có tồn tại không
         if (!Hash::check($request->password, $user->password)) {
-            throw new HttpApiException("Mật khẩu không đúng!",'password', 400);
+            throw new HttpApiException("Mật khẩu không đúng!", 'password', 400);
         }
 
         $credentials = $request->only(['email', 'password']);
@@ -105,15 +105,15 @@ class AuthService extends BaseService
      *
      * @param  string $token
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return array
      */
     protected function createNewToken($token)
     {
-        return response()->json([
+        return [
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
-        ]);
+        ];
     }
 }
