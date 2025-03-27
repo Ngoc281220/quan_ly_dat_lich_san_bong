@@ -1,36 +1,30 @@
 import {
-  FaHome,
-  FaCalendar,
-  FaTasks,
-  FaUser,
-  FaTable,
-  FaEnvelope,
-  FaChartBar,
-  FaFutbol 
+  FaTachometerAlt, // Bảng điều khiển
+  FaFutbol, // Quản lý sân thể thao
+  FaUserCircle, // User Profile
+  FaUsers, // Quản lý người dùng
+  FaNewspaper, // Quản lý bài viết
 } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 const menuItems = [
-  { name: "Bảng điều khiển", icon: <FaHome />, path: "/admin/dashboard" },
-  { name: "Quản lý sân bóng", icon: <FaFutbol />, path: "/admin/fields" },
-  { name: "Calendar", icon: <FaCalendar />, path: "/calendar" },
-  { name: "User Profile", icon: <FaUser />, path: "/profile" },
-  { name: "Quản lý người dùng", icon: <FaTasks />, path: "/admin/user" },
-  { name: "Tables", icon: <FaTable />, path: "/tables" },
-  { name: "Email", icon: <FaEnvelope />, path: "/email" },
-  { name: "Charts", icon: <FaChartBar />, path: "/charts" },
+  {
+    name: "Bảng điều khiển",
+    icon: <FaTachometerAlt />,
+    path: "/admin/dashboard",
+  },
+  { name: "Quản lý sân thể thao", icon: <FaFutbol />, path: "/admin/fields" },
+  { name: "User Profile", icon: <FaUserCircle />, path: "/profile" },
+  { name: "Quản lý người dùng", icon: <FaUsers />, path: "/admin/user" },
+  { name: "Quản lý bài viết", icon: <FaNewspaper />, path: "/admin/posts" },
 ];
-
 function AdminSidebar() {
-
   return (
     <div
       className={`bg-gray-900 text-white min-h-screen p-4 transition-all admin-sidebar`}
     >
       {/* Logo */}
-      <h2
-        className="text-xl font-bold text-center transition-opacity"
-      >
+      <h2 className="text-xl font-bold text-center transition-opacity">
         Admin
       </h2>
 
@@ -43,11 +37,7 @@ function AdminSidebar() {
             className="d-block p-3 rounded-lg transition text-white text-decoration-none"
           >
             <span className="text-xl ">{item.icon}</span>
-            <span
-              className="mx-3 transition-all "
-            >
-              {item.name}
-            </span>
+            <span className="mx-3 transition-all ">{item.name}</span>
           </NavLink>
         ))}
       </nav>

@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 const menuItems = [
   { path: "/", icon: <FaHome size={24} />, label: "Trang chủ" },
   { path: "/map", icon: <FaMap size={24} />, label: "Bản đồ" },
-  { path: "/highlights", icon: <FaFileAlt size={24} />, label: "Nổi bật" },
+  { path: "/posts", icon: <FaFileAlt size={24} />, label: "Bài viết" },
   { path: "/account", icon: <FaUser size={24} />, label: "Tài khoản" },
 ];
 

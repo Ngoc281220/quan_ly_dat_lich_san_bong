@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Website\FieldsController;
 use App\Http\Controllers\Website\BookingController;
+use App\Http\Controllers\website\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,7 @@ Route::prefix('web')->group(function(){
     Route::prefix('booking')->group(function() {
         Route::get('/get-schedule', [BookingController::class, 'getSchedule']);
     });
+    Route::prefix('posts')->group(function() {{
+        Route::get('/', [PostController::class, 'listPost']);
+    }});
 });
