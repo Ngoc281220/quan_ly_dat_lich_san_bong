@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id(); // ID đặt sân
-            $table->unsignedBigInteger('sub_field_id'); // ID sân con
-            $table->unsignedBigInteger('user_id'); // ID người dùng
-            $table->date('date'); // Ngày đặt sân
-            $table->time('start_time'); // Giờ bắt đầu
-            $table->time('end_time'); // Giờ kết thúc
-            $table->unsignedBigInteger('status')->default(0); // Trạng thái
-            $table->timestamps(); // created_at, updated_at
+            $table->unsignedBigInteger('field_id'); // ID sân
+            $table->unsignedBigInteger('user_id'); //ID người dùng
+            $table->decimal('total_hours', 5, 2)->default(0); // tổng giời đặt
+            $table->decimal('total_price', 10, 2)->default(0);// tổng tiền  đặt
+            $table->integer('status', )->default(0)->comment('pending, confirmed, canceled');
+            $table->timestamps();
         });
     }
 

@@ -14,10 +14,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('users')->insert([
+            'full_name' => 'Admin',
+            'email' => 'admin@gmail.com', // Để tránh trùng email
+            'phone' => '0' . rand(100000000, 999999999),
+            'password' => Hash::make('123456'),
+            'role' => 0,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
         for ($i = 0; $i < 20; $i++) {
             DB::table('users')->insert([
-                'full_name' => 'Nguyễn Văn A ' . $i,
-                'email' => 'user' . $i . '@gmail.com', // Để tránh trùng email
+                'full_name' => 'Nguyễn Văn A-' . $i,
+                'email' => 'user-' . $i . '@gmail.com', // Để tránh trùng email
                 'phone' => '0' . rand(100000000, 999999999),
                 'password' => Hash::make('123456'),
                 'role' => $i == 0 ? 1 : 0,

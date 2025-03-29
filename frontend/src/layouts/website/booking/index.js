@@ -181,8 +181,9 @@ function BookingLayout() {
       [name]: value,
     }));
   };
+  
   const paymentConfirmation = () => {
-    showToast('Vui lòng nhập số điện thoại', 'warning');
+    showToast("Vui lòng nhập số điện thoại", "warning");
   };
 
   return (
@@ -302,21 +303,42 @@ function BookingLayout() {
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>TÊN CỦA BẠN</Form.Label>
-                <Form.Control type="text" value={userIn.name} />
+                <Form.Control
+                   type="text"
+                   name="name" 
+                  onChange={handleChange}
+                  value={userIn.name}
+                />
               </Form.Group>
               <Form.Group
                 className="mb-3"
                 controlId="exampleForm.ControlInput1"
               >
                 <Form.Label>SỐ ĐIỆN THOẠI</Form.Label>
-                <Form.Control type="text" value={userIn.phone} maxLength={10} />
+                <Form.Control
+                  type="text"
+                  name="phone" 
+                  onChange={handleChange}
+                  value={userIn.phone}
+                  maxLength={10}
+                />
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>GHI CHÚ CHO CHỦ SÂN</Form.Label>
-                <Form.Control as="textarea" value={userIn.note} rows={3} />
+                <Form.Control
+                  as="textarea"
+                  name="note" 
+                  onChange={handleChange}
+                  value={userIn.note}
+                  rows={3}
+                />
               </Form.Group>
             </Card.Body>
-            <Button variant="warning" onClick={paymentConfirmation} className="my-3">
+            <Button
+              variant="warning"
+              onClick={paymentConfirmation}
+              className="my-3"
+            >
               XÁC NHẬN & THANH TOÁN
             </Button>
           </Card>

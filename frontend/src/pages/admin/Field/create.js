@@ -1,12 +1,14 @@
 import { useState, useEffect, useCallback } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useNavigate } from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
 import CommonInput from "../../../components/input";
 import { getListCategory, createField } from "../../../services/admin/fields";
 import { showToast } from "../../../components/common";
 
 function CreateFields() {
+  const navigate = useNavigate();
   const [categoryFields, setCategoryFields] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
@@ -16,7 +18,7 @@ function CreateFields() {
     contact_phone: "",
     description: "",
     images: [], // Chọn nhiều ảnh
-    quantity: 0
+    quantity: 1
   });
   const [errors, setErrors] = useState({});
   const fetchCategories = useCallback(async () => {
@@ -58,7 +60,7 @@ function CreateFields() {
       await createField(formDataToSend);
       showToast("🚀 Thêm sân thành công!", "success");
       setTimeout(() => {
-        // navigate("/");
+        navigate("/admin/fields");
       }, 2000);
     } catch (error) {
       if (error.response.data.errors) {
