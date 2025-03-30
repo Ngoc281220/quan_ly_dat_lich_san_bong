@@ -17,6 +17,9 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id'); //ID người dùng
             $table->decimal('total_hours', 5, 2)->default(0); // tổng giời đặt
             $table->decimal('total_price', 10, 2)->default(0);// tổng tiền  đặt
+            $table->string('name_user_booking_field')->nullable();
+            $table->string('phone')->nullable();
+            $table->text('comment')->nullable();
             $table->integer('status', )->default(0)->comment('pending, confirmed, canceled');
             $table->timestamps();
         });

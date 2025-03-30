@@ -8,6 +8,7 @@ import DefaultLayoutAdmin from "./layouts/admin/DefaultLayout";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./assets/styles/App.scss";
 import Loading from "./config/loading";
+import NotFoundPage from "./pages/404/NotFoundPage";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -52,6 +53,7 @@ function App() {
               />
             );
           })}
+          <Route path="/404" element={<NotFoundPage/>}/>
         </Routes>
       </Container>
     </BrowserRouter>

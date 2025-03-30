@@ -20,4 +20,9 @@ class BookingController extends Controller {
         $data = $this->bookingService->getSchedule($request);
         return (new ApiResponder($data, new BookingTransformer()))->collection();
     }
+
+    public function bookingsField(Request $request)
+    {
+        dd($request);
+    }
 }

@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('booking_id');
+            $table->decimal('total_price', 10, 2);
+            $table->integer('payment_method')->default(0)->comment('credit_card, cash');
+            $table->json('image_payment')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */

@@ -20,8 +20,9 @@ use App\Http\Controllers\website\PostController;
 Route::get('load-category',  [FieldsController::class, 'loadCategory']);
 Route::prefix('web')->group(function(){
     Route::get('/home', [FieldsController::class, 'loadListField']);
-    Route::prefix('booking')->group(function() {
+    Route::prefix('bookings')->group(function() {
         Route::get('/get-schedule', [BookingController::class, 'getSchedule']);
+        Route::post('/field', [BookingController::class, 'bookingsField']);
     });
     Route::prefix('posts')->group(function() {{
         Route::get('/', [PostController::class, 'listPost']);

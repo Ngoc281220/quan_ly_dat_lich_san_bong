@@ -181,9 +181,25 @@ function BookingLayout() {
       [name]: value,
     }));
   };
-  
+
   const paymentConfirmation = () => {
-    showToast("Vui lòng nhập số điện thoại", "warning");
+    const phone = userIn.phone.trim();
+    if (phone === null || phone === '')
+    {
+      showToast("Vui lòng nhập số điện thoại", "warning");
+    }
+    try {
+      const params = {
+        listBooing,
+        userIn,
+        totalPrice,
+        totalHours,
+        idField: id
+      }
+      console.log('params', params);
+    } catch (error) {
+      
+    }
   };
 
   return (
@@ -273,24 +289,29 @@ function BookingLayout() {
               <Card.Text className="py-1 mb-0">
                 Ngày: {formatDateCurrent()}
               </Card.Text>
-              {listBooing.length > 0 ? (
-                listBooing.map((item, idx) => (
-                  <tr key={idx}>
-                    <td>{`Sân-${item.sub_field_id}: `}</td>
-                    {/* Ngày đặt */}
-                    <td className="px-2">
-                      {item.start_time} - {item.end_time} |
-                    </td>
-                    <td>
-                      {(item.total_hours * generalPrice).toLocaleString()} VNĐ
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="5" className="text-center"></td>
-                </tr>
-              )}
+              <table>
+                <tbody>
+                  {listBooing.length > 0 ? (
+                    listBooing.map((item, idx) => (
+                      <tr key={idx}>
+                        <td>{`Sân-${item.sub_field_id}: `}</td>
+                        {/* Ngày đặt */}
+                        <td className="px-2">
+                          {item.start_time} - {item.end_time} |
+                        </td>
+                        <td>
+                          {(item.total_hours * generalPrice).toLocaleString()}{" "}
+                          VNĐ
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="text-center"></td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
 
               <Card.Text className="py-1 mb-0">
                 Tổng giờ: {totalHours}h
@@ -304,8 +325,8 @@ function BookingLayout() {
               >
                 <Form.Label>TÊN CỦA BẠN</Form.Label>
                 <Form.Control
-                   type="text"
-                   name="name" 
+                  type="text"
+                  name="name"
                   onChange={handleChange}
                   value={userIn.name}
                 />
@@ -317,7 +338,7 @@ function BookingLayout() {
                 <Form.Label>SỐ ĐIỆN THOẠI</Form.Label>
                 <Form.Control
                   type="text"
-                  name="phone" 
+                  name="phone"
                   onChange={handleChange}
                   value={userIn.phone}
                   maxLength={10}
@@ -327,7 +348,7 @@ function BookingLayout() {
                 <Form.Label>GHI CHÚ CHO CHỦ SÂN</Form.Label>
                 <Form.Control
                   as="textarea"
-                  name="note" 
+                  name="note"
                   onChange={handleChange}
                   value={userIn.note}
                   rows={3}
