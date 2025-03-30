@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\BookingService;
 use App\Utils\ApiResponder;
 use App\Transformers\Website\BookingTransformer;
+use App\Transformers\Website\CreateBookingTransformer;
 
 class BookingController extends Controller {
     protected $bookingService;
@@ -23,6 +24,7 @@ class BookingController extends Controller {
 
     public function bookingsField(Request $request)
     {
-        dd($request);
+        $data = $this->bookingService->bookingsField($request);
+        return(new ApiResponder($data, new CreateBookingTransformer()))->created();
     }
 }

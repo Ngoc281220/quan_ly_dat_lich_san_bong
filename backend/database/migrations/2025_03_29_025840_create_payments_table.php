@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->integer('payment_method')->default(0)->comment('credit_card, cash');
             $table->json('image_payment')->nullable();
+            $table->date('date_payment');
             $table->integer('status')->default(0);
             $table->timestamps();
         });

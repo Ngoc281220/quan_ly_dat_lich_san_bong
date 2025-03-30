@@ -10,6 +10,7 @@ import Card from "react-bootstrap/Card";
 import { formatDateCurrent } from "../../../components/common";
 import Form from "react-bootstrap/Form";
 import { showToast } from "../../../components/common";
+import { bookingsField } from "../../../services/website/booking";
 
 const times = [
   "06:00",
@@ -182,7 +183,7 @@ function BookingLayout() {
     }));
   };
 
-  const paymentConfirmation = () => {
+  const paymentConfirmation = async () => {
     const phone = userIn.phone.trim();
     if (phone === null || phone === '')
     {
@@ -196,6 +197,8 @@ function BookingLayout() {
         totalHours,
         idField: id
       }
+      
+      const { data } = await bookingsField(params); 
       console.log('params', params);
     } catch (error) {
       

@@ -9,8 +9,8 @@ class Booking extends Model
 {
     use HasFactory;
     protected $table = 'bookings';
-    protected $fillable = ['sub_field_id', 'user_id', 'date', 'start_time', 'end_time', 'status'];
-
+    protected $fillable = ['field_id', 'user_id', 'total_hours', 'total_price', 'name_user_booking_field', 'phone', 'comment', 'status'];
+    
     // Mối quan hệ với sân con
     public function subField() {
         return $this->belongsTo(SubField::class, 'sub_field_id');
