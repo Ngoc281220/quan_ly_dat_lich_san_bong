@@ -17,8 +17,9 @@ import FieldList from "@pages/admin/Field";
 import CreateFields from "@pages/admin/Field/create";
 import FieldDetail from "@pages/admin/Field/detail";
 
-// 
+// admin quản lý bài viết
 import PostList from "../pages/admin/post";
+import CreatePostForm from "../pages/admin/post/create";
 
 // admin quản lý người dùng
 import ListUser from "@pages/admin/user";
@@ -77,6 +78,10 @@ const ADMIN_ROUTES = [
   {
     path:"/admin/posts",
     component: PostList
+  },
+  {
+    path: "admin/posts/create",
+    component: CreatePostForm
   }
 ];
 
