@@ -3,7 +3,7 @@ function PostList() {
     return (
         <>
             <div className="d-flex justify-content-end">
-                <Button href="/admin/fields/create" variant="primary">
+                <Button href="/admin/posts/create" variant="primary">
                 Thêm bài viết
                 </Button>
             </div>
@@ -14,12 +14,12 @@ function PostList() {
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Tên sân</th>
-                            <th>Loại sân</th>
-                            <th>Gía thuê</th>
-                            <th>Mở sân</th>
-                            <th>Đóng sân</th>
-                            <th>Trạng thái</th>
+                            <th>Tiêu đề</th>
+                            <th>Hình ảnh</th>
+                            <th>Tóm tắt</th>
+                            <th>Nội dung</th>
+                            <th>Ngày đăng</th>
+                            <th>Bình luận</th>
                             <th>Actions</th>
                         </tr>
                         </thead>
