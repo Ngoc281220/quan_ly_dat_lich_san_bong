@@ -5,7 +5,6 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\FieldsController;
 use App\Http\Controllers\admin\UserController;
 
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,22 +16,26 @@ use App\Http\Controllers\admin\UserController;
 |
 */
 
-Route::prefix("auth")->group(function () {
-    Route::post("/login", [AuthController::class, "login"])->name("login");
-    Route::post("/register", [AuthController::class, "register"])->name("register");
-    Route::get("/verify", [AuthController::class, "verify"])->name("verify");
-    Route::post("/refresh-token", [AuthController::class, "refreshToken"])->name("refreshToken");
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/verify', [AuthController::class, 'verify'])->name('verify');
+    Route::post('/refresh-token', [AuthController::class, 'refreshToken'])->name('refreshToken');
 });
 
-Route::prefix("admin")->group(function () {
-    Route::prefix("fields")->group(function () {
-        Route::get('/', [FieldsController::class, 'getListField'])->name("admin.fields");
-        Route::get("/list-category", [FieldsController::class, "getListCategory"])->name("admin.fields.category");
-        Route::post("/create", [FieldsController::class, "createField"])->name("admin.fields.createField");
-        Route::get('/{id}', [FieldsController::class, "getFieldByID"])->name("admin.fields.ID");
+Route::prefix('admin')->group(function () {
+    Route::prefix('fields')->group(function () {
+        Route::get('/', [FieldsController::class, 'getListField'])->name('admin.fields');
+        Route::get('/list-category', [FieldsController::class, 'getListCategory'])->name('admin.fields.category');
+        Route::post('/create', [FieldsController::class, 'createField'])->name('admin.fields.createField');
+        Route::get('/{id}', [FieldsController::class, 'getFieldByID'])->name('admin.fields.ID');
     });
 
-    Route::prefix("users")->group(function() {
-        Route::get('/', [UserController::class, 'listUser'])->name("admin.users");
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'listUser'])->name('admin.users');
+    });
+
+    Route::prefix('posts')->group(function () {
+        Route::post('/create', [UserController::class, 'create'])->name('admin.posts.create');
     });
 });

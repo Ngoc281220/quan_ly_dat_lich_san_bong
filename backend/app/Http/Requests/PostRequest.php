@@ -23,7 +23,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'image_url' => 'nullable|url',
+            'image_url' => 'nullable|mimes:jpg,png,jpeg|max:2048',
             'excerpt' => 'required|string',
             'content' => 'required|string',
             'date' => 'required|date',

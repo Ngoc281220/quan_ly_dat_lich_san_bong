@@ -12,4 +12,10 @@ class PostService extends BaseService
     {
         return Post::all();
     }
+
+    // Tạo bài viết
+    public function create($request)
+    {
+        return Post::create($request->all());
+    }
 }
