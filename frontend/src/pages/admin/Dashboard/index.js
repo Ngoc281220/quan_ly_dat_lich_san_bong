@@ -5,9 +5,9 @@ import DashboardStats from "../../../components/DashboardStats";
 function Dashboard() {
   return (
     <>
-      <>
-      <DashboardStats/>
-      </>
+      <div className="my-4">
+        <DashboardStats/>
+      </div>
       <LineChart />
     </>
   );
