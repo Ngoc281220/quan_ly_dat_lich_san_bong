@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import { Container, Form, Button, Card, Image } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Container, Form, Button, Card, Image } from 'react-bootstrap';
 import { createPost } from '../../../services/admin/post';
 
 const CreatePostForm = () => {
   const [formData, setFormData] = useState({
-    title: "",
-    image_url: "",
-    excerpt: "",
-    content: "",
-    date: "",
-    comments: "",
+    title: '',
+    image: null,
+    excerpt: '',
+    content: '',
+    date: '',
+    comments: '',
   });
-
+  const [preview, setPreview] = useState('');
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -20,18 +20,32 @@ const CreatePostForm = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      setFormData((prev) => ({ ...prev, image: file }));
+
+      // Hiển thị ảnh xem trước
       const reader = new FileReader();
-      reader.onloadend = () => {
-        console.log('xx', reader.result);
-        setFormData({ ...formData, image_url: reader.result });
-      };
+      reader.onloadend = () => setPreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('excerpt', formData.excerpt);
+      formDataToSend.append('content', formData.content);
+      formDataToSend.append('date', formData.date);
+      formDataToSend.append('comments', formData.comments);
+      if (formData.image) {
+        formDataToSend.append('image', formData.image);
+      }
+      const { data } = await createPost(formDataToSend);
+      console.log('data', data);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -58,9 +72,9 @@ const CreatePostForm = () => {
               accept="image/*"
               onChange={handleImageChange}
             />
-            {formData.image_url && (
+            {preview && (
               <div className="mt-3 text-center">
-                <Image src={formData.image_url} alt="Preview" fluid rounded />
+                <Image src={preview} alt="Preview" fluid rounded />
               </div>
             )}
           </Form.Group>

@@ -23,7 +23,7 @@ class PostRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'image_url' => 'nullable|mimes:jpg,png,jpeg|max:2048',
+            'image' => 'nullable|mimes:jpg,png,jpeg|max:2048',
             'excerpt' => 'required|string',
             'content' => 'required|string',
             'date' => 'required|date',
@@ -38,7 +38,6 @@ class PostRequest extends FormRequest
             'title.string' => 'Tiêu đề phải là một chuỗi ký tự.',
             'title.max' => 'Tiêu đề không được vượt quá 255 ký tự.',
 
-            'image_url.url' => 'Định dạng URL của hình ảnh không hợp lệ.',
 
             'excerpt.required' => 'Vui lòng nhập mô tả ngắn.',
             'excerpt.string' => 'Mô tả ngắn phải là một chuỗi ký tự.',

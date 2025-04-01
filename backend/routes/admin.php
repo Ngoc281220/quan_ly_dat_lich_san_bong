@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\FieldsController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\admin\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,6 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::prefix('posts')->group(function () {
-        Route::post('/create', [UserController::class, 'create'])->name('admin.posts.create');
+        Route::post('/create', [PostController::class, 'create'])->name('admin.posts.create');
     });
 });

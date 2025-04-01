@@ -10,5 +10,5 @@ class Post extends Model
     use HasFactory;
 
     protected $table = 'posts';
-    protected $fillable = ['title', 'image_url', 'excerpt', 'content', 'date', 'comments'];
+    protected $fillable = ['title', 'image', 'excerpt', 'content', 'date', 'comments'];
 }

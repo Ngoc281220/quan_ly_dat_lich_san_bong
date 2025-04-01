@@ -16,6 +16,12 @@ class PostService extends BaseService
     // Tạo bài viết
     public function create($request)
     {
-        return Post::create($request->all());
+        $data = $request->all();
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $this->saveFile($request->file('image'), 'posts');
+        }
+        $data['image'] = $imagePath ? json_encode($imagePath) : null;
+        return Post::create($data);
     }
 }
