@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Card, Image } from "react-bootstrap";
+import { createPost } from '../../../services/admin/post';
 
 const CreatePostForm = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ const CreatePostForm = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
+        console.log('xx', reader.result);
         setFormData({ ...formData, image_url: reader.result });
       };
       reader.readAsDataURL(file);
