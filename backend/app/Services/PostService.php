@@ -39,7 +39,6 @@ class PostService extends BaseService
                     ->orWhere('comments', 'like', "%{$search}%");
             });
         }
-
         return $query->paginate($perPage);
     }
 }
