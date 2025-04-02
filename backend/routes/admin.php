@@ -38,5 +38,6 @@ Route::prefix('admin')->group(function () {
 
     Route::prefix('posts')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('admin.posts.create');
+        Route::get('/', [PostController::class, 'getListPost'])->name('admin.posts.list');
     });
 });

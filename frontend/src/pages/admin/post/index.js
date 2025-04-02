@@ -1,5 +1,30 @@
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import { getListPost } from "../../../services/admin/post";
+
 function PostList() {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [pagination, setPagination] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [search, setSearch] = useState("");
+
+    const loadPosts = async (search, page) => {
+        setLoading(true);
+        try {
+            const { data, pagination } = await getListPost(page);
+            setPosts(data);
+            setPagination(pagination);
+        } catch (error) {
+            console.error("Lỗi khi lấy danh sách sân:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        loadPosts(search, currentPage);
+    }, [search, currentPage]);
     return (
         <>
             <div className="d-flex justify-content-end">
