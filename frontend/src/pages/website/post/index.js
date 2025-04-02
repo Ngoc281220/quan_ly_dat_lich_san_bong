@@ -28,7 +28,7 @@ function BlogList() {
                   <Col md={5}>
                     <Card.Img
                       variant="top"
-                      src={post.image_url}
+                      src={post.image}
                       alt={post.title}
                     />
                   </Col>

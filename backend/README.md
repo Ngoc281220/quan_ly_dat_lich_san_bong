@@ -27,7 +27,7 @@ php artisan key:generate
 - php artisan cache:clear
 - php artisan config:clear
 - composer dump-autoload
-
+ php artisan storage:link
 
 - Chạy command:
 - php artisan make:controller Auth\AuthController
