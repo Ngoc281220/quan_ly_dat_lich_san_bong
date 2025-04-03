@@ -8,6 +8,7 @@ function Dashboard() {
       <div className="my-4">
         <DashboardStats/>
       </div>
+      <h3>Thống kê doanh thu</h3>
       <LineChart />
     </>
   );

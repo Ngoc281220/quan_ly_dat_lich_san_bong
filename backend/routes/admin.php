@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\admin\FieldsController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PostController;
+use App\Http\Controllers\admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +40,10 @@ Route::prefix('admin')->group(function () {
     Route::prefix('posts')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('admin.posts.create');
         Route::get('/', [PostController::class, 'getListPost'])->name('admin.posts.list');
+    });
+
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'dashboard']);
+        Route::get('/revenue', [DashboardController::class, 'getRevenueByMonth']);
     });
 });
