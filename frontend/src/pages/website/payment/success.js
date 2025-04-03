@@ -1,8 +1,24 @@
-import React from 'react';
+import {useEffect} from 'react';
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
-
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { saveInfoPaymentMo } from '../../../services/website/payment';
 
 export default function PaymentSuccess() {
+    const [searchParams] = useSearchParams();
+    const handleSaveInfoPaymentMo = async () => {
+        const params = {
+            order_code: searchParams.get('orderId'),
+            amount: searchParams.get('amount'),
+        };
+        try {
+            await saveInfoPaymentMo(params);
+        } catch (error) {
+            console.log(error);
+        }
+    }   
+    useEffect(() => {
+        handleSaveInfoPaymentMo();
+    }, [searchParams])
     return (
         <Container className="mt-5">
             <Row className="justify-content-center">

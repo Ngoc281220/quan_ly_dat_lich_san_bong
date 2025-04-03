@@ -1,52 +1,52 @@
-import React, { useState, useEffect } from "react";
-import { Container, Button, Table, Badge } from "react-bootstrap";
-import { useParams } from "react-router-dom";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { FaArrowLeft } from "react-icons/fa";
-import { getSchedule } from "../../../services/website/booking";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import Card from "react-bootstrap/Card";
-import { formatDateCurrent } from "../../../components/common";
-import Form from "react-bootstrap/Form";
-import { showToast } from "../../../components/common";
-import { bookingsField } from "../../../services/website/booking";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Container, Button, Table, Badge } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { FaArrowLeft } from 'react-icons/fa';
+import { getSchedule } from '../../../services/website/booking';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Card from 'react-bootstrap/Card';
+import { formatDateCurrent } from '../../../components/common';
+import Form from 'react-bootstrap/Form';
+import { showToast } from '../../../components/common';
+import { bookingsField } from '../../../services/website/booking';
+import { useNavigate } from 'react-router-dom';
 
 const times = [
-  "06:00",
-  "06:30",
-  "07:00",
-  "07:30",
-  "08:00",
-  "08:30",
-  "09:00",
-  "09:30",
-  "10:00",
-  "10:30",
-  "11:00",
-  "11:30",
-  "12:00",
-  "12:30",
-  "13:00",
-  "13:30",
-  "14:00",
-  "14:30",
-  "15:00",
-  "15:30",
-  "16:00",
-  "16:30",
-  "17:00",
-  "17:30",
-  "18:00",
-  "18:30",
-  "19:00",
-  "19:30",
-  "20:00",
-  "20:30",
-  "21:00",
-  "21:30",
-  "22:00",
+  '06:00',
+  '06:30',
+  '07:00',
+  '07:30',
+  '08:00',
+  '08:30',
+  '09:00',
+  '09:30',
+  '10:00',
+  '10:30',
+  '11:00',
+  '11:30',
+  '12:00',
+  '12:30',
+  '13:00',
+  '13:30',
+  '14:00',
+  '14:30',
+  '15:00',
+  '15:30',
+  '16:00',
+  '16:30',
+  '17:00',
+  '17:30',
+  '18:00',
+  '18:30',
+  '19:00',
+  '19:30',
+  '20:00',
+  '20:30',
+  '21:00',
+  '21:30',
+  '22:00',
 ];
 
 function BookingLayout() {
@@ -64,9 +64,9 @@ function BookingLayout() {
   const [listBooking, setListBooking] = useState([]);
   // xét thông tin người thuê sân
   const [userIn, setUserIn] = useState({
-    name: "",
-    phone: "",
-    note: "",
+    name: '',
+    phone: '',
+    note: '',
   });
 
   const handleClose = () => setShow(false);
@@ -79,7 +79,7 @@ function BookingLayout() {
   const loadData = async () => {
     const { data } = await getSchedule(
       id,
-      selectedDate.toISOString().split("T")[0]
+      selectedDate.toISOString().split('T')[0],
     );
     if (data.length > 0) {
       setCourts(data);
@@ -100,7 +100,7 @@ function BookingLayout() {
   };
 
   const timeToMinutes = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
+    const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
   };
 
@@ -121,7 +121,7 @@ function BookingLayout() {
 
     const courtsMap = {};
     selectedSlots.forEach((slot) => {
-      const [courtId, time] = slot.split("-");
+      const [courtId, time] = slot.split('-');
       if (!courtsMap[courtId]) courtsMap[courtId] = new Set();
       courtsMap[courtId].add(time);
     });
@@ -133,7 +133,7 @@ function BookingLayout() {
       const endTime = timesArray[timesArray.length - 1];
 
       const timeToMinutes = (time) => {
-        const [h, m] = time.split(":").map(Number);
+        const [h, m] = time.split(':').map(Number);
         return h * 60 + m;
       };
 
@@ -146,13 +146,13 @@ function BookingLayout() {
 
   const handleBooking = () => {
     if (selectedSlots.length === 0) {
-      alert("Vui lòng chọn ít nhất một khung giờ!");
+      alert('Vui lòng chọn ít nhất một khung giờ!');
       return;
     }
 
     const bookingData = {};
     selectedSlots.forEach((slot) => {
-      const [subFieldId, time] = slot.split("-");
+      const [subFieldId, time] = slot.split('-');
       if (!bookingData[subFieldId]) bookingData[subFieldId] = [];
       bookingData[subFieldId].push(time);
     });
@@ -166,12 +166,12 @@ function BookingLayout() {
 
         return {
           sub_field_id: parseInt(subFieldId),
-          date: selectedDate.toISOString().split("T")[0],
+          date: selectedDate.toISOString().split('T')[0],
           start_time,
           end_time,
           total_hours, // Tổng giờ tính toán
         };
-      }
+      },
     );
     setShow(true);
     setListBooking(formattedBookings);
@@ -187,9 +187,8 @@ function BookingLayout() {
 
   const paymentConfirmation = async () => {
     const phone = userIn.phone.trim();
-    if (phone === null || phone === '')
-    {
-      showToast("Vui lòng nhập số điện thoại", "warning");
+    if (phone === null || phone === '') {
+      showToast('Vui lòng nhập số điện thoại', 'warning');
     }
     try {
       const params = {
@@ -197,16 +196,14 @@ function BookingLayout() {
         userIn,
         totalPrice,
         totalHours,
-        idField: id
-      }
-      
-      const { data } = await bookingsField(params); 
+        idField: id,
+      };
+
+      const { data } = await bookingsField(params);
       if (data) {
         navigate(`/payment/${data.order_code}`);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   return (
@@ -236,7 +233,7 @@ function BookingLayout() {
             ))}
           </tr>
         </thead>
-        <tbody>
+        {/* <tbody>
           {courts.map((item, idx) => (
             <tr key={idx}>
               <td>{item.sub_field_name}</td>
@@ -250,6 +247,73 @@ function BookingLayout() {
                     }
                     onClick={() =>
                       toggleSlot(item.sub_field_id, time, item.price)
+                    }
+                  ></td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody> */}
+        {/* <tbody>
+          {courts.map((item, idx) => (
+            <tr key={idx}>
+              <td>{item.sub_field_name}</td>
+              {times.map((time) => {
+                const slot = `${item.sub_field_id}-${time}`;
+                const now = new Date().toTimeString().slice(0, 5); // Lấy HH:mm hiện tại
+                const isPast = time < now; // Kiểm tra nếu đã qua
+                console.log('item', item.time_slots)
+                return (
+                  <td
+                    key={slot}
+                    className={
+                      isPast
+                        ? 'bg-secondary text-light' // Nếu đã qua, đổi màu xám
+                        : selectedSlots.includes(slot)
+                          ? 'bg-warning'
+                          : 'bg-light'
+                    }
+                    onClick={
+                      isPast
+                        ? undefined
+                        : () => toggleSlot(item.sub_field_id, time, item.price)
+                    }
+                  ></td>
+                );
+              })}
+            </tr>
+          ))}
+        </tbody> */}
+        <tbody>
+          {courts.map((item, idx) => (
+            <tr key={idx}>
+              <td>{item.sub_field_name}</td>
+              {times.map((time) => {
+                const slot = `${item.sub_field_id}-${time}`;
+                const now = new Date().toTimeString().slice(0, 5); // Lấy HH:mm hiện tại
+                const isPast = time < now; // Kiểm tra nếu đã qua
+
+                // Kiểm tra nếu thời gian nằm trong time_slots
+                const isBooked = item.time_slots.some(
+                  (slot) => time >= slot.start_time && time < slot.end_time,
+                );
+
+                return (
+                  <td
+                    key={slot}
+                    className={
+                      isBooked
+                        ? 'bg-danger text-light' // Nếu đã đặt, tô màu đỏ
+                        : isPast
+                          ? 'bg-secondary text-light' // Nếu đã qua, đổi màu xám
+                          : selectedSlots.includes(slot)
+                            ? 'bg-warning'
+                            : 'bg-light'
+                    }
+                    onClick={
+                      isPast || isBooked
+                        ? undefined // Nếu đã qua hoặc đã đặt, vô hiệu hóa click
+                        : () => toggleSlot(item.sub_field_id, time, item.price)
                     }
                   ></td>
                 );
@@ -307,7 +371,7 @@ function BookingLayout() {
                           {item.start_time} - {item.end_time} |
                         </td>
                         <td>
-                          {(item.total_hours * generalPrice).toLocaleString()}{" "}
+                          {(item.total_hours * generalPrice).toLocaleString()}{' '}
                           VNĐ
                         </td>
                       </tr>

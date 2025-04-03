@@ -33,5 +33,6 @@ Route::prefix('web')->group(function(){
 
     Route::prefix('payment')->group(function(){
         Route::post('/momo', [PaymentController::class, 'paymentMomo']);
+        Route::post('/save-momo',[PaymentController::class, 'saveInfoPaymentMo']);
     });
 });
