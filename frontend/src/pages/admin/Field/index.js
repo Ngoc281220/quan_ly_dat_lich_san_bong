@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Badge from "react-bootstrap/Badge";
 import { Eye, Pencil, Trash } from "react-bootstrap-icons";
-import { getListField } from "../../../services/admin/fields";
+import { getListField, deleteField } from "../../../services/admin/fields";
 import Pagination from "../../../components/Pagination";
 import { formatCurrencyVND, formatTime } from "../../../components/common";
 import { STATUS_FIELD } from "../../../const";
+import { showToast } from "../../../components/common";
 
 function statusField(status) {
   if (status === STATUS_FIELD.ACTIVE) {
@@ -55,6 +56,21 @@ function FieldList() {
     loadField(currentPage);
   }, [currentPage]);
 
+  const handleDelete = async (id) => {
+    if (window.confirm("Bạn có chắc chắn xóa bản ghi này không ?")) {
+      try {
+        await deleteField(id);
+        setFields(fields.filter((item) => item.id !== id)); // Cập nhật danh sách
+        setTimeout(() => {
+          showToast('Xóa bạn ghi thành công')
+        }, 2000);
+      } catch (error) {
+        showToast('Có lỗi xảy ra', 'error');
+        console.error("Erorr", error);
+      } finally {
+      }
+    }
+  };
   return (
     <div>
       <div className="d-flex justify-content-end">
@@ -107,7 +123,10 @@ function FieldList() {
                       <button className="btn btn-outline-warning btn-sm mx-1">
                         <Pencil />
                       </button>
-                      <button className="btn btn-outline-danger btn-sm mx-1">
+                      <button 
+                        className="btn btn-outline-danger btn-sm mx-1"
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <Trash />
                       </button>
                     </td>

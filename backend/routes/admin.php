@@ -31,10 +31,12 @@ Route::prefix('admin')->group(function () {
         Route::get('/list-category', [FieldsController::class, 'getListCategory'])->name('admin.fields.category');
         Route::post('/create', [FieldsController::class, 'createField'])->name('admin.fields.createField');
         Route::get('/{id}', [FieldsController::class, 'getFieldByID'])->name('admin.fields.ID');
+        Route::post('/delete/{id}',[FieldsController::class, 'deleteField'])->name('admin.fields.delete');
     });
 
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'listUser'])->name('admin.users');
+        Route::post('/delete/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
     });
 
     Route::prefix('posts')->group(function () {

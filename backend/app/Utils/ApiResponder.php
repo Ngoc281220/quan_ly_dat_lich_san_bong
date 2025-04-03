@@ -40,12 +40,12 @@ class ApiResponder
 
     public function updated(): JsonResponse
     {
-        return  response()->json($this->success(200, "Updated"));
+        return response()->json($this->success(200, "Updated"));
     }
 
     public function deleted(): JsonResponse
     {
-        return  response()->json($this->success(200, "Xóa thành công"));
+        return response()->json($this->success(200, "Xóa thành công"));
     }
 
     public function data(): JsonResponse

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use App\Models\Field;
 use App\Models\SubField;
+use App\Exceptions\HttpApiException;
 
 class FieldsService extends BaseService
 {
@@ -98,6 +99,16 @@ class FieldsService extends BaseService
 
     public function loadCategory()
     {
-       return Category::all(['id', 'name']);
+        return Category::all(['id', 'name']);
+    }
+
+    public function deleteField($id)
+    {
+        $field = Field::find($id);
+        if (!$field) {
+            throw new HttpApiException('Sân không tồn tại', 'field');
+        }
+
+        return Field::destroy($id);
     }
 }

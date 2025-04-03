@@ -22,4 +22,10 @@ class UserController extends Controller
         $data = $this->userService->getAllUser($request);
         return(new ApiResponder($data, new UserTransformer()))->pagination();
     }
+
+    public function delete($id) 
+    {
+        $data = $this->userService->delete($id);
+        return response()->json($data);
+    }
 }

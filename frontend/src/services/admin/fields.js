@@ -22,3 +22,7 @@ export async function getListField(page) {
 export async function detaiField(id) {
   return await api.get(`admin/fields/${id}`);
 }
+
+export async function deleteField(id) {
+  return await api.post(`admin/fields/delete/${id}`);
+}

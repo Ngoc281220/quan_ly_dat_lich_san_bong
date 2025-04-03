@@ -8,6 +8,7 @@ use App\Services\FieldsService;
 use App\Http\Requests\CreateFieldRequest;
 use App\Utils\ApiResponder;
 use App\Transformers\FieldTransformer;
+
 class FieldsController extends Controller
 {
     protected $fieldsService;
@@ -39,5 +40,16 @@ class FieldsController extends Controller
     {
         $data = $this->fieldsService->getFiledByID($id);
         return (new ApiResponder($data, new FieldTransformer()))->data();
+    }
+
+    // Xóa sân thể thao
+    public function deleteField($id)
+    {
+        $data = $this->fieldsService->deleteField($id);
+        return response()->json([
+            'message' => 'Xóa sân thành công',
+            'status' => 200,
+            'data' => $data
+        ]);
     }
 }
