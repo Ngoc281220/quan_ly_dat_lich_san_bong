@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Offcanvas, Card, Button, Nav } from "react-bootstrap";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Offcanvas, Card, Button, Nav } from 'react-bootstrap';
+import useAuthStore from '../../store';
 import {
   FaStar,
   FaMapMarkerAlt,
@@ -9,14 +10,15 @@ import {
   FaShareAlt,
   FaClock,
   FaCopy,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 // import OffcanvasBookingCard from "../BookingCard";
 function CommonCard({ id, image, title, location, time, phone, rating }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
-  const [activeTab, setActiveTab] = useState("info");
+  const [activeTab, setActiveTab] = useState('info');
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const { user } = useAuthStore();
 
   return (
     <Card className="mb-3 shadow-sm card-container">
@@ -25,7 +27,7 @@ function CommonCard({ id, image, title, location, time, phone, rating }) {
         style={{
           backgroundImage: image
             ? `url(${image})`
-            : "linear-gradient(#555, #777)",
+            : 'linear-gradient(#555, #777)',
         }}
       >
         <div className="card-overlay">
@@ -64,51 +66,37 @@ function CommonCard({ id, image, title, location, time, phone, rating }) {
                 >
                   XEM CHI TIẾT
                 </Button>
-                <Button
-                  variant="warning"
-                  className="fs-14 fw-bold text-white"
-                  onClick={() => {
-                    navigate(`/booking/${id}`);
-                  }}
-                >
-                  ĐẶT LỊCH
-                </Button>
+                {user != null && (
+                  <Button
+                    variant="warning"
+                    className="fs-14 fw-bold text-white"
+                    onClick={() => {
+                      navigate(`/booking/${id}`);
+                    }}
+                  >
+                    ĐẶT LỊCH
+                  </Button>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-      {/* <Offcanvas className="bg-success w-500" show={show} onHide={handleClose}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Offcanvas</Offcanvas.Title>
-        </Offcanvas.Header>
-        <Offcanvas.Body>
-          Some text as placeholder. In real life you can have the elements you
-          have chosen. Like, text, images, lists, etc.
-        </Offcanvas.Body>
-      </Offcanvas> */}
       <Offcanvas
         show={show}
         onHide={handleClose}
         backdrop={true}
         className="bg-light text-dark w-500"
       >
-        {/* <Offcanvas.Header 
-        closeButton 
-        style={{ backgroundImage: 'url(https://dailysonepoxy.com/wp-content/uploads/2022/02/uu-diem-cua-son-san-the-thao.jpg)', 
-          backgroundSize: 'cover', backgroundPosition: 'center' }}>
-          <Offcanvas.Title>
-            <img
-              src="https://via.placeholder.com/40"
-              alt="Logo"
-              className="rounded-circle me-2"
-            />
-            CLB Cầu Lông TPT Sport - Làng đại học
-          </Offcanvas.Title>
-        </Offcanvas.Header> */}
         <Offcanvas.Body>
-          <div style={{ backgroundImage: 'url(https://dailysonepoxy.com/wp-content/uploads/2022/02/uu-diem-cua-son-san-the-thao.jpg)', 
-          backgroundSize: 'cover', backgroundPosition: 'center' }}>
+          <div
+            style={{
+              backgroundImage:
+                'url(https://dailysonepoxy.com/wp-content/uploads/2022/02/uu-diem-cua-son-san-the-thao.jpg)',
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
             <Card className="mb-3 shadow-sm">
               <Card.Body>
                 <div className="d-flex align-items-center mb-2 justify-content-center">
@@ -117,7 +105,9 @@ function CommonCard({ id, image, title, location, time, phone, rating }) {
                   </Button>
                 </div>
                 <Card.Subtitle className="mb-2 text-muted">
-                  <h4 className="fs-5">CLB Cầu Lông TPT Sport - Làng đại học</h4>
+                  <h4 className="fs-5">
+                    CLB Cầu Lông TPT Sport - Làng đại học
+                  </h4>
                   <span className="badge bg-light text-success border border-success">
                     Cầu lông
                   </span>
@@ -131,7 +121,7 @@ function CommonCard({ id, image, title, location, time, phone, rating }) {
                     <FaClock className="me-2 text-success" /> 06:00 - 22:00
                   </div>
                   <div className="d-flex align-items-center">
-                    <FaPhone className="me-2 text-success" />{" "}
+                    <FaPhone className="me-2 text-success" />{' '}
                     <a
                       href="tel:0374857068"
                       className="text-decoration-none text-dark"
@@ -163,7 +153,7 @@ function CommonCard({ id, image, title, location, time, phone, rating }) {
             </Nav.Item>
           </Nav>
 
-          {activeTab === "info" && (
+          {activeTab === 'info' && (
             <>
               <Card className="mb-3">
                 <Card.Body>

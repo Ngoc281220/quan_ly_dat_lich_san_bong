@@ -293,5 +293,39 @@
     font-size: 0.9rem;
     padding: 5px 10px;
   }
+
+  
+  .bg-green {
+    background-color: #064e3b !important;
+  }
+  
+  .custom-card {
+    background-color: #0f3d31;
+    border-radius: 12px;
+    color: white;
+  }
+  
+  .custom-alert {
+    background-color: #ffc107 !important;
+    color: #212529 !important;
+    border-radius: 8px;
+  }
+  
+  .custom-upload-card {
+    background-color: #1e5846;
+    border-radius: 12px;
+    color: white;
+  }
+  
+  .qr-image {
+    border: 2px solid white;
+    border-radius: 8px;
+    padding: 5px;
+  }
+  
+  .custom-button {
+    border-radius: 8px;
+    font-size: 1.2rem;
+  }
   
   

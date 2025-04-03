@@ -7,6 +7,8 @@ import AccountLayout from "../layouts/website/account";
 import VerifyEmail from "../components/verify";
 import BookingLayout from "../layouts/website/booking";
 import BookingSchedule from "../pages/website/Booking";
+import PaymentPage from "@pages/website/payment";
+import PaymentLayout from "../layouts/website/payment";
 
 // post
 import BlogList from "../pages/website/post";
@@ -51,6 +53,11 @@ const WEBSITE_ROUTES = [
   {
     path: "/posts",
     component: BlogList
+  },
+  {
+    path: "/payment",
+    component: PaymentPage,
+    layout: PaymentLayout
   }
 ];
 

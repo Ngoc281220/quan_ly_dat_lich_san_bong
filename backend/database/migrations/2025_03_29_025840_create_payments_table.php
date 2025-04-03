@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('booking_id');
+            $table->string('order_code')->unique();
             $table->decimal('total_price', 10, 2);
             $table->integer('payment_method')->default(0)->comment('credit_card, cash');
             $table->json('image_payment')->nullable();

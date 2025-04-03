@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id(); // ID đặt sân
+            $table->string('booking_code')->unique();
             $table->unsignedBigInteger('field_id'); // ID sân
             $table->unsignedBigInteger('user_id'); //ID người dùng
             $table->decimal('total_hours', 5, 2)->default(0); // tổng giời đặt
