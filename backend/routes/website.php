@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Website\FieldsController;
 use App\Http\Controllers\Website\BookingController;
 use App\Http\Controllers\website\PostController;
+use App\Http\Controllers\Website\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,12 @@ Route::prefix('web')->group(function(){
         Route::post('/field', [BookingController::class, 'bookingsField']);
         Route::get('/{order_code}', [BookingController::class, 'getBookingByOrderCode']);
     });
+
     Route::prefix('posts')->group(function() {{
         Route::get('/', [PostController::class, 'listPost']);
     }});
+
+    Route::prefix('payment')->group(function(){
+        Route::post('/momo', [PaymentController::class, 'paymentMomo']);
+    });
 });

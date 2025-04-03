@@ -14,5 +14,6 @@ class PaymentController {
     public function paymentMomo(Request $request) 
     {
         $data = $this->paymentService->paymentMomo($request);
+        return response()->json( ['data' => $data]);
     }
 }

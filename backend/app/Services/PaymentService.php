@@ -17,8 +17,7 @@ class PaymentService extends BaseService {
         $amount = $request->total_price;
         $orderId = $request->order_code;
         $this->paymentMomo->setData($orderInfo, $amount, $orderId);
-
         $data = $this->paymentMomo->paymentMomo();
-        dd($data);
+        return $data;
     }
 }

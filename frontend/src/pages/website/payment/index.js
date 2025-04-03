@@ -3,6 +3,7 @@ import QRCodeImage from '../../../assets/image/QRCODE.png';
 import { useParams } from 'react-router-dom';
 import { getBookingByOrderCode } from '../../../services/website/booking';
 import { formatCurrencyVND } from '../../../components/common';
+import { paymentMomo } from '../../../services/website/payment';
 
 import {
   Container,
@@ -36,6 +37,23 @@ export default function PaymentPage() {
   useEffect(() => {
     loadData();
   }, [order_code]);
+
+  const handlePaymentMomo = async () => {
+    try {
+      const total_price = data.total_price;
+      const order_code = data.order_code;
+      const response = await paymentMomo({ total_price, order_code });
+      if (response.data && response.data.payUrl) {
+        // Chuyển hướng người dùng đến trang thanh toán Momo
+        window.location.href = response.data.payUrl;
+      } else {
+        console.log('Không có URL thanh toán từ Momo');
+      }
+      console.log('respone', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Container fluid className="bg-green text-white min-vh-100 p-4">
       <Row>
@@ -64,6 +82,7 @@ export default function PaymentPage() {
                       variant="danger"
                       size="lg"
                       className="custom-button mx-3 fs-14"
+                      onClick={handlePaymentMomo}
                     >
                       Thanh toán MoMo
                     </Button>
@@ -124,7 +143,7 @@ export default function PaymentPage() {
               <strong>Chi tiết đơn:</strong>
             </p>
             <ul>
-              {data.booking_details.map((item, index) => {
+              {data && data.booking_details && data.booking_details.map((item, index) => {
                 return (
                   <li key={index}>
                     {`Sân: ${item.sub_field_id}, Thời gian: ${item.start_time} - ${item.end_time}, Ngày đặt: ${item.date}`}

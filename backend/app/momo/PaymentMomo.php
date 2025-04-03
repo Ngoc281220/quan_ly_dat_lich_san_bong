@@ -3,92 +3,104 @@
 namespace App\momo;
 
 use Exception;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PaymentMomo
 {
     protected $orderInfo;
     protected $amount;
     protected $orderId;
+    protected $requestId;
+    protected $requestType = 'payWithATM';
+    protected $extraData = '';
+    protected $lang = 'vi';
 
-    public function __construct()
-    {
-       
-    }
+    public function __construct() {}
 
     public function setData($orderInfo, $amount, $orderId)
     {
         $this->orderInfo = $orderInfo;
         $this->amount = $amount;
         $this->orderId = $orderId;
+        $this->requestId = time() . "";
     }
-    private function execPostRequest($url, $data)
+
+    public function execPostRequest($url, $data)
     {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt(
-            $ch,
-            CURLOPT_HTTPHEADER,
-            array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($data)
-            )
-        );
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        //execute post
-        $result = curl_exec($ch);
-        //close connection
-        curl_close($ch);
-        return $result;
+        try {
+            $response = Http::withoutVerifying()
+                ->timeout(30)
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json'
+                ])
+                ->post($url, $data);
+
+            if ($response->successful()) {
+                return $response->json();
+            }
+
+            Log::error('MoMo API Failed', [
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            return ['error' => 'MoMo API failed'];
+        } catch (\Exception $e) {
+            Log::error('MoMo Connection Error: ' . $e->getMessage());
+            return ['error' => $e->getMessage()];
+        }
     }
 
     public function paymentMomo()
     {
         try {
-            $url = env('MOMO_END_POINT');
-            $partnerCode = env('MOMO_PARTNER_CODE');
-            $accessKey = env('MOMO_ACCESS_KEY');
-            $secretKey = env('MOMO_SECRET_KEY');
+            $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+            $partnerCode = 'MOMOBKUN20180529';
+            $accessKey = 'klm05TvNBzhg7h7j';
+            $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
+            $redirectUrl = "http://localhost:3000/payment/success";
+            $ipnUrl = "http://localhost:3000/payment/success";
 
-            $requestId = time();
-            $requestType = "payWithATM";
-            $extraData = "";
-            $ipnUrl = env('URL_PAYMENT_SUCCESS');
-            $redirectUrl = env('URL_PAYMENT_SUCCESS');
-            // Tạo chữ ký bảo mật
-            $rawHash = "accessKey={$accessKey}&amount={$this->amount}&extraData={$extraData}&ipnUrl={$ipnUrl}&orderId={$this->orderId}&orderInfo={$this->orderInfo}&partnerCode={$partnerCode}&redirectUrl={$redirectUrl}&requestId={$requestId}&requestType={$requestType}";
+            // Tính toán signature
+            $rawHash = "accessKey=" . $accessKey
+                . "&amount=" . $this->amount
+                . "&extraData=" . $this->extraData
+                . "&ipnUrl=" . $ipnUrl
+                . "&orderId=" . $this->orderId
+                . "&orderInfo=" . $this->orderInfo
+                . "&partnerCode=" . $partnerCode
+                . "&redirectUrl=" . $redirectUrl
+                . "&requestId=" . $this->requestId
+                . "&requestType=" . $this->requestType;
+
             $signature = hash_hmac("sha256", $rawHash, $secretKey);
 
             $data = [
                 'partnerCode' => $partnerCode,
                 'partnerName' => "Test",
                 'storeId' => "MomoTestStore",
-                'requestId' => (string)$requestId,
-                'amount' => (string)$this->amount,
-                'orderId' => (string)$this->orderId,
+                'requestId' => $this->requestId,
+                'amount' => $this->amount,
+                'orderId' => $this->orderId,
                 'orderInfo' => $this->orderInfo,
                 'redirectUrl' => $redirectUrl,
                 'ipnUrl' => $ipnUrl,
-                'lang' => 'vi',
-                'extraData' => $extraData,
-                'requestType' => $requestType,
+                'lang' => $this->lang,
+                'extraData' => $this->extraData,
+                'requestType' => $this->requestType,
                 'signature' => $signature
             ];
 
-            $result = $this->execPostRequest($url, json_encode($data));
-            $jsonResult = json_decode($result, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception("JSON Decode Error: " . json_last_error_msg());
+            $result = $this->execPostRequest($endpoint, $data);
+            if (isset($result['payUrl'])) {
+                return $result;
             }
 
-            return $jsonResult;
+            return back()->withErrors(['momo_error' => 'Không thể kết nối đến MoMo']);
         } catch (Exception $e) {
-            // Ghi log lỗi
-            error_log("[MoMo Payment Error] " . $e->getMessage());
-            return ['error' => true, 'message' => $e->getMessage()];
+            Log::error("[MoMo Payment Error] " . $e->getMessage());
+            return back()->withErrors(['momo_error' => $e->getMessage()]);
         }
     }
 }

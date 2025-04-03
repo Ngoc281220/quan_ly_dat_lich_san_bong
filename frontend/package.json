@@ -10,6 +10,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
     "cra-template": "1.2.0",
+    "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.485.0",
