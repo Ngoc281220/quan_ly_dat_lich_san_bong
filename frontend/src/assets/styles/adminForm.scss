@@ -270,3 +270,59 @@
   .fs-08{
     font-size: .875rem;
   }
+
+  /* src/pages/Unauthorized/style.css */
+.unauthorized-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+.unauthorized-content {
+  text-align: center;
+  max-width: 500px;
+  padding: 40px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.illustration svg {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 24px;
+  color: #ff4d4f; /* Màu cảnh báo */
+}
+
+.title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 16px;
+}
+
+.description {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.back-button {
+  background-color: #1890ff;
+  border: none;
+}
+
+.home-button {
+  background-color: #f0f0f0;
+  color: #333;
+  border: 1px solid #d9d9d9;
+}

@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Container } from "react-bootstrap";
-import { ToastContainer } from "react-toastify";
-import { WEBSITE_ROUTES, ADMIN_ROUTES } from "./routes";
-import DefautlLayout from "./layouts/website/DefaultLayout";
-import DefaultLayoutAdmin from "./layouts/admin/DefaultLayout";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "./assets/styles/App.scss";
-import Loading from "./config/loading";
-import NotFoundPage from "./pages/404/NotFoundPage";
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
+import { ToastContainer } from 'react-toastify';
+import { WEBSITE_ROUTES, ADMIN_ROUTES } from './routes';
+import DefautlLayout from './layouts/website/DefaultLayout';
+import DefaultLayoutAdmin from './layouts/admin/DefaultLayout';
+import Loading from './config/loading';
+import NotFoundPage from './pages/404/NotFoundPage';
+import Unauthorized from './pages/Unauthorized';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './assets/styles/App.scss';
+import { AuthAdmin } from './middleware';
+import useAuthStore from './store';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const {user} = useAuthStore();
   useEffect(() => {
     // Giả lập API call
     setTimeout(() => setLoading(false), 4000);
@@ -19,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Container fluid className="p-0">
-        {loading ? <Loading /> : ""}
+        {loading ? <Loading /> : ''}
         <ToastContainer />
         <Routes>
           {WEBSITE_ROUTES.map((route, index) => {
@@ -46,14 +50,17 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  <AuthAdmin role={user && user.role}>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </AuthAdmin>
                 }
               />
             );
           })}
-          <Route path="/404" element={<NotFoundPage/>}/>
+          <Route path="/404" element={<NotFoundPage />} />
+          <Route path="/403" element={<Unauthorized />} />
         </Routes>
       </Container>
     </BrowserRouter>
