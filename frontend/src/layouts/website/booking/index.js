@@ -211,7 +211,7 @@ function BookingLayout() {
       <div className="bg-success booking-header">
         <div className="d-flex justify-content-between align-items-center mb-3 h-100-px py-3 pe-5">
           <Button variant="outline-success">
-            <FaArrowLeft color="white" />
+            <FaArrowLeft color="white" onClick={() => navigate('/')} />
           </Button>
           <h4 className="text-center flex-grow-1 text-white">Đặt lịch</h4>
           <DatePicker
