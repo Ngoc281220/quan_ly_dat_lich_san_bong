@@ -9,7 +9,8 @@ use App\Models\BookingDetail;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class BookingService extends BaseService
 {
@@ -46,10 +47,13 @@ class BookingService extends BaseService
         try {
             DB::beginTransaction(); // Bắt đầu transaction
            
+            $order_code = Str::uuid();
+            
             // Lưu thông tin vào bảng bookings
             $bookings = Booking::create([
+                'order_code' => $order_code->toString(),
                 'field_id' => $request->idField,
-                'user_id' => Auth::id(),
+                'user_id' => Auth::id() ?? 0,
                 'total_hours' => $request->totalHours,
                 'total_price' => $request->totalPrice,
                 'name_user_booking_field' => $request->userIn['name'],
@@ -71,11 +75,11 @@ class BookingService extends BaseService
             }
 
             DB::commit(); // Xác nhận transaction
-
+            
             return $bookings;
         } catch (\Exception $e) {
             DB::rollBack(); // Hoàn tác nếu có lỗi
-
+            Log::info('Request Data:', $request->all());
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi đặt sân',

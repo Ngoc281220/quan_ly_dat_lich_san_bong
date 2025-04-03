@@ -9,5 +9,5 @@ class Payment extends Model
 {
     use HasFactory;
     protected $table = 'payments';
-    protected $fillable = ['booking_id', 'total_price', 'payment_method', 'image_payment','date_payment' ,'status'];
+    protected $fillable = ['booking_id', 'order_code', 'total_price', 'payment_method', 'image_payment', 'date_payment', 'status'];
 }

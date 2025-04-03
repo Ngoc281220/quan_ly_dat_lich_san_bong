@@ -11,6 +11,7 @@ import { formatDateCurrent } from "../../../components/common";
 import Form from "react-bootstrap/Form";
 import { showToast } from "../../../components/common";
 import { bookingsField } from "../../../services/website/booking";
+import { useNavigate } from "react-router-dom";
 
 const times = [
   "06:00",
@@ -49,6 +50,7 @@ const times = [
 ];
 
 function BookingLayout() {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [courts, setCourts] = useState([]);
@@ -59,7 +61,7 @@ function BookingLayout() {
   const [nameField, setNameField] = useState(null);
   const [generalPrice, setGeneralPrice] = useState(null);
   const [location, setLocation] = useState(null);
-  const [listBooing, setListBooking] = useState([]);
+  const [listBooking, setListBooking] = useState([]);
   // xét thông tin người thuê sân
   const [userIn, setUserIn] = useState({
     name: "",
@@ -191,7 +193,7 @@ function BookingLayout() {
     }
     try {
       const params = {
-        listBooing,
+        listBooking,
         userIn,
         totalPrice,
         totalHours,
@@ -199,7 +201,9 @@ function BookingLayout() {
       }
       
       const { data } = await bookingsField(params); 
-      console.log('params', params);
+      if (data) {
+        navigate(`/payment/${data.order_code}`);
+      }
     } catch (error) {
       
     }
@@ -294,8 +298,8 @@ function BookingLayout() {
               </Card.Text>
               <table>
                 <tbody>
-                  {listBooing.length > 0 ? (
-                    listBooing.map((item, idx) => (
+                  {listBooking.length > 0 ? (
+                    listBooking.map((item, idx) => (
                       <tr key={idx}>
                         <td>{`Sân-${item.sub_field_id}: `}</td>
                         {/* Ngày đặt */}

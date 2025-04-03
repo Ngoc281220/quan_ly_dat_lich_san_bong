@@ -55,7 +55,7 @@ const WEBSITE_ROUTES = [
     component: BlogList
   },
   {
-    path: "/payment",
+    path: "/payment/:order_code",
     component: PaymentPage,
     layout: PaymentLayout
   }

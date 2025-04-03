@@ -9,7 +9,7 @@ class Booking extends Model
 {
     use HasFactory;
     protected $table = 'bookings';
-    protected $fillable = ['field_id', 'user_id', 'total_hours', 'total_price', 'name_user_booking_field', 'phone', 'comment', 'status'];
+    protected $fillable = ['order_code','field_id', 'user_id', 'total_hours', 'total_price', 'name_user_booking_field', 'phone', 'comment', 'status'];
     
     // Mối quan hệ với sân con
     public function subField() {
