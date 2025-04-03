@@ -7,6 +7,7 @@ use App\Services\PostService;
 use App\Http\Requests\PostRequest;
 use App\Utils\ApiResponder;
 use App\Transformers\admin\PostTransformer;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -24,5 +25,14 @@ class PostController extends Controller
     {
         $data = $this->postService->create($request);
         return (new ApiResponder($data, new PostTransformer()))->created();
+    }
+
+    /**
+     * Admin lấy danh sách bài viết
+     */
+    public function getListPost(Request $request)
+    {
+        $data = $this->postService->getListPost($request);
+        return (new ApiResponder($data, new PostTransformer()))->pagination();
     }
 }

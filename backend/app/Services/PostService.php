@@ -24,4 +24,21 @@ class PostService extends BaseService
         $data['image'] = $imagePath ? json_encode($imagePath) : null;
         return Post::create($data);
     }
+
+    public function getListPost($request)
+    {
+        $search = $request->input('search', '');
+        $perPage = 10;
+
+        $query = Post::query();
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('content', 'like', "%{$search}%")
+                    ->orWhere('comments', 'like', "%{$search}%");
+            });
+        }
+        return $query->paginate($perPage);
+    }
 }
