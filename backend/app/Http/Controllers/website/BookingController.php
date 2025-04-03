@@ -7,6 +7,7 @@ use App\Services\BookingService;
 use App\Utils\ApiResponder;
 use App\Transformers\Website\BookingTransformer;
 use App\Transformers\Website\CreateBookingTransformer;
+use App\Transformers\Website\BookingByOrderCodeTransformer;
 
 class BookingController extends Controller {
     protected $bookingService;
@@ -26,5 +27,11 @@ class BookingController extends Controller {
     {
         $data = $this->bookingService->bookingsField($request);
         return(new ApiResponder($data, new CreateBookingTransformer()))->created();
+    }
+
+    public function getBookingByOrderCode($order_code) 
+    {
+        $data = $this->bookingService->getBookingByOrderCode($order_code);
+        return (new ApiResponder($data, new BookingByOrderCodeTransformer()))->data();
     }
 }

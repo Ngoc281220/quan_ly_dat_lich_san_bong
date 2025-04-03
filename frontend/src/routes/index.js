@@ -9,6 +9,7 @@ import BookingLayout from "../layouts/website/booking";
 import BookingSchedule from "../pages/website/Booking";
 import PaymentPage from "@pages/website/payment";
 import PaymentLayout from "../layouts/website/payment";
+import PaymentSuccess from "@pages/website/payment/success";
 
 // post
 import BlogList from "../pages/website/post";
@@ -57,6 +58,11 @@ const WEBSITE_ROUTES = [
   {
     path: "/payment/:order_code",
     component: PaymentPage,
+    layout: PaymentLayout
+  },
+  {
+    path: "/payment/success",
+    component: PaymentSuccess,
     layout: PaymentLayout
   }
 ];

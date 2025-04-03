@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Providers;
+
 use Illuminate\Support\Facades\Schema;
 
 use Illuminate\Support\ServiceProvider;
+use App\momo\PaymentMomo;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +15,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        $this->app->bind(PaymentMomo::class, function ($app) {
+            return new PaymentMomo();
+        });
     }
 
     /**

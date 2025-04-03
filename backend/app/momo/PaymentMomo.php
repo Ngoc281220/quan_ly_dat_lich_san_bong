@@ -6,17 +6,21 @@ use Exception;
 
 class PaymentMomo
 {
-    private $orderInfo;
-    private $amount;
-    private $orderId;
+    protected $orderInfo;
+    protected $amount;
+    protected $orderId;
 
-    public function __construct($orderInfo, $amount, $orderId)
+    public function __construct()
+    {
+       
+    }
+
+    public function setData($orderInfo, $amount, $orderId)
     {
         $this->orderInfo = $orderInfo;
         $this->amount = $amount;
         $this->orderId = $orderId;
     }
-
     private function execPostRequest($url, $data)
     {
         $ch = curl_init($url);
@@ -51,8 +55,8 @@ class PaymentMomo
             $requestId = time();
             $requestType = "payWithATM";
             $extraData = "";
-            $ipnUrl = "";
-            $redirectUrl = "";
+            $ipnUrl = env('URL_PAYMENT_SUCCESS');
+            $redirectUrl = env('URL_PAYMENT_SUCCESS');
             // Tạo chữ ký bảo mật
             $rawHash = "accessKey={$accessKey}&amount={$this->amount}&extraData={$extraData}&ipnUrl={$ipnUrl}&orderId={$this->orderId}&orderInfo={$this->orderInfo}&partnerCode={$partnerCode}&redirectUrl={$redirectUrl}&requestId={$requestId}&requestType={$requestType}";
             $signature = hash_hmac("sha256", $rawHash, $secretKey);

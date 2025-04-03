@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import QRCodeImage from '../../../assets/image/QRCODE.png';
+import { useParams } from 'react-router-dom';
+import { getBookingByOrderCode } from '../../../services/website/booking';
+import { formatCurrencyVND } from '../../../components/common';
+
 import {
   Container,
   Row,
@@ -12,13 +16,26 @@ import {
 } from 'react-bootstrap';
 
 export default function PaymentPage() {
+  const { order_code } = useParams();
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [data, setData] = useState({});
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
 
+  const loadData = async () => {
+    try {
+      const { data } = await getBookingByOrderCode(order_code);
+      setData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    loadData();
+  }, [order_code]);
   return (
     <Container fluid className="bg-green text-white min-vh-100 p-4">
       <Row>
@@ -95,26 +112,34 @@ export default function PaymentPage() {
         <Col md={4}>
           <Card className="p-3 custom-card">
             <p>
-              <strong>Tên:</strong> Nguyen Van Ngoc
+              <strong>Tên:</strong> {data.name_user_booking_field}
             </p>
             <p>
-              <strong>SDT:</strong> 0821113345
+              <strong>SDT:</strong> {data.phone}
             </p>
             <p>
-              <strong>Mã đơn:</strong> #7314
+              <strong>Mã đơn:</strong> #{data.order_code}
             </p>
             <p>
               <strong>Chi tiết đơn:</strong>
             </p>
             <ul>
-              <li>D: 11h30 - 12h00</li>
-              <li>E: 11h30 - 12h00</li>
+              {data.booking_details.map((item, index) => {
+                return (
+                  <li key={index}>
+                    {`Sân: ${item.sub_field_id}, Thời gian: ${item.start_time} - ${item.end_time}, Ngày đặt: ${item.date}`}
+                  </li>
+                );
+              })}
             </ul>
             <p>
-              <strong>Tổng đơn:</strong> 40.000 đ
+              <strong>Tổng giờ:</strong> {data.total_hours}
             </p>
             <p>
-              <strong>Cần cọc:</strong> 20.000 đ
+              <strong>Tổng đơn:</strong> {formatCurrencyVND(data.total_price)}
+            </p>
+            <p>
+              <strong>Cần cọc:</strong> {formatCurrencyVND(data.deposit_price)}
             </p>
           </Card>
         </Col>

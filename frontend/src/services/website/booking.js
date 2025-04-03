@@ -7,3 +7,7 @@ export async function getSchedule(id, date) {
 export async function bookingsField(params) {
     return await api.post('/web/bookings/field', params);
 }
+
+export async function getBookingByOrderCode(order_code) {
+    return await api.get(`/web/bookings/${order_code}`);
+}

@@ -46,9 +46,9 @@ class BookingService extends BaseService
     {
         try {
             DB::beginTransaction(); // Bắt đầu transaction
-           
+
             $order_code = Str::uuid();
-            
+
             // Lưu thông tin vào bảng bookings
             $bookings = Booking::create([
                 'order_code' => $order_code->toString(),
@@ -75,16 +75,54 @@ class BookingService extends BaseService
             }
 
             DB::commit(); // Xác nhận transaction
-            
+
             return $bookings;
         } catch (\Exception $e) {
             DB::rollBack(); // Hoàn tác nếu có lỗi
-            Log::info('Request Data:', $request->all());
             return response()->json([
                 'success' => false,
                 'message' => 'Có lỗi xảy ra khi đặt sân',
                 'error' => $e->getMessage()
             ], 500);
         }
+    }
+
+    public function getBookingByOrderCode($order_code)
+    {
+
+        $query = Booking::where('bookings.order_code', $order_code)
+        ->leftJoin('booking_details', 'booking_details.booking_id', '=', 'bookings.id')
+        ->select('bookings.*', 'booking_details.id as id_booking_detail', 'booking_details.sub_field_id', 'booking_details.date', 'booking_details.start_time', 'booking_details.end_time')
+        ->get()
+        ->groupBy('id') // Nhóm theo ID booking
+        ->map(function ($bookings) {
+            $booking = $bookings->first(); // Lấy thông tin chính của booking
+            return [
+                'id' => $booking->id,
+                'order_code' => $booking->order_code,
+                'field_id' => $booking->field_id,
+                'user_id' => $booking->user_id,
+                'total_hours' => $booking->total_hours,
+                'total_price' => $booking->total_price,
+                'name_user_booking_field' => $booking->name_user_booking_field,
+                'phone' => $booking->phone,
+                'comment' => $booking->comment,
+                'status' => $booking->status,
+                'created_at' => $booking->created_at,
+                'updated_at' => $booking->updated_at,
+                'booking_details' => $bookings->map(function ($detail) {
+                    return [
+                        'id_booking_detail' => $detail->id_booking_detail,
+                        'sub_field_id' => $detail->sub_field_id,
+                        'date' => $detail->date,
+                        'start_time' => $detail->start_time,
+                        'end_time' => $detail->end_time,
+                    ];
+                })->values()
+            ];
+        })
+        ->values()
+        ->first();
+        return $query;
     }
 }
