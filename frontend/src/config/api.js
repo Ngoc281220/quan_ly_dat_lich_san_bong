@@ -17,7 +17,7 @@ class API {
     // ✅ Thêm token vào mỗi request nếu có
     this.api.interceptors.request.use(
       (config) => {
-        const token = sessionStorage.getItem("accessToken");
+        const token = localStorage.getItem("accessToken");
         if (token) {
           config.headers["Authorization"] = `Bearer ${token}`;
         }

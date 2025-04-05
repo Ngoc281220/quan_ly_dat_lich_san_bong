@@ -55,6 +55,6 @@ class PostController extends Controller
     public function updatePostByID(Request $request, $id)
     {
         $data = $this->postService->updatePostByID($request, $id);
-        return (new ApiResponder($data, new PostTransformer()))->updated();
+        return (new ApiResponder($data, new PostTransformer()))->data();
     }
 }

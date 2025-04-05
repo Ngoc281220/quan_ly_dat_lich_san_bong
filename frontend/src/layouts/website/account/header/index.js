@@ -1,9 +1,11 @@
-import { useState } from "react";
-import { Container, Card, Button } from "react-bootstrap";
-import OffCanvasRegister from "../../../../components/register";
-import OffCanvasLoign from "../../../../components/login";
+import { useState } from 'react';
+import { Container, Card, Button } from 'react-bootstrap';
+import OffCanvasRegister from '../../../../components/register';
+import OffCanvasLoign from '../../../../components/login';
+import useAuthStore from '../../../../store';
 
 function AccountHeader() {
+  const { user, logout } = useAuthStore();
   const [isShow, setIsShow] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   return (
@@ -12,13 +14,25 @@ function AccountHeader() {
         <Card.Body>
           <Card.Title>ALoBO - Đặt lịch online sân thể thao</Card.Title>
           <Card.Text>Tạo tài khoản để dễ dàng quản lý lịch đặt</Card.Text>
-          <div className="d-flex justify-content-end">
-            <Button variant="light" className="me-2" onClick={() => setIsLogin(true)}>
-              Đăng nhập
-            </Button>
-            <Button variant="outline-light" onClick={() => setIsShow(true)}>
-              Đăng ký
-            </Button>
+          <div className='d-flex justify-content-end'>
+            {user ? (
+              <Button variant="danger" onClick={logout}>
+                Đăng xuất
+              </Button>
+            ) : (
+              <>
+                <Button
+                  variant="light"
+                  className="me-2"
+                  onClick={() => setIsLogin(true)}
+                >
+                  Đăng nhập
+                </Button>
+                <Button variant="outline-light" onClick={() => setIsShow(true)}>
+                  Đăng ký
+                </Button>
+              </>
+            )}
           </div>
         </Card.Body>
       </Card>

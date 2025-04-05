@@ -72,12 +72,13 @@ class PostService extends BaseService
             throw new HttpApiException("Bài viết không tồn tại!", "post");
         }
 
-        return $post->update([
+        $post->update([
             'title' => $request->title,
             'excerpt' => $request->excerpt,
             'content' => $request->content,
             'date' => $request->date,
-            'comments' => $request->$request
+            'comments' => $request->comments
         ]);
+        return $post;
     }
 }

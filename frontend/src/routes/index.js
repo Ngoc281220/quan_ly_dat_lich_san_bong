@@ -12,7 +12,7 @@ import PaymentLayout from "../layouts/website/payment";
 import PaymentSuccess from "@pages/website/payment/success";
 
 // post
-import BlogList from "../pages/website/post";
+import BlogList from "@pages/website/post";
 
 // admin route
 import Dashboard from "@pages/admin/Dashboard";
@@ -21,8 +21,9 @@ import CreateFields from "@pages/admin/Field/create";
 import FieldDetail from "@pages/admin/Field/detail";
 
 // admin quản lý bài viết
-import PostList from "../pages/admin/post";
-import CreatePostForm from "../pages/admin/post/create";
+import PostList from "@pages/admin/post";
+import CreatePostForm from "@pages/admin/post/create";
+import UpdatePostForm from "@pages/admin/post/update";
 
 // admin quản lý người dùng
 import ListUser from "@pages/admin/user";
@@ -95,6 +96,10 @@ const ADMIN_ROUTES = [
   {
     path: "admin/posts/create",
     component: CreatePostForm
+  },
+  {
+    path: "admin/posts/update/:id",
+    component: UpdatePostForm
   }
 ];
 

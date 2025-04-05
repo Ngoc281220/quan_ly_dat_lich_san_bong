@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { getListPost, deletePostByID } from '../../../services/admin/post';
 import { Pencil, Trash } from 'react-bootstrap-icons';
@@ -6,6 +7,7 @@ import Pagination from '../../../components/Pagination';
 import { showToast } from '../../../components/common';
 
 function PostList() {
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState(null);
@@ -81,7 +83,9 @@ function PostList() {
                     <td>{item.date}</td>
                     <td>{item.comments}</td>
                     <td>
-                      <button className="btn btn-outline-warning btn-sm mx-1">
+                      <button
+                      onClick={() => navigate(`/admin/posts/update/${item.id}`)}
+                      className="btn btn-outline-warning btn-sm mx-1">
                         <Pencil />
                       </button>
                       <button
