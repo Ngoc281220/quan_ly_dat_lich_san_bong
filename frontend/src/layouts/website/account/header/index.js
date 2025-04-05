@@ -3,6 +3,8 @@ import { Container, Card, Button } from 'react-bootstrap';
 import OffCanvasRegister from '../../../../components/register';
 import OffCanvasLoign from '../../../../components/login';
 import useAuthStore from '../../../../store';
+import Dropdown from 'react-bootstrap/Dropdown';
+import "animate.css";
 
 function AccountHeader() {
   const { user, logout } = useAuthStore();
@@ -14,11 +16,35 @@ function AccountHeader() {
         <Card.Body>
           <Card.Title>ALoBO - Đặt lịch online sân thể thao</Card.Title>
           <Card.Text>Tạo tài khoản để dễ dàng quản lý lịch đặt</Card.Text>
-          <div className='d-flex justify-content-end'>
+          <div className="d-flex justify-content-end">
             {user ? (
-              <Button variant="danger" onClick={logout}>
-                Đăng xuất
-              </Button>
+              // <Button variant="danger" onClick={logout}>
+              //   Hiển thị menu
+              // </Button>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="light"
+                  id="dropdown-user-menu"
+                  className="rounded-pill px-4 py-2 shadow-sm fw-semibold text-dark border"
+                >
+                  👤 Tài khoản
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu className="my-2 shadow border-0 rounded-3 animate__animated animate__fadeIn">
+                  <Dropdown.Item href="#/profile" className="py-2">
+                    📝 Chỉnh sửa thông tin cá nhân
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/change-password" className="py-2">
+                    🔒 Thay đổi mật khẩu
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    href="#/logout"
+                    className="py-2 text-danger fw-semibold"
+                  >
+                    🚪 Đăng xuất
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             ) : (
               <>
                 <Button
