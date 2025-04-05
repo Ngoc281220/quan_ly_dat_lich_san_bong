@@ -10,7 +10,7 @@ export async function createPost(params) {
 }
 
 export async function getListPost(search, page = 1) {
-  return await api.post(`/admin/posts?search=${search}&page=${page}`);
+  return await api.get(`/admin/posts?search=${search}&page=${page}`);
 }
 
 export async function deletePostByID(id) {

@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com', // Để tránh trùng email
             'phone' => '0' . rand(100000000, 999999999),
             'password' => Hash::make('123456'),
-            'role' => 0,
+            'role' => 1,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

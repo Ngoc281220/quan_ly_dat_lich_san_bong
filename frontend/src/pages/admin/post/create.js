@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button, Card, Image } from 'react-bootstrap';
 import { createPost } from '../../../services/admin/post';
+import { showToast } from '../../../components/common';
 
 const CreatePostForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     title: '',
     image: null,
@@ -42,9 +45,14 @@ const CreatePostForm = () => {
         formDataToSend.append('image', formData.image);
       }
       const { data } = await createPost(formDataToSend);
-      console.log('data', data);
+      if (data) {
+        showToast("Thêm mới bài viết thành công!");
+        setTimeout(() => {
+          navigate('/admin/posts');
+        }, 2000);
+      }
     } catch (error) {
-      console.log('error', error);
+      showToast("Có lỗi xảy ra");
     }
   };
 

@@ -15,7 +15,7 @@ import useAuthStore from './store';
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
   useEffect(() => {
     // Giả lập API call
     setTimeout(() => setLoading(false), 4000);
@@ -50,7 +50,7 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <AuthAdmin role={user && user.role}>
+                  <AuthAdmin user={user} >
                     <Layout>
                       <Page />
                     </Layout>
