@@ -38,7 +38,7 @@ function AccountHeader() {
                     🔒 Thay đổi mật khẩu
                   </Dropdown.Item>
                   <Dropdown.Item
-                    href="#/logout"
+                    onClick={logout}
                     className="py-2 text-danger fw-semibold"
                   >
                     🚪 Đăng xuất
