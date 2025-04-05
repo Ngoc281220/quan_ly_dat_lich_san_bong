@@ -42,6 +42,9 @@ Route::prefix('admin')->group(function () {
     Route::prefix('posts')->group(function () {
         Route::post('/create', [PostController::class, 'create'])->name('admin.posts.create');
         Route::get('/', [PostController::class, 'getListPost'])->name('admin.posts.list');
+        Route::get('/delete/{id}', [PostController::class, 'delete'])->name('admin.posts.delete');
+        Route::get('/{id}', [PostController::class, 'getPostByID'])->name('admin.posts.id');
+        Route::post('/update/{id}', [PostController::class, 'updatePostByID'])->name('admin.posts.update');
     });
 
     Route::prefix('dashboard')->group(function () {

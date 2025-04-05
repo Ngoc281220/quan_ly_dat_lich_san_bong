@@ -12,3 +12,15 @@ export async function createPost(params) {
 export async function getListPost(search, page = 1) {
   return await api.post(`/admin/posts?search=${search}&page=${page}`);
 }
+
+export async function deletePostByID(id) {
+  return await api.get(`/admin/posts/delete/${id}`);
+}
+
+export async function getPostByID(id) {
+  return await api.get(`/admin/posts/${id}`);
+}
+
+export async function updatePostByID(id, params) {
+  return await api.post(`/admin/posts/update/${id}`, params);
+}

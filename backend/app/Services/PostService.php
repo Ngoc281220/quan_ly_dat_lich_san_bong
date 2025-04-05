@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Post;
+use App\Exceptions\HttpApiException;
 
 class PostService extends BaseService
 {
@@ -40,5 +41,43 @@ class PostService extends BaseService
             });
         }
         return $query->paginate($perPage);
+    }
+
+    public function delete($id)
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            throw new HttpApiException("Bài viết không tồn tại!", "post");
+        }
+
+        return $post->delete();
+    }
+
+    public function getPostByID($id)
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            throw new HttpApiException("Bài viết không tồn tại!", "post");
+        }
+        return $post;
+    }
+
+    public function updatePostByID($request, $id)
+    {
+        $post = Post::find($id);
+
+        if (!$post) {
+            throw new HttpApiException("Bài viết không tồn tại!", "post");
+        }
+
+        return $post->update([
+            'title' => $request->title,
+            'excerpt' => $request->excerpt,
+            'content' => $request->content,
+            'date' => $request->date,
+            'comments' => $request->$request
+        ]);
     }
 }

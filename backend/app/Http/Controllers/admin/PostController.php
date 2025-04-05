@@ -35,4 +35,26 @@ class PostController extends Controller
         $data = $this->postService->getListPost($request);
         return (new ApiResponder($data, new PostTransformer()))->pagination();
     }
+
+    public function delete($id)
+    {
+        $data = $this->postService->delete($id);
+        return response()->json([
+            'message' => 'Xóa bản ghi thành công',
+            'status' => 200,
+            'data' => $data
+        ]);
+    }
+
+    public function getPostByID($id)
+    {
+        $data = $this->postService->getPostByID($id);
+        return (new ApiResponder($data, new PostTransformer()))->data();
+    }
+
+    public function updatePostByID(Request $request, $id)
+    {
+        $data = $this->postService->updatePostByID($request, $id);
+        return (new ApiResponder($data, new PostTransformer()))->updated();
+    }
 }
