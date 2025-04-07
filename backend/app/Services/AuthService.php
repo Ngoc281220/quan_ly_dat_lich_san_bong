@@ -116,4 +116,13 @@ class AuthService extends BaseService
             'user' => auth()->user()
         ];
     }
+
+    protected function changePass($request) {
+        $idUser = Auth::id();
+        $user = User::update([
+            'password' => Hash::make($request->newPassword)
+        ])->where('id', $idUser);
+
+        return $user;
+    }
 }

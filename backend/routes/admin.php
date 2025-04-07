@@ -23,6 +23,7 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::get('/verify', [AuthController::class, 'verify'])->name('verify');
     Route::post('/refresh-token', [AuthController::class, 'refreshToken'])->name('refreshToken');
+    Route::post('/change-password', [AuthController::class, 'changePass']);
 });
 
 Route::prefix('admin')->group(function () {

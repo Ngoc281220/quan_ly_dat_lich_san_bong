@@ -4,12 +4,16 @@ import OffCanvasRegister from '../../../../components/register';
 import OffCanvasLoign from '../../../../components/login';
 import useAuthStore from '../../../../store';
 import Dropdown from 'react-bootstrap/Dropdown';
+import ChangePassword from '../../../../components/ChangePassword';
 import "animate.css";
 
 function AccountHeader() {
   const { user, logout } = useAuthStore();
   const [isShow, setIsShow] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+  const [isShowPass, setShowPass] = useState(false);
+  const handleShowPass = () => setShowPass(true);
+  const handleClosePass = () => setShowPass(false);
   return (
     <Container fluid className="bg-header-ac">
       <Card className="text-white bg-transparent border-0 mt-3">
@@ -34,7 +38,7 @@ function AccountHeader() {
                   <Dropdown.Item href="#/profile" className="py-2">
                     📝 Chỉnh sửa thông tin cá nhân
                   </Dropdown.Item>
-                  <Dropdown.Item href="#/change-password" className="py-2">
+                  <Dropdown.Item onClick={handleShowPass}  className="py-2">
                     🔒 Thay đổi mật khẩu
                   </Dropdown.Item>
                   <Dropdown.Item
@@ -64,6 +68,7 @@ function AccountHeader() {
       </Card>
       <OffCanvasRegister isShow={isShow} handleClose={() => setIsShow(false)} />
       <OffCanvasLoign isShow={isLogin} handleClose={() => setIsLogin(false)} />
+      <ChangePassword show={isShowPass} onHide={handleClosePass} onShow={handleShowPass} />
     </Container>
   );
 }

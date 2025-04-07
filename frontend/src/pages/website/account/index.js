@@ -1,7 +1,7 @@
 import { Card, Container, Row, Col, Image, Button } from "react-bootstrap";
 import { Bell, Trash } from "lucide-react";
 const user = {
-  name: "Nguyen Van Ngoc",
+  name: "Nguyen X",
   avatar: "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg",
   address: "D. Tôn Thất Tùng, Đông Hòa, Dĩ An, Bình Dương",
   bookings: [
