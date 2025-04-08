@@ -45,8 +45,8 @@ class AuthController extends Controller
     {
         return $this->authService->refresh();
     }
-    
-    public function changePass(Request $request) 
+
+    public function changePass(Request $request)
     {
         $data = $this->authService->changePass($request);
         return response()->json($data);

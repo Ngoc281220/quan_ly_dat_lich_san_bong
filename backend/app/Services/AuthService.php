@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Mail;
 use App\Enums\UserEnum;
 use App\Mail\VerifyEmail;
 use App\Exceptions\HttpApiException;
+use Illuminate\Support\Facades\Auth;
 
 class AuthService extends BaseService
 {
-
     public function __construct() {}
 
     // Đăng ký tài khoản người dùng
@@ -20,15 +20,15 @@ class AuthService extends BaseService
     {
         try {
             $user = User::create([
-                "full_name" => $request->full_name,
-                "email" => $request->email,
-                "phone" => $request->phone,
-                "password" => Hash::make($request->password),
-                "role" => UserEnum::ROLE_USER,
-                "email_verification_token" => Str::random(32)
+                'full_name' => $request->full_name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'role' => UserEnum::ROLE_USER,
+                'email_verification_token' => Str::random(32),
             ]);
 
-            $verificationUrl = env('FRONTEND_URL') . "/verify-email?token=" . $user->email_verification_token;
+            $verificationUrl = env('FRONTEND_URL') . '/verify-email?token=' . $user->email_verification_token;
             Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
             return response()->json(['message' => 'Vui lòng kiểm tra email để xác nhận tài khoản'], 201);
@@ -65,16 +65,16 @@ class AuthService extends BaseService
     {
         $user = User::where('email', $request->email)->first();
         if (!$user) {
-            throw new HttpApiException("Email không tồn tại!", 'email', 400);
+            throw new HttpApiException('Email không tồn tại!', 'email', 400);
         }
 
         // Kiểm tra mật khẩu có tồn tại không
         if (!Hash::check($request->password, $user->password)) {
-            throw new HttpApiException("Mật khẩu không đúng!", 'password', 400);
+            throw new HttpApiException('Mật khẩu không đúng!', 'password', 400);
         }
 
         $credentials = $request->only(['email', 'password']);
-        if (! $token = auth()->attempt($credentials)) {
+        if (!($token = auth()->attempt($credentials))) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -113,15 +113,17 @@ class AuthService extends BaseService
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'user' => auth()->user()
+            'user' => auth()->user(),
         ];
     }
 
-    protected function changePass($request) {
+    public function changePass($request)
+    {
         $idUser = Auth::id();
-        $user = User::update([
-            'password' => Hash::make($request->newPassword)
-        ])->where('id', $idUser);
+
+        $user = User::where('id', $idUser)->update([
+            'password' => Hash::make($request->newPassword),
+        ]);
 
         return $user;
     }

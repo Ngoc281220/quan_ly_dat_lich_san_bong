@@ -11,3 +11,7 @@ export async function verify(token) {
 export async function login(params) {
   return await api.post("/auth/login", params);
 }
+
+export async function changePass(params) {
+  return await api.post("/auth/change-password", params);
+}
