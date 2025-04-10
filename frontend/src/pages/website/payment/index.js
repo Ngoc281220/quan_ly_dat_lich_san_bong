@@ -3,7 +3,8 @@ import QRCodeImage from '../../../assets/image/QRCODE.png';
 import { useParams } from 'react-router-dom';
 import { getBookingByOrderCode } from '../../../services/website/booking';
 import { formatCurrencyVND } from '../../../components/common';
-import { paymentMomo } from '../../../services/website/payment';
+import { paymentMomo, paymentCard } from '../../../services/website/payment';
+import { showToast } from '../../../components/common';
 
 import {
   Container,
@@ -52,6 +53,25 @@ export default function PaymentPage() {
       console.log('respone', response);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handlePaymentCard = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('image_payment', selectedFile);
+      formData.append('order_code', data.order_code);
+      formData.append('amount', data.total_price);
+      const respone = await paymentCard(formData);
+      if (respone.data) {
+        showToast('Thanh toán thành công');
+      }
+      else
+      {
+        showToast('Thanh toán thất bại');
+      }
+    } catch (error) {
+      showToast('Thanh toán thất bại');
     }
   };
   return (
@@ -121,7 +141,12 @@ export default function PaymentPage() {
             </Col>
           </Row>
           <div className="text-center mt-4">
-            <Button variant="warning" size="lg" className="custom-button w-100">
+            <Button
+              variant="warning"
+              size="lg"
+              onClick={handlePaymentCard}
+              className="custom-button w-100"
+            >
               XÁC NHẬN ĐẶT
             </Button>
           </div>
@@ -143,13 +168,15 @@ export default function PaymentPage() {
               <strong>Chi tiết đơn:</strong>
             </p>
             <ul>
-              {data && data.booking_details && data.booking_details.map((item, index) => {
-                return (
-                  <li key={index}>
-                    {`Sân: ${item.sub_field_id}, Thời gian: ${item.start_time} - ${item.end_time}, Ngày đặt: ${item.date}`}
-                  </li>
-                );
-              })}
+              {data &&
+                data.booking_details &&
+                data.booking_details.map((item, index) => {
+                  return (
+                    <li key={index}>
+                      {`Sân: ${item.sub_field_id}, Thời gian: ${item.start_time} - ${item.end_time}, Ngày đặt: ${item.date}`}
+                    </li>
+                  );
+                })}
             </ul>
             <p>
               <strong>Tổng giờ:</strong> {data.total_hours}

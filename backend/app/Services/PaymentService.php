@@ -63,4 +63,33 @@ class PaymentService extends BaseService
         // Trả về dữ liệu doanh thu theo tháng
        return $revenues;
     }
+
+    public function paymentCard($request) 
+    {
+        $payment = Payment::where('order_code', $request->order_code)->first();
+        if ($payment) {
+            throw new HttpApiException('Bản ghi đã tồn tại', $request->order_code);
+        }
+        $booking = Booking::where('order_code', $request->order_code)->first();
+      
+        if (! $booking ) {
+            throw new HttpApiException('booking_id không tồn tại', $ $booking);
+        }
+
+        $image_payment = null;
+
+        if ($request->hasFile('images')) {
+            $image_payment = $this->saveFile($request->file('images'), 'fields');
+        }
+
+        return Payment::create([
+            'booking_id' => $booking->id,
+            'order_code' => $request->order_code,
+            'total_price' => $request->amount,
+            'payment_method' => $image_payment ? 1 : 0,
+            'image_payment' => $image_payment ? json_encode($image_payment) : null,
+            'date_payment' => Carbon::now()->toDateString(),
+            'status' => 0
+        ]);
+    }
 }

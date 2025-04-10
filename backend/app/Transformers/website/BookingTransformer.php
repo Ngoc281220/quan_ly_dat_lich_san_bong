@@ -17,7 +17,7 @@ class BookingTransformer extends TransformerAbstract
         $data = (object) $data; // Chuyển mảng thành object
 
         $field = $this->getField($data->field_id ?? null);
-     
+
         return [
             'field_id' => $data->field_id ?? null,
             'sub_field_id' => $data->sub_field_id ?? null,
@@ -53,8 +53,12 @@ class BookingTransformer extends TransformerAbstract
     /**
      * Định dạng lại giờ.
      */
-    public function getTime(string $time): string
+    public function getTime(?string $time): string
     {
+        if ($time === null) {
+            return "";
+        }
+
         return date("H:i", strtotime($time));
     }
 }

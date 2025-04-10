@@ -25,4 +25,9 @@ class PaymentController
         $data = $this->paymentService->saveInfoPaymentMo($request);
         return response()->json($data);
     }
+
+    public function paymentCard(Request $request) 
+    {
+        $data = $this->paymentService->paymentCard($request);
+    }
 }
