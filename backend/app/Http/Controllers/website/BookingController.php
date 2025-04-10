@@ -34,4 +34,10 @@ class BookingController extends Controller {
         $data = $this->bookingService->getBookingByOrderCode($order_code);
         return (new ApiResponder($data, new BookingByOrderCodeTransformer()))->data();
     }
+
+    public function listBookingByIDUSER() {
+        dd(1);
+        $data = $this->bookingService->listBookingByIDUSER();
+        dd($data);
+    }
 }

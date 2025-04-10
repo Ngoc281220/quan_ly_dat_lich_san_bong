@@ -25,6 +25,7 @@ Route::prefix('web')->group(function(){
         Route::get('/get-schedule', [BookingController::class, 'getSchedule']);
         Route::post('/field', [BookingController::class, 'bookingsField']);
         Route::get('/{order_code}', [BookingController::class, 'getBookingByOrderCode']);
+        Route::get('/list-booking', [BookingController::class, 'listBookingByIDUSER']);
     });
 
     Route::prefix('posts')->group(function() {{

@@ -10,7 +10,6 @@ use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
 
 class BookingService extends BaseService
 {
@@ -70,7 +69,7 @@ class BookingService extends BaseService
             $bookings = Booking::create([
                 'order_code' => $order_code->toString(),
                 'field_id' => $request->idField,
-                'user_id' => Auth::id() ?? 0,
+                'user_id' => Auth::id(),
                 'total_hours' => $request->totalHours,
                 'total_price' => $request->totalPrice,
                 'name_user_booking_field' => $request->userIn['name'],
@@ -140,6 +139,51 @@ class BookingService extends BaseService
             })
             ->values()
             ->first();
+        return $query;
+    }
+
+    public function listBookingByIDUSER()
+    {
+        $IDUSER = Auth::id();
+        $query = Booking::where('bookings.user_id', $IDUSER)
+            ->leftJoin('booking_details', 'booking_details.booking_id', '=', 'bookings.id')
+            ->leftJoin('payments', 'payments.booking_id', '=', 'bookings.id')
+            ->select(
+                'bookings.*',
+                'booking_details.id as id_booking_detail',
+                'booking_details.sub_field_id',
+                'booking_details.date',
+                'booking_details.start_time',
+                'booking_details.end_time',
+                'payments.id as payment_id',
+                'payments.status as payment_status'
+            )
+            ->get()
+            ->groupBy('id') // Nhóm theo ID booking
+            ->map(function ($bookings) {
+                $booking = $bookings->first(); // Lấy thông tin chính của booking
+                return [
+                    'id' => $booking->id,
+                    'user_id' => $booking->user_id,
+                    'total_hours' => $booking->total_hours,
+                    'total_price' => $booking->total_price,
+                    'status' => $booking->status,
+                    'payment_id' => $booking->payment_id,
+                    'payment_status' => $booking->payment_status,
+                    'booking_details' => $bookings->map(function ($detail) {
+                        return [
+                            'id_booking_detail' => $detail->id_booking_detail,
+                            'sub_field_id' => $detail->sub_field_id,
+                            'date' => $detail->date,
+                            'start_time' => $detail->start_time,
+                            'end_time' => $detail->end_time,
+                        ];
+                    })->values()
+                ];
+            })
+            ->values()
+            ->first();
+
         return $query;
     }
 }
