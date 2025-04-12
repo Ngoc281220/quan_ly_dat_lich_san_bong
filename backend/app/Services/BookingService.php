@@ -6,10 +6,10 @@ use Carbon\Carbon;
 use App\Models\SubField;
 use App\Models\Booking;
 use App\Models\BookingDetail;
-use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Exceptions\HttpApiException;
 
 class BookingService extends BaseService
 {
@@ -158,11 +158,10 @@ class BookingService extends BaseService
                 'payments.id as payment_id',
                 'payments.status as payment_status'
             )
-            ->get()
-            ->groupBy('id') // Nhóm theo ID booking
+            ->get() // ✅ Đây là điểm kết thúc query
+            ->groupBy('id')
             ->map(function ($bookings) {
-                $booking = $bookings->first(); // Lấy thông tin chính của booking
-
+                $booking = $bookings->first();
                 return [
                     'id' => $booking->id,
                     'user_id' => $booking->user_id,
@@ -183,8 +182,8 @@ class BookingService extends BaseService
                     })->values()
                 ];
             })
-            ->values()
-            ->first();
+            ->values(); // ✅ Trả về Collection gọn gàng
+
         return $query;
     }
 }

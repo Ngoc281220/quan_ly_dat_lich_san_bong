@@ -16,6 +16,7 @@ class ListBookingTransformer extends TransformerAbstract
     public function transform($booking)
     {
         $field = Field::find($booking['field_id']);
+
         return [
             'id'            => $booking['id'],
             'user_id'       => $booking['user_id'],
@@ -24,7 +25,7 @@ class ListBookingTransformer extends TransformerAbstract
             'contact_phone' => $field->contact_phone,
             'total_hours'   => (float) $booking['total_hours'],
             'total_price'   => (float) $booking['total_price'],
-            'status'        => (int) $booking['status'],
+            'status'        => (int) $booking['status'] == 0 ? "Hủy do quá giờ thanh toán" : "Đặt sân thành công",
             'payment_id'    => $booking['payment_id'],
             'payment_status'=> (int) $booking['payment_status'],
             'booking_details' => collect($booking['booking_details'])->map(function ($detail) {
@@ -32,10 +33,18 @@ class ListBookingTransformer extends TransformerAbstract
                     'id_booking_detail' => $detail['id_booking_detail'],
                     'sub_field_id'      => $detail['sub_field_id'],
                     'date'              => $detail['date'],
-                    'start_time'        => $detail['start_time'],
-                    'end_time'          => $detail['end_time'],
+                    'time'        => $this->getTime($detail['start_time'])."-".$this->getTime($detail['end_time']),
                 ];
             })->toArray(),
         ];
+    }
+
+    public function getTime(?string $time): string
+    {
+        if ($time === null) {
+            return "";
+        }
+
+        return date("H:i", strtotime($time));
     }
 }
