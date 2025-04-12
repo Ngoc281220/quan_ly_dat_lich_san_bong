@@ -162,9 +162,11 @@ class BookingService extends BaseService
             ->groupBy('id') // Nhóm theo ID booking
             ->map(function ($bookings) {
                 $booking = $bookings->first(); // Lấy thông tin chính của booking
+
                 return [
                     'id' => $booking->id,
                     'user_id' => $booking->user_id,
+                    'field_id' => $booking->field_id,
                     'total_hours' => $booking->total_hours,
                     'total_price' => $booking->total_price,
                     'status' => $booking->status,
@@ -183,7 +185,6 @@ class BookingService extends BaseService
             })
             ->values()
             ->first();
-
         return $query;
     }
 }

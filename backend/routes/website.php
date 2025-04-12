@@ -22,10 +22,10 @@ Route::get('load-category',  [FieldsController::class, 'loadCategory']);
 Route::prefix('web')->group(function(){
     Route::get('/home', [FieldsController::class, 'loadListField']);
     Route::prefix('bookings')->group(function() {
+        Route::get('/get-all', [BookingController::class, 'listBookingByIDUser']);
         Route::get('/get-schedule', [BookingController::class, 'getSchedule']);
         Route::post('/field', [BookingController::class, 'bookingsField']);
         Route::get('/{order_code}', [BookingController::class, 'getBookingByOrderCode']);
-        Route::get('/list-booking', [BookingController::class, 'listBookingByIDUSER']);
     });
 
     Route::prefix('posts')->group(function() {{

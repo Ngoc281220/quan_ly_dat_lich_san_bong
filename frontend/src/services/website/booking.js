@@ -11,3 +11,7 @@ export async function bookingsField(params) {
 export async function getBookingByOrderCode(order_code) {
     return await api.get(`/web/bookings/${order_code}`);
 }
+
+export async function listBookingBYIDUSER() {
+    return await api.get('/web/bookings/get-all');
+}

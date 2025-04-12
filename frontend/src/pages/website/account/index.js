@@ -1,5 +1,8 @@
+import { useState, useEffect } from "react";
 import { Card, Container, Row, Col, Image, Button } from "react-bootstrap";
 import { Bell, Trash } from "lucide-react";
+import { listBookingBYIDUSER
+ } from "../../../services/website/booking";
 const user = {
   name: "Nguyen X",
   avatar: "https://static.vecteezy.com/system/resources/thumbnails/006/487/917/small_2x/man-avatar-icon-free-vector.jpg",
@@ -21,6 +24,13 @@ const user = {
 };
 
 function AccountPage() {
+  const loadData = async () => {
+     const {data} = await listBookingBYIDUSER();
+     console.log('data', data);
+  }
+  useEffect (() => {
+    loadData();
+  }, []);
   return (
     <Container className="mt-4">
       <Card className="p-4 bg-success text-white">
