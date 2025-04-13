@@ -11,6 +11,7 @@ use App\Transformers\Website\CreateBookingTransformer;
 use App\Transformers\Website\BookingByOrderCodeTransformer;
 use App\Transformers\Website\ListBookingTransformer;
 
+
 class BookingController extends Controller
 {
     protected $bookingService;
@@ -40,7 +41,6 @@ class BookingController extends Controller
 
     public function listBookingByIDUser()
     {
-        
         $data = $this->bookingService->listBookingByIDUSER();
         return(new ApiResponder($data, new ListBookingTransformer()))->collection();
     }

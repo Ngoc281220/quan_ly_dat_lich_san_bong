@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { Form, Button } from "react-bootstrap";
 import { register } from "../../services/website/auth";
+import OffCanvasLoign from "../login";
 import "../../assets/styles/RegisterForm.scss";
 
 function OffCanvasRegister({ isShow, handleClose }) {
@@ -14,6 +15,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
     confirm_password: "",
   });
   const [errors, setErrors] = useState({});
+  const [isLogin, setIsLogin] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -161,11 +163,12 @@ function OffCanvasRegister({ isShow, handleClose }) {
             </Button>
             <p className="mt-4 text-center">
               Bạn đã có tài khoản?{" "}
-              <a href="/login" className="text-login">
+              <a className="text-login" onClick={() => setIsLogin(true)}>
                 Đăng nhập
               </a>
             </p>
           </Form>
+          <OffCanvasLoign isShow={isLogin} handleClose={() => setIsLogin(false)} />
         </div>
       </Offcanvas.Body>
     </Offcanvas>

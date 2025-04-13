@@ -8,6 +8,7 @@ import useAuthStore from "../../store";
 import { showToast } from "../common";
 import "../../assets/styles/RegisterForm.scss";
 import { PERMISSION } from "../../const";
+import OffCanvasRegister from "../register";
 
 
 function OffCanvasLoign({ isShow, handleClose }) {
@@ -20,6 +21,7 @@ function OffCanvasLoign({ isShow, handleClose }) {
   });
   const [errors, setErrors] = useState({});
   const [showLoading, setShowLoading] = useState(false);
+  const [isShowRegister, setIsShowRegister] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -137,12 +139,13 @@ function OffCanvasLoign({ isShow, handleClose }) {
             </Button>
             <p className="mt-4 text-center">
               Bạn chưa có tài khoản?{" "}
-              <a href="/login" className="text-login">
+              <a className="text-login" onClick={() => setIsShowRegister(true)}>
                 Đăng ký ngay
               </a>
             </p>
           </Form>
         </div>
+        <OffCanvasRegister isShow={isShowRegister} handleClose={() => setIsShowRegister(false)} />
       </Offcanvas.Body>
     </Offcanvas>
   );

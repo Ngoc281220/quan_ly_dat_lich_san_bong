@@ -1,23 +1,31 @@
 import axios from "axios";
+import useAuthStore from "../store";
+
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+  return null;
+};
 
 const API_URL = process.env.REACT_APP_API_URL || "http://127.0.0.1:8000/api";
 
 class API {
   constructor() {
-    this.config = {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    };
-
     this.api = axios.create({
       baseURL: API_URL,
-      headers: this.config,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      withCredentials: true, // 👈 Cho phép gửi cookie kèm request
     });
 
-    // ✅ Thêm token vào mỗi request nếu có
+    // ❌ Không cần interceptor để gắn Authorization header nữa
+    // Vì cookie sẽ tự được browser gửi
     this.api.interceptors.request.use(
       (config) => {
-        const token = localStorage.getItem("accessToken");
+        let token  = getCookie('accessToken');
         if (token) {
           config.headers["Authorization"] = `Bearer ${token}`;
         }
@@ -26,11 +34,11 @@ class API {
       (error) => Promise.reject(error)
     );
 
-    // ✅ Xử lý refresh token khi accessToken hết hạn
     this.api.interceptors.response.use(
       (response) => response.data,
       async (error) => {
         const originalRequest = error.config;
+
         if (
           error.response &&
           error.response.status === 401 &&
@@ -38,26 +46,20 @@ class API {
         ) {
           originalRequest._retry = true;
 
-          const refreshToken = localStorage.getItem("refreshToken");
-          if (refreshToken) {
-            try {
-              const res = await axios.post(`${API_URL}/auth/refresh-token`, {
-                refreshToken,
-              });
-              sessionStorage.setItem("accessToken", res.data.accessToken);
+          try {
+            await axios.post(`${API_URL}/auth/refresh-token`, null, {
+              withCredentials: true, // 👈 Cho phép gửi cookie trong refresh request
+            });
 
-              // Gán token mới vào header và gửi lại request
-              originalRequest.headers["Authorization"] =
-                "Bearer " + res.data.accessToken;
-              return this.api(originalRequest);
-            } catch (err) {
-              console.error("Refresh token failed", err);
-              return Promise.reject(err);
-            }
+            // Không cần set token lại → cookie mới đã được gửi về
+            return this.api(originalRequest);
+          } catch (err) {
+            console.error("Refresh token failed", err);
+            return Promise.reject(err);
           }
         }
+
         if (error.response.status === 422 || error.response.status === 400) {
-          
           return Promise.reject({
             errors: error.response.data.errors || "Dữ liệu không hợp lệ",
           });
