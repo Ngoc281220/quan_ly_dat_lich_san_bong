@@ -37,4 +37,6 @@ Route::prefix('web')->group(function(){
         Route::post('/save-momo',[PaymentController::class, 'saveInfoPaymentMo']);
         Route::post('/card',[PaymentController::class, 'paymentCard']);
     });
+   
+    Route::get('search', [FieldsController::class, 'searchField']);
 });

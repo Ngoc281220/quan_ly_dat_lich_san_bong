@@ -82,6 +82,7 @@ function BookingLayout() {
       selectedDate.toISOString().split('T')[0],
     );
     if (data.length > 0) {
+      console.log('data', data);
       setCourts(data);
       setNameField(data[0].name_field);
       setGeneralPrice(data[0].price);
@@ -189,6 +190,7 @@ function BookingLayout() {
     const phone = userIn.phone.trim();
     if (phone === null || phone === '') {
       showToast('Vui lòng nhập số điện thoại', 'warning');
+      return;
     }
     try {
       const params = {

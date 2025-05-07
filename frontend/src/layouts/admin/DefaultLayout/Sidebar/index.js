@@ -14,7 +14,7 @@ const menuItems = [
     path: "/admin/dashboard",
   },
   { name: "Quản lý sân thể thao", icon: <FaFutbol />, path: "/admin/fields" },
-  { name: "User Profile", icon: <FaUserCircle />, path: "/profile" },
+  // { name: "User Profile", icon: <FaUserCircle />, path: "/profile" },
   { name: "Quản lý người dùng", icon: <FaUsers />, path: "/admin/user" },
   { name: "Quản lý bài viết", icon: <FaNewspaper />, path: "/admin/posts" },
 ];

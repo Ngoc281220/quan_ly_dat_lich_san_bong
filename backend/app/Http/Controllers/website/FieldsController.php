@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\FieldsService;
 use App\Utils\ApiResponder;
 use App\Transformers\Website\FieldTransformer;
+use Illuminate\Http\Request;
 
 class FieldsController extends Controller
 {
@@ -26,5 +27,11 @@ class FieldsController extends Controller
     {
         $data = $this->fieldService->loadCategory();
         return response()->json($data);
+    }
+
+    public function searchField(Request $request)
+    {
+        $data = $this->fieldService->searchField($request);
+        return (new ApiResponder($data, new FieldTransformer()))->collection();
     }
 }

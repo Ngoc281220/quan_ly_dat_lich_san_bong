@@ -3,6 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { changePass } from '../../services/website/auth';
+import { showToast } from '../common';
 
 // Component thay đổi mật khẩu
 export default function ChangePassword({ show, onHide, onShow }) {
@@ -10,21 +12,34 @@ export default function ChangePassword({ show, onHide, onShow }) {
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (newPassword === confirmPassword) {
-      alert('Password changed successfully!');
-      // Gọi API hoặc làm các hành động khác ở đây
-      onHide();
-    } else {
-      alert('Passwords do not match!');
+    try {
+      if (newPassword === confirmPassword) {
+        const params = {
+          newPassword,
+        };
+        const data = await changePass(params);
+        if (data) {
+          showToast('Thay đổi mật khẩu thành công');
+        }
+        onHide();
+      } else {
+        showToast('Mật khẩu không khớp!', 'error');
+      }
+    } catch (error) {
+      showToast('Lỗi hệ thống!', 'error');
     }
   };
 
   return (
-    <Offcanvas show={show} onHide={onHide} backdrop="static"
-    placement="end"
-    className="w-100 bg-success p-5">
+    <Offcanvas
+      show={show}
+      onHide={onHide}
+      backdrop="static"
+      placement="end"
+      className="w-100 bg-success p-5"
+    >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Thay đổi mật khẩu</Offcanvas.Title>
       </Offcanvas.Header>
@@ -77,22 +92,3 @@ export default function ChangePassword({ show, onHide, onShow }) {
     </Offcanvas>
   );
 }
-
-// // Component cha quản lý việc mở/đóng Offcanvas
-// function App() {
-//   const [show, setShow] = useState(false);
-
-//   const handleShow = () => setShow(true);
-//   const handleClose = () => setShow(false);
-
-//   return (
-//     <div>
-//       <Button variant="primary" onClick={handleShow}>
-//         Change Password
-//       </Button>
-//       <ChangePassword show={show} onHide={handleClose} onShow={handleShow} />
-//     </div>
-//   );
-// }
-
-// export default App;
