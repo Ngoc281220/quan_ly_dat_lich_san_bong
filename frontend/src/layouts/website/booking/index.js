@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Button, Table, Badge } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import { Container, Button, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -49,6 +49,7 @@ const times = [
   '22:00',
 ];
 
+
 function BookingLayout() {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -82,7 +83,6 @@ function BookingLayout() {
       selectedDate.toISOString().split('T')[0],
     );
     if (data.length > 0) {
-      console.log('data', data);
       setCourts(data);
       setNameField(data[0].name_field);
       setGeneralPrice(data[0].price);
@@ -208,6 +208,19 @@ function BookingLayout() {
     } catch (error) {}
   };
 
+  const lastDateRef = useRef(null);
+
+  const handleDate = async (date) => {
+    if (date && date !== lastDateRef.current) {
+      lastDateRef.current = date;
+      setCourts([]);
+      setNameField(null);
+      setGeneralPrice(null);
+      setLocation(null);
+      setSelectedDate(date);
+    }
+  };
+
   return (
     <Container fluid className="mt-3 px-0">
       <div className="bg-success booking-header">
@@ -218,7 +231,7 @@ function BookingLayout() {
           <h4 className="text-center flex-grow-1 text-white">Đặt lịch</h4>
           <DatePicker
             selected={selectedDate}
-            onChange={setSelectedDate}
+            onChange={handleDate}
             dateFormat="dd/MM/yyyy"
             className="form-control w-auto"
           />
@@ -235,58 +248,8 @@ function BookingLayout() {
             ))}
           </tr>
         </thead>
-        {/* <tbody>
-          {courts.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.sub_field_name}</td>
-              {times.map((time) => {
-                const slot = `${item.sub_field_id}-${time}`;
-                return (
-                  <td
-                    key={slot}
-                    className={
-                      selectedSlots.includes(slot) ? "bg-warning" : "bg-light"
-                    }
-                    onClick={() =>
-                      toggleSlot(item.sub_field_id, time, item.price)
-                    }
-                  ></td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody> */}
-        {/* <tbody>
-          {courts.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.sub_field_name}</td>
-              {times.map((time) => {
-                const slot = `${item.sub_field_id}-${time}`;
-                const now = new Date().toTimeString().slice(0, 5); // Lấy HH:mm hiện tại
-                const isPast = time < now; // Kiểm tra nếu đã qua
-                console.log('item', item.time_slots)
-                return (
-                  <td
-                    key={slot}
-                    className={
-                      isPast
-                        ? 'bg-secondary text-light' // Nếu đã qua, đổi màu xám
-                        : selectedSlots.includes(slot)
-                          ? 'bg-warning'
-                          : 'bg-light'
-                    }
-                    onClick={
-                      isPast
-                        ? undefined
-                        : () => toggleSlot(item.sub_field_id, time, item.price)
-                    }
-                  ></td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody> */}
         <tbody>
+          
           {courts.map((item, idx) => (
             <tr key={idx}>
               <td>{item.sub_field_name}</td>

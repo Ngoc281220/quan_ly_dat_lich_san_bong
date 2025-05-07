@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exceptions\HttpApiException;
 use Carbon\Carbon;
 use App\Models\SubField;
 use App\Models\Booking;
@@ -63,7 +64,6 @@ class BookingService extends BaseService
     {
         try {
             DB::beginTransaction(); // Bắt đầu transaction
-
             $order_code = Str::uuid();
 
             // Lưu thông tin vào bảng bookings
