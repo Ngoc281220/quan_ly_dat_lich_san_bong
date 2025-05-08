@@ -28,4 +28,9 @@ class Field extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function listCategory()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

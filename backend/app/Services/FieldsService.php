@@ -137,4 +137,23 @@ class FieldsService extends BaseService
         }
         return $query->get();
     }
+
+    public function detailField($id) {
+        return Field::find($id);
+    }
+
+    public function updateField($request, $id)
+    {
+        $field = Field::find($id);
+
+        $field->update([
+            'name' => $request->name ?? '',
+            'category_id' => $request->category_id ?? '',
+            'location' => $request->location ?? '',
+            'price' => $request->price ?? '',
+            'contact_phone' => $request->contact_phone ?? ''
+        ]);
+        
+        return $field;
+    }
 }

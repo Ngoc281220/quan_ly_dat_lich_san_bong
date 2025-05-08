@@ -8,6 +8,7 @@ use App\Services\FieldsService;
 use App\Http\Requests\CreateFieldRequest;
 use App\Utils\ApiResponder;
 use App\Transformers\FieldTransformer;
+use App\Transformers\admin\FieldDetailTransformer;
 
 class FieldsController extends Controller
 {
@@ -51,5 +52,17 @@ class FieldsController extends Controller
             'status' => 200,
             'data' => $data
         ]);
+    }
+
+    public function detailField($id)
+    {
+        $data = $this->fieldsService->detailField($id);
+        return (new ApiResponder($data, new FieldDetailTransformer()))->data();
+    }
+
+    public function updateField(Request $request, $id) 
+    {
+        $data = $this->fieldsService->updateField($request, $id);
+        return (new ApiResponder($data, new FieldDetailTransformer()))->data();
     }
 }

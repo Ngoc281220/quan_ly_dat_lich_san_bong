@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Button from "react-bootstrap/Button";
-import Badge from "react-bootstrap/Badge";
-import { Eye, Pencil, Trash } from "react-bootstrap-icons";
-import { getListField, deleteField } from "../../../services/admin/fields";
-import Pagination from "../../../components/Pagination";
-import { formatCurrencyVND, formatTime } from "../../../components/common";
-import { STATUS_FIELD } from "../../../const";
-import { showToast } from "../../../components/common";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Badge from 'react-bootstrap/Badge';
+import { Eye, Pencil, Trash } from 'react-bootstrap-icons';
+import { getListField, deleteField } from '../../../services/admin/fields';
+import Pagination from '../../../components/Pagination';
+import { formatCurrencyVND, formatTime } from '../../../components/common';
+import { STATUS_FIELD } from '../../../const';
+import { showToast } from '../../../components/common';
 
 function statusField(status) {
   if (status === STATUS_FIELD.ACTIVE) {
@@ -46,7 +46,7 @@ function FieldList() {
       setFields(data);
       setPagination(pagination);
     } catch (error) {
-      console.error("Lỗi khi lấy danh sách sân:", error);
+      console.error('Lỗi khi lấy danh sách sân:', error);
     } finally {
       setLoading(false);
     }
@@ -57,16 +57,16 @@ function FieldList() {
   }, [currentPage]);
 
   const handleDelete = async (id) => {
-    if (window.confirm("Bạn có chắc chắn xóa bản ghi này không ?")) {
+    if (window.confirm('Bạn có chắc chắn xóa bản ghi này không ?')) {
       try {
         await deleteField(id);
         setFields(fields.filter((item) => item.id !== id)); // Cập nhật danh sách
         setTimeout(() => {
-          showToast('Xóa bạn ghi thành công')
+          showToast('Xóa bạn ghi thành công');
         }, 2000);
       } catch (error) {
         showToast('Có lỗi xảy ra', 'error');
-        console.error("Erorr", error);
+        console.error('Erorr', error);
       } finally {
       }
     }
@@ -120,10 +120,15 @@ function FieldList() {
                       >
                         <Eye />
                       </button>
-                      <button className="btn btn-outline-warning btn-sm mx-1">
+                      <button
+                        onClick={() =>
+                          navigate(`/admin/fields/update/${item.id}`)
+                        }
+                        className="btn btn-outline-warning btn-sm mx-1"
+                      >
                         <Pencil />
                       </button>
-                      <button 
+                      <button
                         className="btn btn-outline-danger btn-sm mx-1"
                         onClick={() => handleDelete(item.id)}
                       >

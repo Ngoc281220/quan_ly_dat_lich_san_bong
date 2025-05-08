@@ -19,6 +19,7 @@ import Dashboard from "@pages/admin/Dashboard";
 import FieldList from "@pages/admin/Field";
 import CreateFields from "@pages/admin/Field/create";
 import FieldDetail from "@pages/admin/Field/detail";
+import UpdateFieldForm from "../pages/admin/Field/update";
 
 // admin quản lý bài viết
 import PostList from "@pages/admin/post";
@@ -87,6 +88,11 @@ const ADMIN_ROUTES = [
     path:"/admin/fields/:id",
     component: FieldDetail
   },
+  {
+    path:"/admin/fields/update/:id",
+    component: UpdateFieldForm
+  }
+  ,
   {
     path:"/admin/user",
     component: ListUser

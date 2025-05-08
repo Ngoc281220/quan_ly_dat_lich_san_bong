@@ -26,3 +26,11 @@ export async function detaiField(id) {
 export async function deleteField(id) {
   return await api.post(`admin/fields/delete/${id}`);
 }
+
+export async function getFieldById(id) {
+  return await api.get(`admin/fields/detail/${id}`);
+}
+
+export async function updateField(id, params) {
+  return await api.post(`admin/fields/update/${id}`, params);
+}
