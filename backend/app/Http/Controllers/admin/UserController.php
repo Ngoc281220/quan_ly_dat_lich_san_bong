@@ -7,6 +7,8 @@ use App\Services\UserService;
 use App\Utils\ApiResponder;
 use App\Transformers\admin\UserTransformer;
 use App\Transformers\admin\UserByIdTransformer;
+use App\Transformers\admin\DetailUserTransformer;
+
 
 class UserController extends Controller
 {
@@ -40,5 +42,11 @@ class UserController extends Controller
     {
         $data = $this->userService->updateUserById($request, $id);
         return(new ApiResponder($data, new UserTransformer()))->data();
+    }
+
+    public function detail($id)
+    {
+        $data = $this->userService->detail($id);
+         return(new ApiResponder($data, new DetailUserTransformer()))->data();
     }
 }

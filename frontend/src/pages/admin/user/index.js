@@ -5,7 +5,6 @@ import Pagination from '../../../components/Pagination';
 import { showToast } from '../../../components/common';
 import { useNavigate } from 'react-router-dom';
 
-
 function ListUser() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
@@ -82,20 +81,25 @@ function ListUser() {
                       <td>{item.phone}</td>
                       <td>
                         <button
+                          onClick={() =>
+                            navigate(`/admin/user/detail/${item.id}`)
+                          }
                           className="btn btn-outline-primary btn-sm mx-1"
                           size="sm"
                         >
                           <Eye />
                         </button>
-                        <button 
-                          onClick={() => navigate(`/admin/user/update/${item.id}`)}
+                        <button
+                          onClick={() =>
+                            navigate(`/admin/user/update/${item.id}`)
+                          }
                           className="btn btn-outline-warning btn-sm mx-1"
                         >
                           <Pencil />
                         </button>
-                        <button 
-                            className="btn btn-outline-danger btn-sm mx-1"
-                            onClick={() => handleDelete(item.id)}
+                        <button
+                          className="btn btn-outline-danger btn-sm mx-1"
+                          onClick={() => handleDelete(item.id)}
                         >
                           <Trash />
                         </button>
