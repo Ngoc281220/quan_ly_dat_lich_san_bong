@@ -3,8 +3,11 @@ import { getAllUser, deleteUser } from '../../../services/admin/user';
 import { Eye, Pencil, Trash } from 'react-bootstrap-icons';
 import Pagination from '../../../components/Pagination';
 import { showToast } from '../../../components/common';
+import { useNavigate } from 'react-router-dom';
+
 
 function ListUser() {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState(null);
@@ -84,7 +87,10 @@ function ListUser() {
                         >
                           <Eye />
                         </button>
-                        <button className="btn btn-outline-warning btn-sm mx-1">
+                        <button 
+                          onClick={() => navigate(`/admin/user/update/${item.id}`)}
+                          className="btn btn-outline-warning btn-sm mx-1"
+                        >
                           <Pencil />
                         </button>
                         <button 

@@ -27,6 +27,7 @@ import UpdatePostForm from "@pages/admin/post/update";
 
 // admin quản lý người dùng
 import ListUser from "@pages/admin/user";
+import EditUserForm from "@pages/admin/user/edit";
 
 const WEBSITE_ROUTES = [
   {
@@ -88,6 +89,10 @@ const ADMIN_ROUTES = [
   {
     path:"/admin/user",
     component: ListUser
+  },
+  {
+    path: "admin/user/update/:id",
+    component: EditUserForm
   },
   {
     path:"/admin/posts",

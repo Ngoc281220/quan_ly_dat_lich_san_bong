@@ -38,6 +38,8 @@ Route::prefix('admin')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'listUser'])->name('admin.users');
         Route::post('/delete/{id}', [UserController::class, 'delete'])->name('admin.users.delete');
+        Route::get('/{id}', [UserController::class, 'getUserById'])->name('admin.users.delete');
+        Route::post('/update/{id}', [UserController::class, 'updateUserById'])->name('admin.users.update');
     });
 
     Route::prefix('posts')->group(function () {

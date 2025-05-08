@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\UserService;
 use App\Utils\ApiResponder;
 use App\Transformers\admin\UserTransformer;
+use App\Transformers\admin\UserByIdTransformer;
 
 class UserController extends Controller
 {
@@ -27,5 +28,17 @@ class UserController extends Controller
     {
         $data = $this->userService->delete($id);
         return response()->json($data);
+    }
+
+    public function getUserById($id) 
+    {
+        $data = $this->userService->getUserById($id);
+        return(new ApiResponder($data, new UserByIdTransformer()))->data();
+    }
+
+    public function updateUserById(Request $request, $id)
+    {
+        $data = $this->userService->updateUserById($request, $id);
+        return(new ApiResponder($data, new UserTransformer()))->data();
     }
 }

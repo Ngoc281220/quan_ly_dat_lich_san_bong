@@ -99,10 +99,12 @@ const LineChart = () => {
 
   const handleMonthChange = (e) => {
     setSelectedMonth(Number(e.target.value)); // Cập nhật giá trị tháng
+    fetchRevenueData(selectedMonth, selectedYear)
   };
 
   const handleYearChange = (e) => {
     setSelectedYear(Number(e.target.value)); // Cập nhật giá trị năm
+    fetchRevenueData(selectedMonth, selectedYear);
   };
 
   const data = {
