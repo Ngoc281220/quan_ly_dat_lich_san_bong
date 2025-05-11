@@ -138,7 +138,8 @@ class FieldsService extends BaseService
         return $query->get();
     }
 
-    public function detailField($id) {
+    public function detailField($id)
+    {
         return Field::find($id);
     }
 
@@ -153,7 +154,36 @@ class FieldsService extends BaseService
             'price' => $request->price ?? '',
             'contact_phone' => $request->contact_phone ?? ''
         ]);
-        
+
         return $field;
+    }
+
+    public function searchCategory($request)
+    {
+        $search = $request->query('search') ?? '';
+
+        $query = Field::select(
+            'fields.id',
+            'fields.name',
+            'fields.category_id',
+            'fields.location',
+            'fields.price',
+            'fields.status',
+            'fields.image',
+            'fields.open_time',
+            'fields.close_time',
+            'fields.contact_phone',
+            'categories.name as category_name'
+        )
+            ->join('categories', 'categories.id', '=', 'fields.category_id');
+
+        if (!empty($search)) {
+            $query->where(function ($q) use ($search) {
+                $q->where('categories.name', 'like', "%{$search}%")
+                    ->orWhere('categories.description', 'like', "%{$search}%");
+            });
+        }
+
+        return $query->get();
     }
 }

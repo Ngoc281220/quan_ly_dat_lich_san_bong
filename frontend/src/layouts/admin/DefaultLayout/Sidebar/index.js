@@ -4,19 +4,21 @@ import {
   FaUserCircle, // User Profile
   FaUsers, // Quản lý người dùng
   FaNewspaper, // Quản lý bài viết
-} from "react-icons/fa";
-import { NavLink } from "react-router-dom";
+  FaTags,
+} from 'react-icons/fa';
+import { NavLink } from 'react-router-dom';
 
 const menuItems = [
   {
-    name: "Bảng điều khiển",
+    name: 'Bảng điều khiển',
     icon: <FaTachometerAlt />,
-    path: "/admin/dashboard",
+    path: '/admin/dashboard',
   },
-  { name: "Quản lý sân thể thao", icon: <FaFutbol />, path: "/admin/fields" },
+  { name: 'Quản lý danh mục sân', icon: <FaTags />, path: '/admin/categories' },
+  { name: 'Quản lý sân thể thao', icon: <FaFutbol />, path: '/admin/fields' },
   // { name: "User Profile", icon: <FaUserCircle />, path: "/profile" },
-  { name: "Quản lý người dùng", icon: <FaUsers />, path: "/admin/user" },
-  { name: "Quản lý bài viết", icon: <FaNewspaper />, path: "/admin/posts" },
+  { name: 'Quản lý người dùng', icon: <FaUsers />, path: '/admin/user' },
+  { name: 'Quản lý bài viết', icon: <FaNewspaper />, path: '/admin/posts' },
 ];
 function AdminSidebar() {
   return (

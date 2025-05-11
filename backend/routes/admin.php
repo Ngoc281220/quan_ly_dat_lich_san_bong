@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\FieldsController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PostController;
 use App\Http\Controllers\admin\DashboardController;
+use App\Http\Controllers\admin\CategoriesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,9 +33,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/list-category', [FieldsController::class, 'getListCategory'])->name('admin.fields.category');
         Route::post('/create', [FieldsController::class, 'createField'])->name('admin.fields.createField');
         Route::get('/{id}', [FieldsController::class, 'getFieldByID'])->name('admin.fields.ID');
-        Route::post('/delete/{id}',[FieldsController::class, 'deleteField'])->name('admin.fields.delete');
-        Route::get('/detail/{id}',[FieldsController::class, 'detailField'])->name('admin.fields.detail');
-        Route::post('/update/{id}',[FieldsController::class, 'updateField'])->name('admin.fields.update');
+        Route::post('/delete/{id}', [FieldsController::class, 'deleteField'])->name('admin.fields.delete');
+        Route::get('/detail/{id}', [FieldsController::class, 'detailField'])->name('admin.fields.detail');
+        Route::post('/update/{id}', [FieldsController::class, 'updateField'])->name('admin.fields.update');
     });
 
     Route::prefix('users')->group(function () {
@@ -56,5 +57,12 @@ Route::prefix('admin')->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'dashboard']);
         Route::get('/revenue', [DashboardController::class, 'getRevenueByMonth']);
+    });
+
+    Route::prefix('categories')->group(function () {
+        Route::get('/', [CategoriesController::class, 'loadCategory']);
+        Route::post('/create', [CategoriesController::class, 'create']);
+        Route::get('/find/{id}', [CategoriesController::class, 'find']);
+        Route::post('/update/{id}', [CategoriesController::class, 'update'])->name('admin.categories.update');
     });
 });

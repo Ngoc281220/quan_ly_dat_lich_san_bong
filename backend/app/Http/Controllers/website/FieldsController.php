@@ -34,4 +34,10 @@ class FieldsController extends Controller
         $data = $this->fieldService->searchField($request);
         return (new ApiResponder($data, new FieldTransformer()))->collection();
     }
+
+    public function searchCategory(Request $request) 
+    {
+        $data = $this->fieldService->searchCategory($request);
+        return (new ApiResponder($data, new FieldTransformer()))->collection();
+    }
 }

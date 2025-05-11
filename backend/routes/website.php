@@ -39,4 +39,5 @@ Route::prefix('web')->group(function(){
     });
    
     Route::get('search', [FieldsController::class, 'searchField']);
+    Route::get('search-category', [FieldsController::class, 'searchCategory']);
 });
