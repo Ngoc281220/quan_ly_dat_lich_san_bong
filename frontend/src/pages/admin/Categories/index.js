@@ -59,9 +59,9 @@ export default function Categories() {
                     <td>
                       <button
                         className="btn btn-outline-warning btn-sm mx-1"
-                        // onClick={() =>
-                        //   navigate(`/admin/fields/update/${item.id}`)
-                        // }
+                        onClick={() =>
+                          navigate(`/admin/categories/update/${item.id}`)
+                        }
                       >
                         <Pencil />
                       </button>

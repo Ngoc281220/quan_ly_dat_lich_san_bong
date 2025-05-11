@@ -34,6 +34,7 @@ import UserDetail from "../pages/admin/user/detail";
 // admin quản lý loại sân
 import Categories from "../pages/admin/Categories";
 import CreateCategory from "../pages/admin/Categories/create";
+import UpdateCategory from "../pages/admin/Categories/edit";
 
 const WEBSITE_ROUTES = [
   {
@@ -129,6 +130,10 @@ const ADMIN_ROUTES = [
   {
     path: "admin/categories/create",
     component: CreateCategory
+  },
+  {
+    path: "admin/categories/update/:id",
+    component: UpdateCategory
   }
 ];
 
