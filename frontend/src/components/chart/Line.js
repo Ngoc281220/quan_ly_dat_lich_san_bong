@@ -130,7 +130,7 @@ const LineChart = () => {
           ))}
         </select>
         
-        <select value={selectedYear} onChange={handleYearChange}>
+        <select className='mx-2' value={selectedYear} onChange={handleYearChange}>
           {[2023, 2024, 2025].map((year) => (
             <option key={year} value={year}>
               {year}

@@ -35,9 +35,9 @@ class PaymentService extends BaseService
             throw new HttpApiException('Bản ghi đã tồn tại', $request->order_code);
         }
         $booking = Booking::where('order_code', $request->order_code)->first();
-      
-        if (! $booking ) {
-            throw new HttpApiException('booking_id không tồn tại', $ $booking);
+
+        if (! $booking) {
+            throw new HttpApiException('booking_id không tồn tại', $$booking);
         }
         return Payment::create([
             'booking_id' => $booking->id,
@@ -52,28 +52,48 @@ class PaymentService extends BaseService
 
     public function getRevenueByMonth($request)
     {
-        // Lấy dữ liệu doanh thu theo tháng với điều kiện status khác 0
-        $revenues = Payment::select(DB::raw('MONTH(date_payment) as month, YEAR(date_payment) as year'), DB::raw('SUM(total_price) as total_revenue'))
-            ->where('status', '!=', 0) // Thêm điều kiện lọc status khác 0
-            ->groupBy(DB::raw('MONTH(date_payment)'), DB::raw('YEAR(date_payment)'))
+        $year = $request->year;
+        $month = $request->month;
+
+        $query = Payment::select(
+            DB::raw('MONTH(date_payment) as month'),
+            DB::raw('YEAR(date_payment) as year'),
+            DB::raw('SUM(total_price) as total_revenue')
+        )
+            ->where('status', '!=', 0);
+
+        // Nếu có lọc theo năm
+        if ($year) {
+            $query->whereYear('date_payment', $year);
+        }
+
+        // Nếu có lọc theo tháng
+        if ($month) {
+            $query->whereMonth('date_payment', $month);
+        }
+
+        $revenues = $query->groupBy(
+            DB::raw('MONTH(date_payment)'),
+            DB::raw('YEAR(date_payment)')
+        )
             ->orderBy(DB::raw('YEAR(date_payment)'), 'asc')
             ->orderBy(DB::raw('MONTH(date_payment)'), 'asc')
             ->get();
 
-        // Trả về dữ liệu doanh thu theo tháng
-       return $revenues;
+        return $revenues;
     }
 
-    public function paymentCard($request) 
+
+    public function paymentCard($request)
     {
         $payment = Payment::where('order_code', $request->order_code)->first();
         if ($payment) {
             throw new HttpApiException('Bản ghi đã tồn tại', $request->order_code);
         }
         $booking = Booking::where('order_code', $request->order_code)->first();
-      
-        if (! $booking ) {
-            throw new HttpApiException('booking_id không tồn tại', $ $booking);
+
+        if (! $booking) {
+            throw new HttpApiException('booking_id không tồn tại', $$booking);
         }
 
         $image_payment = null;

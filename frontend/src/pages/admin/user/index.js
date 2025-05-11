@@ -46,12 +46,6 @@ function ListUser() {
   return (
     <>
       <div>
-        {/* <div className="d-flex justify-content-end">
-            <Button href="/admin/fields/create" variant="primary">
-                Thêm người dùng
-            </Button>
-        </div> */}
-
         <div className="data-table-container">
           <h2>Danh sách người dùng</h2>
           <div className="table-wrapper">

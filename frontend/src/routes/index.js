@@ -36,6 +36,9 @@ import Categories from "../pages/admin/Categories";
 import CreateCategory from "../pages/admin/Categories/create";
 import UpdateCategory from "../pages/admin/Categories/edit";
 
+// admin quản lý đặt sân
+import ManagementBookingField from "../pages/admin/ManagementBookingField";
+
 const WEBSITE_ROUTES = [
   {
     path: "/",
@@ -134,6 +137,10 @@ const ADMIN_ROUTES = [
   {
     path: "admin/categories/update/:id",
     component: UpdateCategory
+  },
+  {
+    path: 'admin/booking-field',
+    component: ManagementBookingField
   }
 ];
 

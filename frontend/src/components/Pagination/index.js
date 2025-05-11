@@ -1,40 +1,63 @@
-import React from "react";
-
 const Pagination = ({ pagination, onPageChange }) => {
   if (!pagination || pagination.total === 0) return null;
 
   const { currentPage, lastPage } = pagination;
+  const pageNeighbours = 1; // số trang hiển thị xung quanh trang hiện tại
+  const totalNumbers = pageNeighbours * 2 + 1; // tổng số nút trang hiển thị
+
+  const generatePageNumbers = () => {
+    const pages = [];
+
+    const startPage = Math.max(1, currentPage - pageNeighbours);
+    const endPage = Math.min(lastPage, currentPage + pageNeighbours);
+
+    if (startPage > 1) {
+      pages.push(1);
+      if (startPage > 2) pages.push('...');
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    if (endPage < lastPage) {
+      if (endPage < lastPage - 1) pages.push('...');
+      pages.push(lastPage);
+    }
+
+    return pages;
+  };
 
   return (
-    <div className="pagination text-end">
-      {/* Nút Previous */}
+    <div className="pagination text-end mt-3">
+      {/* Previous */}
       <button
-        onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
+        onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary mx-1"
       >
         Prev
       </button>
 
-      {/* Nút số trang */}
-      {[...Array(lastPage)].map((_, index) => {
-        const page = index + 1;
-        return (
-          <button
-            key={page}
-            onClick={() => onPageChange(page)}
-            className={`btn mx-1 ${currentPage === page ? "active" : "btn-outline-primary"}`}
-          >
-            {page}
-          </button>
-        );
-      })}
+      {/* Page numbers */}
+      {generatePageNumbers().map((page, index) => (
+        <button
+          key={index}
+          onClick={() => typeof page === 'number' && onPageChange(page)}
+          className={`btn mx-1 ${
+            page === currentPage ? 'btn-primary active' : 'btn-outline-primary'
+          }`}
+          disabled={page === '...'}
+        >
+          {page}
+        </button>
+      ))}
 
-      {/* Nút Next */}
+      {/* Next */}
       <button
-        onClick={() => onPageChange(Math.min(currentPage + 1, lastPage))}
+        onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === lastPage}
-        className="btn btn-outline-primary"
+        className="btn btn-outline-primary mx-1"
       >
         Next
       </button>

@@ -1,11 +1,12 @@
 import {
   FaTachometerAlt, // Bảng điều khiển
   FaFutbol, // Quản lý sân thể thao
-  FaUserCircle, // User Profile
   FaUsers, // Quản lý người dùng
   FaNewspaper, // Quản lý bài viết
   FaTags,
+  FaCalendarAlt 
 } from 'react-icons/fa';
+
 import { NavLink } from 'react-router-dom';
 
 const menuItems = [
@@ -16,8 +17,8 @@ const menuItems = [
   },
   { name: 'Quản lý danh mục sân', icon: <FaTags />, path: '/admin/categories' },
   { name: 'Quản lý sân thể thao', icon: <FaFutbol />, path: '/admin/fields' },
-  // { name: "User Profile", icon: <FaUserCircle />, path: "/profile" },
   { name: 'Quản lý người dùng', icon: <FaUsers />, path: '/admin/user' },
+  { name: 'Quản lý đặt sân', icon: <FaCalendarAlt />, path: '/admin/booking-field' },
   { name: 'Quản lý bài viết', icon: <FaNewspaper />, path: '/admin/posts' },
 ];
 function AdminSidebar() {
