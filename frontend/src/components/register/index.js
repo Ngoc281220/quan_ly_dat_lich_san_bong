@@ -1,21 +1,23 @@
-import { useState, useEffect } from "react";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import { Form, Button } from "react-bootstrap";
-import { register } from "../../services/website/auth";
-import OffCanvasLoign from "../login";
-import "../../assets/styles/RegisterForm.scss";
+import { useState, useEffect } from 'react';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Form, Button } from 'react-bootstrap';
+import { register } from '../../services/website/auth';
+import OffCanvasLoign from '../login';
+import Spinner from 'react-bootstrap/Spinner';
+import '../../assets/styles/RegisterForm.scss';
 
 function OffCanvasRegister({ isShow, handleClose }) {
   const [show, setShow] = useState(isShow);
   const [formData, setFormData] = useState({
-    email: "",
-    full_name: "",
-    phone: "",
-    password: "",
-    confirm_password: "",
+    email: '',
+    full_name: '',
+    phone: '',
+    password: '',
+    confirm_password: '',
   });
   const [errors, setErrors] = useState({});
   const [isLogin, setIsLogin] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,19 +26,19 @@ function OffCanvasRegister({ isShow, handleClose }) {
   const validate = () => {
     let newErrors = {};
     if (!formData.email) {
-      newErrors.email = "Vui lòng nhập email";
+      newErrors.email = 'Vui lòng nhập email';
     }
     if (!formData.full_name) {
-      newErrors.full_name = "Vui lòng nhập họ tên";
+      newErrors.full_name = 'Vui lòng nhập họ tên';
     }
     if (!formData.phone) {
-      newErrors.phone = "Vui lòng số điện thoại";
+      newErrors.phone = 'Vui lòng số điện thoại';
     }
     if (!formData.password) {
-      newErrors.password = "Vui lòng nhập mật khẩu";
+      newErrors.password = 'Vui lòng nhập mật khẩu';
     }
     if (!formData.confirm_password) {
-      newErrors.confirm_password = "Vui lòng xác nhận mật khẩu";
+      newErrors.confirm_password = 'Vui lòng xác nhận mật khẩu';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -45,17 +47,20 @@ function OffCanvasRegister({ isShow, handleClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      console.log("Đăng ký thành công", formData);
+      // console.log("Đăng ký thành công", formData);
     }
+    setShowLoading(true);
     try {
       const data = await register(formData);
-      if(data) {
-        console.log("Đăng ký thành công", formData);
+      if (data) {
+        console.log('Đăng ký thành công', formData);
       }
     } catch (error) {
       if (error.errors) {
         setErrors(error.errors);
       }
+    } finally {
+      setShowLoading(false);
     }
   };
   useEffect(() => {
@@ -159,16 +164,25 @@ function OffCanvasRegister({ isShow, handleClose }) {
             </Form.Group>
 
             <Button type="submit" className="w-100 mt-4 py-2 btn-regsiter">
-              Đăng ký
+              {showLoading ? (
+                <>
+                  <Spinner animation="border" size="md" className="me-2" />
+                </>
+              ) : (
+                'Đăng ký'
+              )}
             </Button>
             <p className="mt-4 text-center">
-              Bạn đã có tài khoản?{" "}
+              Bạn đã có tài khoản?{' '}
               <a className="text-login" onClick={() => setIsLogin(true)}>
                 Đăng nhập
               </a>
             </p>
           </Form>
-          <OffCanvasLoign isShow={isLogin} handleClose={() => setIsLogin(false)} />
+          <OffCanvasLoign
+            isShow={isLogin}
+            handleClose={() => setIsLogin(false)}
+          />
         </div>
       </Offcanvas.Body>
     </Offcanvas>

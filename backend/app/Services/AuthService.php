@@ -10,6 +10,7 @@ use App\Enums\UserEnum;
 use App\Mail\VerifyEmail;
 use App\Exceptions\HttpApiException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthService extends BaseService
 {
@@ -28,7 +29,8 @@ class AuthService extends BaseService
                 'email_verification_token' => Str::random(32),
             ]);
 
-            $verificationUrl = env('FRONTEND_URL') . '/verify-email?token=' . $user->email_verification_token;
+            $verificationUrl = config('app.frontend_url') . '/verify-email?token=' . urlencode($user->email_verification_token);
+
             Mail::to($user->email)->send(new VerifyEmail($user, $verificationUrl));
 
             return response()->json(['message' => 'Vui lòng kiểm tra email để xác nhận tài khoản'], 201);
@@ -41,22 +43,24 @@ class AuthService extends BaseService
     public function verify($request)
     {
         $token = $request->query('token');
+        Log::info('Token nhận được: ' . $token);
 
         if (!$token) {
             return response()->json(['message' => 'Token không hợp lệ'], 400);
         }
 
-        // Tìm user có token tương ứng
         $user = User::where('email_verification_token', $token)->first();
+        Log::info('User tìm được:', [$user]);
 
         if (!$user) {
             return response()->json(['message' => 'Token không hợp lệ hoặc đã được sử dụng'], 400);
         }
 
-        // Xác thực email
         $user->email_verified_at = now();
         $user->email_verification_token = null;
         $user->save();
+
+        Log::info('User đã xác thực email:', [$user]);
 
         return response()->json(['message' => 'Xác thực email thành công'], 200);
     }

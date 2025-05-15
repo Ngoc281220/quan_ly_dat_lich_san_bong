@@ -1,0 +1,71 @@
+.revenue-chart-card {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.revenue-chart-card .card-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 1rem 1.25rem;
+}
+
+.revenue-chart-card .card-body {
+  padding: 1.25rem;
+  height: 400px; /* Fixed height for consistent chart sizing */
+}
+
+.revenue-chart-card .card-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 1.25rem;
+}
+
+.chart-container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.form-select {
+  border-radius: 8px;
+  border: 1px solid #dee2e6;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  border-color: #4bc0c0;
+  box-shadow: 0 0 0 0.25rem rgba(75, 192, 192, 0.25);
+}
+
+/* Tooltip styling */
+.chartjs-tooltip {
+  opacity: 1 !important;
+  background-color: rgba(0, 0, 0, 0.8) !important;
+  border-radius: 5px !important;
+  padding: 10px !important;
+  color: white !important;
+}
+
+/* Legend styling */
+.chartjs-legend {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .revenue-chart-card .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .revenue-chart-card .card-header > div:last-child {
+    margin-top: 10px;
+    width: 100%;
+  }
+  
+  .form-select {
+    width: 100%;
+  }
+}

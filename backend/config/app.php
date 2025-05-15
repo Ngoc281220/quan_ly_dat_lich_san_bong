@@ -187,5 +187,6 @@ return [
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ])->toArray(),
-
+    
+    'frontend_url' => env('FRONTEND_URL', 'http://localhost:3000')
 ];

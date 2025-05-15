@@ -1,9 +1,418 @@
+// import React, { useState, useEffect, useRef } from 'react';
+// import { Container, Button, Table } from 'react-bootstrap';
+// import { useParams } from 'react-router-dom';
+// import DatePicker from 'react-datepicker';
+// import 'react-datepicker/dist/react-datepicker.css';
+// import { FaArrowLeft } from 'react-icons/fa';
+// import { getSchedule } from '../../../services/website/booking';
+// import Offcanvas from 'react-bootstrap/Offcanvas';
+// import Card from 'react-bootstrap/Card';
+// import { formatDateCurrent } from '../../../components/common';
+// import Form from 'react-bootstrap/Form';
+// import { showToast } from '../../../components/common';
+// import { bookingsField } from '../../../services/website/booking';
+// import { useNavigate } from 'react-router-dom';
+
+// const times = [
+//   '06:00',
+//   '06:30',
+//   '07:00',
+//   '07:30',
+//   '08:00',
+//   '08:30',
+//   '09:00',
+//   '09:30',
+//   '10:00',
+//   '10:30',
+//   '11:00',
+//   '11:30',
+//   '12:00',
+//   '12:30',
+//   '13:00',
+//   '13:30',
+//   '14:00',
+//   '14:30',
+//   '15:00',
+//   '15:30',
+//   '16:00',
+//   '16:30',
+//   '17:00',
+//   '17:30',
+//   '18:00',
+//   '18:30',
+//   '19:00',
+//   '19:30',
+//   '20:00',
+//   '20:30',
+//   '21:00',
+//   '21:30',
+//   '22:00',
+// ];
+
+
+// function BookingLayout() {
+//   const navigate = useNavigate();
+//   const [selectedDate, setSelectedDate] = useState(new Date());
+//   const [selectedSlots, setSelectedSlots] = useState([]);
+//   const [courts, setCourts] = useState([]);
+//   const [totalHours, setTotalHours] = useState(0);
+//   const [totalPrice, setTotalPrice] = useState(0);
+//   const { id } = useParams();
+//   const [show, setShow] = useState(false);
+//   const [nameField, setNameField] = useState(null);
+//   const [generalPrice, setGeneralPrice] = useState(null);
+//   const [location, setLocation] = useState(null);
+//   const [listBooking, setListBooking] = useState([]);
+//   // xét thông tin người thuê sân
+//   const [userIn, setUserIn] = useState({
+//     name: '',
+//     phone: '',
+//     note: '',
+//   });
+
+//   const handleClose = () => setShow(false);
+//   // const handleShow = () => setShow(true);
+
+//   useEffect(() => {
+//     loadData();
+//   }, [selectedDate]);
+
+//   const loadData = async () => {
+//     const { data } = await getSchedule(
+//       id,
+//       selectedDate.toISOString().split('T')[0],
+//     );
+//     if (data.length > 0) {
+//       setCourts(data);
+//       setNameField(data[0].name_field);
+//       setGeneralPrice(data[0].price);
+//       setLocation(data[0].location);
+//     }
+//   };
+
+//   const toggleSlot = (subFieldId, time, pricePerHour) => {
+//     const slot = `${subFieldId}-${time}`;
+//     let updatedSlots = selectedSlots.includes(slot)
+//       ? selectedSlots.filter((s) => s !== slot)
+//       : [...selectedSlots, slot];
+
+//     setSelectedSlots(updatedSlots);
+//     calculateTotal(updatedSlots, pricePerHour);
+//   };
+
+//   const timeToMinutes = (time) => {
+//     const [hours, minutes] = time.split(':').map(Number);
+//     return hours * 60 + minutes;
+//   };
+
+//   // Tính tổng giờ của mỗi sân
+
+//   const calculateTotalHours = (start_time, end_time) => {
+//     const startMinutes = timeToMinutes(start_time);
+//     const endMinutes = timeToMinutes(end_time);
+//     return (endMinutes - startMinutes) / 60;
+//   };
+
+//   const calculateTotal = (selectedSlots, pricePerHour) => {
+//     if (selectedSlots.length === 0) {
+//       setTotalHours(0);
+//       setTotalPrice(0);
+//       return;
+//     }
+
+//     const courtsMap = {};
+//     selectedSlots.forEach((slot) => {
+//       const [courtId, time] = slot.split('-');
+//       if (!courtsMap[courtId]) courtsMap[courtId] = new Set();
+//       courtsMap[courtId].add(time);
+//     });
+
+//     let totalHours = 0;
+//     Object.values(courtsMap).forEach((timeSet) => {
+//       const timesArray = [...timeSet].sort();
+//       const startTime = timesArray[0];
+//       const endTime = timesArray[timesArray.length - 1];
+
+//       const timeToMinutes = (time) => {
+//         const [h, m] = time.split(':').map(Number);
+//         return h * 60 + m;
+//       };
+
+//       totalHours += (timeToMinutes(endTime) - timeToMinutes(startTime)) / 60;
+//     });
+
+//     setTotalHours(totalHours);
+//     setTotalPrice(totalHours * pricePerHour);
+//   };
+
+//   const handleBooking = () => {
+//     if (selectedSlots.length === 0) {
+//       alert('Vui lòng chọn ít nhất một khung giờ!');
+//       return;
+//     }
+
+//     const bookingData = {};
+//     selectedSlots.forEach((slot) => {
+//       const [subFieldId, time] = slot.split('-');
+//       if (!bookingData[subFieldId]) bookingData[subFieldId] = [];
+//       bookingData[subFieldId].push(time);
+//     });
+
+//     const formattedBookings = Object.entries(bookingData).map(
+//       ([subFieldId, times]) => {
+//         times.sort();
+//         const start_time = times[0];
+//         const end_time = times[times.length - 1];
+//         const total_hours = calculateTotalHours(start_time, end_time);
+
+//         return {
+//           sub_field_id: parseInt(subFieldId),
+//           date: selectedDate.toISOString().split('T')[0],
+//           start_time,
+//           end_time,
+//           total_hours, // Tổng giờ tính toán
+//         };
+//       },
+//     );
+//     setShow(true);
+//     setListBooking(formattedBookings);
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     setUserIn((prev) => ({
+//       ...prev,
+//       [name]: value,
+//     }));
+//   };
+
+//   const paymentConfirmation = async () => {
+//     const phone = userIn.phone.trim();
+//     if (phone === null || phone === '') {
+//       showToast('Vui lòng nhập số điện thoại', 'warning');
+//       return;
+//     }
+//     try {
+//       const params = {
+//         listBooking,
+//         userIn,
+//         totalPrice,
+//         totalHours,
+//         idField: id,
+//       };
+
+//       const { data } = await bookingsField(params);
+//       if (data) {
+//         navigate(`/payment/${data.order_code}`);
+//       }
+//     } catch (error) {}
+//   };
+
+//   const lastDateRef = useRef(null);
+
+//   const handleDate = async (date) => {
+//     if (date && date !== lastDateRef.current) {
+//       lastDateRef.current = date;
+//       setCourts([]);
+//       setNameField(null);
+//       setGeneralPrice(null);
+//       setLocation(null);
+//       setSelectedDate(date);
+//     }
+//   };
+
+//   return (
+//     <Container fluid className="mt-3 px-0">
+//       <div className="bg-success booking-header">
+//         <div className="d-flex justify-content-between align-items-center mb-3 h-100-px py-3 pe-5">
+//           <Button variant="outline-success">
+//             <FaArrowLeft color="white" onClick={() => navigate('/')} />
+//           </Button>
+//           <h4 className="text-center flex-grow-1 text-white">Đặt lịch</h4>
+//           <DatePicker
+//             selected={selectedDate}
+//             onChange={handleDate}
+//             dateFormat="dd/MM/yyyy"
+//             className="form-control w-auto"
+//           />
+//         </div>
+//       </div>
+//       <Table bordered className="text-center booking-table">
+//         <thead>
+//           <tr>
+//             <th></th>
+//             {times.map((time) => (
+//               <th className="fs-13" key={time}>
+//                 {time}
+//               </th>
+//             ))}
+//           </tr>
+//         </thead>
+//         <tbody>
+          
+//           {courts.map((item, idx) => (
+//             <tr key={idx}>
+//               <td>{item.sub_field_name}</td>
+//               {times.map((time) => {
+//                 const slot = `${item.sub_field_id}-${time}`;
+//                 const now = new Date().toTimeString().slice(0, 5); // Lấy HH:mm hiện tại
+//                 const isPast = time < now; // Kiểm tra nếu đã qua
+
+//                 // Kiểm tra nếu thời gian nằm trong time_slots
+//                 const isBooked = item.time_slots.some(
+//                   (slot) => time >= slot.start_time && time < slot.end_time,
+//                 );
+
+//                 return (
+//                   <td
+//                     key={slot}
+//                     className={
+//                       isBooked
+//                         ? 'bg-danger text-light' // Nếu đã đặt, tô màu đỏ
+//                         : isPast
+//                           ? 'bg-secondary text-light' // Nếu đã qua, đổi màu xám
+//                           : selectedSlots.includes(slot)
+//                             ? 'bg-warning'
+//                             : 'bg-light'
+//                     }
+//                     onClick={
+//                       isPast || isBooked
+//                         ? undefined // Nếu đã qua hoặc đã đặt, vô hiệu hóa click
+//                         : () => toggleSlot(item.sub_field_id, time, item.price)
+//                     }
+//                   ></td>
+//                 );
+//               })}
+//             </tr>
+//           ))}
+//         </tbody>
+//       </Table>
+//       <div className="booking-footer py-5 bg-success">
+//         <div className="summary p-2">
+//           <h4>Tổng giờ: {totalHours}h</h4>
+//           <h4>Tổng tiền: {totalPrice.toLocaleString()} VNĐ</h4>
+//         </div>
+//         <Button
+//           variant="warning"
+//           size="lg"
+//           className="w-100"
+//           // onClick={handleBooking}
+//           onClick={handleBooking}
+//         >
+//           TIẾP THEO
+//         </Button>
+//       </div>
+//       <Offcanvas
+//         show={show}
+//         onHide={handleClose}
+//         placement="top"
+//         className="full-height-offcanvas bg-success"
+//       >
+//         <div className="text-start px-2 py-2">
+//           <Button variant="link" onClick={handleClose} className="p-0 border-0">
+//             <FaArrowLeft color="white" />
+//           </Button>
+//         </div>
+//         <Offcanvas.Body>
+//           <h4 className="text-center text-white fw-bold mb-0 py-3">
+//             Đặt lịch ngày trực quan
+//           </h4>
+//           <Card>
+//             <Card.Header className="py-3">Thông tin đặt lịch</Card.Header>
+//             <Card.Body>
+//               <Card.Text className="py-1 mb-0">Tên sân: {nameField}</Card.Text>
+//               <Card.Text className="mb-0">Địa chỉ: {location}</Card.Text>
+//               <Card.Text className="py-1 mb-0">
+//                 Ngày: {formatDateCurrent()}
+//               </Card.Text>
+//               <table>
+//                 <tbody>
+//                   {listBooking.length > 0 ? (
+//                     listBooking.map((item, idx) => (
+//                       <tr key={idx}>
+//                         <td>{`Sân-${item.sub_field_id}: `}</td>
+//                         {/* Ngày đặt */}
+//                         <td className="px-2">
+//                           {item.start_time} - {item.end_time} |
+//                         </td>
+//                         <td>
+//                           {(item.total_hours * generalPrice).toLocaleString()}{' '}
+//                           VNĐ
+//                         </td>
+//                       </tr>
+//                     ))
+//                   ) : (
+//                     <tr>
+//                       <td colSpan="5" className="text-center"></td>
+//                     </tr>
+//                   )}
+//                 </tbody>
+//               </table>
+
+//               <Card.Text className="py-1 mb-0">
+//                 Tổng giờ: {totalHours}h
+//               </Card.Text>
+//               <Card.Text className="py-1 mb-0">
+//                 Tổng tiền: {totalPrice.toLocaleString()} VNĐ
+//               </Card.Text>
+//               <Form.Group
+//                 className="mb-3"
+//                 controlId="exampleForm.ControlInput1"
+//               >
+//                 <Form.Label>TÊN CỦA BẠN</Form.Label>
+//                 <Form.Control
+//                   type="text"
+//                   name="name"
+//                   onChange={handleChange}
+//                   value={userIn.name}
+//                 />
+//               </Form.Group>
+//               <Form.Group
+//                 className="mb-3"
+//                 controlId="exampleForm.ControlInput1"
+//               >
+//                 <Form.Label>SỐ ĐIỆN THOẠI</Form.Label>
+//                 <Form.Control
+//                   type="text"
+//                   name="phone"
+//                   onChange={handleChange}
+//                   value={userIn.phone}
+//                   maxLength={10}
+//                 />
+//               </Form.Group>
+//               <Form.Group className="mb-3">
+//                 <Form.Label>GHI CHÚ CHO CHỦ SÂN</Form.Label>
+//                 <Form.Control
+//                   as="textarea"
+//                   name="note"
+//                   onChange={handleChange}
+//                   value={userIn.note}
+//                   rows={3}
+//                 />
+//               </Form.Group>
+//             </Card.Body>
+//             <Button
+//               variant="warning"
+//               onClick={paymentConfirmation}
+//               className="my-3"
+//             >
+//               XÁC NHẬN & THANH TOÁN
+//             </Button>
+//           </Card>
+//         </Offcanvas.Body>
+//       </Offcanvas>
+//     </Container>
+//   );
+// }
+
+// export default BookingLayout;
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Container, Button, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { FaArrowLeft } from 'react-icons/fa';
+import { FaArrowLeft, FaCalendarAlt } from 'react-icons/fa';
 import { getSchedule } from '../../../services/website/booking';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Card from 'react-bootstrap/Card';
@@ -12,43 +421,15 @@ import Form from 'react-bootstrap/Form';
 import { showToast } from '../../../components/common';
 import { bookingsField } from '../../../services/website/booking';
 import { useNavigate } from 'react-router-dom';
+import '../../../assets/styles/BookingLayout.scss'; 
 
 const times = [
-  '06:00',
-  '06:30',
-  '07:00',
-  '07:30',
-  '08:00',
-  '08:30',
-  '09:00',
-  '09:30',
-  '10:00',
-  '10:30',
-  '11:00',
-  '11:30',
-  '12:00',
-  '12:30',
-  '13:00',
-  '13:30',
-  '14:00',
-  '14:30',
-  '15:00',
-  '15:30',
-  '16:00',
-  '16:30',
-  '17:00',
-  '17:30',
-  '18:00',
-  '18:30',
-  '19:00',
-  '19:30',
-  '20:00',
-  '20:30',
-  '21:00',
-  '21:30',
-  '22:00',
+  '06:00', '06:30', '07:00', '07:30', '08:00', '08:30', '09:00', '09:30', 
+  '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', 
+  '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', 
+  '18:00', '18:30', '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', 
+  '22:00'
 ];
-
 
 function BookingLayout() {
   const navigate = useNavigate();
@@ -63,7 +444,8 @@ function BookingLayout() {
   const [generalPrice, setGeneralPrice] = useState(null);
   const [location, setLocation] = useState(null);
   const [listBooking, setListBooking] = useState([]);
-  // xét thông tin người thuê sân
+  const [isLoading, setIsLoading] = useState(false);
+  
   const [userIn, setUserIn] = useState({
     name: '',
     phone: '',
@@ -71,22 +453,26 @@ function BookingLayout() {
   });
 
   const handleClose = () => setShow(false);
-  // const handleShow = () => setShow(true);
 
   useEffect(() => {
     loadData();
   }, [selectedDate]);
 
   const loadData = async () => {
-    const { data } = await getSchedule(
-      id,
-      selectedDate.toISOString().split('T')[0],
-    );
-    if (data.length > 0) {
-      setCourts(data);
-      setNameField(data[0].name_field);
-      setGeneralPrice(data[0].price);
-      setLocation(data[0].location);
+    setIsLoading(true);
+    try {
+      const { data } = await getSchedule(
+        id,
+        selectedDate.toISOString().split('T')[0],
+      );
+      if (data.length > 0) {
+        setCourts(data);
+        setNameField(data[0].name_field);
+        setGeneralPrice(data[0].price);
+        setLocation(data[0].location);
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -104,8 +490,6 @@ function BookingLayout() {
     const [hours, minutes] = time.split(':').map(Number);
     return hours * 60 + minutes;
   };
-
-  // Tính tổng giờ của mỗi sân
 
   const calculateTotalHours = (start_time, end_time) => {
     const startMinutes = timeToMinutes(start_time);
@@ -132,12 +516,6 @@ function BookingLayout() {
       const timesArray = [...timeSet].sort();
       const startTime = timesArray[0];
       const endTime = timesArray[timesArray.length - 1];
-
-      const timeToMinutes = (time) => {
-        const [h, m] = time.split(':').map(Number);
-        return h * 60 + m;
-      };
-
       totalHours += (timeToMinutes(endTime) - timeToMinutes(startTime)) / 60;
     });
 
@@ -147,7 +525,7 @@ function BookingLayout() {
 
   const handleBooking = () => {
     if (selectedSlots.length === 0) {
-      alert('Vui lòng chọn ít nhất một khung giờ!');
+      showToast('Vui lòng chọn ít nhất một khung giờ!', 'warning');
       return;
     }
 
@@ -170,7 +548,7 @@ function BookingLayout() {
           date: selectedDate.toISOString().split('T')[0],
           start_time,
           end_time,
-          total_hours, // Tổng giờ tính toán
+          total_hours,
         };
       },
     );
@@ -205,7 +583,9 @@ function BookingLayout() {
       if (data) {
         navigate(`/payment/${data.order_code}`);
       }
-    } catch (error) {}
+    } catch (error) {
+      showToast('Có lỗi xảy ra khi đặt sân', 'error');
+    }
   };
 
   const lastDateRef = useRef(null);
@@ -222,186 +602,235 @@ function BookingLayout() {
   };
 
   return (
-    <Container fluid className="mt-3 px-0">
-      <div className="bg-success booking-header">
-        <div className="d-flex justify-content-between align-items-center mb-3 h-100-px py-3 pe-5">
-          <Button variant="outline-success">
-            <FaArrowLeft color="white" onClick={() => navigate('/')} />
-          </Button>
-          <h4 className="text-center flex-grow-1 text-white">Đặt lịch</h4>
-          <DatePicker
-            selected={selectedDate}
-            onChange={handleDate}
-            dateFormat="dd/MM/yyyy"
-            className="form-control w-auto"
-          />
-        </div>
+    <div className="booking-layout">
+      {/* Header Section */}
+      <div className="booking-header bg-primary text-white py-3 shadow-sm">
+        <Container fluid>
+          <div className="d-flex align-items-center">
+            <Button 
+              variant="link" 
+              className="text-white p-0 me-3"
+              onClick={() => navigate('/')}
+            >
+              <FaArrowLeft size={20} />
+            </Button>
+            <h4 className="mb-0 flex-grow-1 text-center">Đặt lịch sân thể thao</h4>
+            <div >
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDate}
+                dateFormat="dd/MM/yyyy"
+                className="form-control"
+                popperPlacement="bottom-end"
+              />
+              {/* <FaCalendarAlt className="date-picker-icon" /> */}
+            </div>
+          </div>
+        </Container>
       </div>
-      <Table bordered className="text-center booking-table">
-        <thead>
-          <tr>
-            <th></th>
-            {times.map((time) => (
-              <th className="fs-13" key={time}>
-                {time}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          
-          {courts.map((item, idx) => (
-            <tr key={idx}>
-              <td>{item.sub_field_name}</td>
-              {times.map((time) => {
-                const slot = `${item.sub_field_id}-${time}`;
-                const now = new Date().toTimeString().slice(0, 5); // Lấy HH:mm hiện tại
-                const isPast = time < now; // Kiểm tra nếu đã qua
 
-                // Kiểm tra nếu thời gian nằm trong time_slots
-                const isBooked = item.time_slots.some(
-                  (slot) => time >= slot.start_time && time < slot.end_time,
-                );
+      {/* Main Content */}
+      <Container className="mt-5 pt-5 hg" fluid>
+        {isLoading ? (
+          <div className="text-center py-5">
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        ) : courts.length > 0 ? (
+          <>
+            {/* Schedule Table */}
+            <div className="table-responsive border rounded shadow-sm">
+              <Table bordered className="mb-0 schedule-table">
+                <thead className="table-light">
+                  <tr>
+                    <th className="text-nowrap align-middle tr-w">Sân</th>
+                    {times.map((time) => (
+                      <th key={time} className="fs-12">
+                        {`${time.split(':')[0]} : ${time.split(':')[1]}`}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {courts.map((item, idx) => (
+                    <tr key={idx}>
+                      <td className="text-nowrap fw-bold">{item.sub_field_name}</td>
+                      {times.map((time) => {
+                        const slot = `${item.sub_field_id}-${time}`;
+                        const now = new Date().toTimeString().slice(0, 5);
+                        const isPast = time < now;
+                        const isBooked = item.time_slots.some(
+                          (slot) => time >= slot.start_time && time < slot.end_time,
+                        );
 
-                return (
-                  <td
-                    key={slot}
-                    className={
-                      isBooked
-                        ? 'bg-danger text-light' // Nếu đã đặt, tô màu đỏ
-                        : isPast
-                          ? 'bg-secondary text-light' // Nếu đã qua, đổi màu xám
-                          : selectedSlots.includes(slot)
-                            ? 'bg-warning'
-                            : 'bg-light'
-                    }
-                    onClick={
-                      isPast || isBooked
-                        ? undefined // Nếu đã qua hoặc đã đặt, vô hiệu hóa click
-                        : () => toggleSlot(item.sub_field_id, time, item.price)
-                    }
-                  ></td>
-                );
-              })}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      <div className="booking-footer py-5 bg-success">
-        <div className="summary p-2">
-          <h4>Tổng giờ: {totalHours}h</h4>
-          <h4>Tổng tiền: {totalPrice.toLocaleString()} VNĐ</h4>
-        </div>
-        <Button
-          variant="warning"
-          size="lg"
-          className="w-100"
-          // onClick={handleBooking}
-          onClick={handleBooking}
-        >
-          TIẾP THEO
-        </Button>
-      </div>
+                        return (
+                          <td
+                            key={slot}
+                            className={`time-slot ${
+                              isBooked
+                                ? 'booked'
+                                : isPast
+                                  ? 'past'
+                                  : selectedSlots.includes(slot)
+                                    ? 'selected'
+                                    : 'available'
+                            }`}
+                            onClick={
+                              isPast || isBooked
+                                ? undefined
+                                : () => toggleSlot(item.sub_field_id, time, item.price)
+                            }
+                          ></td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </div>
+
+            {/* Legend */}
+            {/* <div className="d-flex justify-content-center mt-3">
+              <div className="d-flex align-items-center me-3">
+                <div className="legend-box available me-2"></div>
+                <small>Có thể đặt</small>
+              </div>
+              <div className="d-flex align-items-center me-3">
+                <div className="legend-box selected me-2"></div>
+                <small>Đã chọn</small>
+              </div>
+              <div className="d-flex align-items-center me-3">
+                <div className="legend-box booked me-2"></div>
+                <small>Đã đặt</small>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className="legend-box past me-2"></div>
+                <small>Quá giờ</small>
+              </div>
+            </div> */}
+
+            {/* Summary & Action */}
+            <div className="booking-summary bg-light p-3 rounded shadow-sm mt-4">
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h5 className="mb-0">Tổng giờ:</h5>
+                <h5 className="mb-0 fw-bold">{totalHours}h</h5>
+              </div>
+              <div className="d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">Tổng tiền:</h5>
+                <h5 className="mb-0 fw-bold text-primary">
+                  {totalPrice.toLocaleString()} VNĐ
+                </h5>
+              </div>
+              <Button
+                variant="primary"
+                size="lg"
+                className="w-100 mt-3 fw-bold"
+                onClick={handleBooking}
+                disabled={selectedSlots.length === 0}
+              >
+                TIẾP THEO
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="text-center py-5">
+            <h5>Không có dữ liệu sân bóng cho ngày này</h5>
+            <p>Vui lòng chọn ngày khác</p>
+          </div>
+        )}
+      </Container>
+
+      {/* Booking Offcanvas */}
       <Offcanvas
         show={show}
         onHide={handleClose}
-        placement="top"
-        className="full-height-offcanvas bg-success"
+        placement="bottom"
+        className="booking-offcanvas"
       >
-        <div className="text-start px-2 py-2">
-          <Button variant="link" onClick={handleClose} className="p-0 border-0">
-            <FaArrowLeft color="white" />
-          </Button>
-        </div>
+        <Offcanvas.Header closeButton className="border-bottom">
+          <Offcanvas.Title className="fw-bold">Xác nhận đặt lịch</Offcanvas.Title>
+        </Offcanvas.Header>
         <Offcanvas.Body>
-          <h4 className="text-center text-white fw-bold mb-0 py-3">
-            Đặt lịch ngày trực quan
-          </h4>
-          <Card>
-            <Card.Header className="py-3">Thông tin đặt lịch</Card.Header>
+          <Card className="border-0 shadow-sm">
+            <Card.Header className="bg-light fw-bold py-3">
+              Thông tin đặt lịch
+            </Card.Header>
             <Card.Body>
-              <Card.Text className="py-1 mb-0">Tên sân: {nameField}</Card.Text>
-              <Card.Text className="mb-0">Địa chỉ: {location}</Card.Text>
-              <Card.Text className="py-1 mb-0">
-                Ngày: {formatDateCurrent()}
-              </Card.Text>
-              <table>
-                <tbody>
-                  {listBooking.length > 0 ? (
-                    listBooking.map((item, idx) => (
-                      <tr key={idx}>
-                        <td>{`Sân-${item.sub_field_id}: `}</td>
-                        {/* Ngày đặt */}
-                        <td className="px-2">
-                          {item.start_time} - {item.end_time} |
-                        </td>
-                        <td>
-                          {(item.total_hours * generalPrice).toLocaleString()}{' '}
-                          VNĐ
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan="5" className="text-center"></td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+              <div className="mb-3">
+                <p className="mb-1"><strong>Tên sân:</strong> {nameField}</p>
+                <p className="mb-1"><strong>Địa chỉ:</strong> {location}</p>
+                <p className="mb-3"><strong>Ngày:</strong> {formatDateCurrent(selectedDate)}</p>
+                
+                <div className="booking-details mb-3">
+                  {listBooking.map((item, idx) => (
+                    <div key={idx} className="d-flex justify-content-between mb-2">
+                      <span>Sân {item.sub_field_id}:</span>
+                      <span>
+                        {item.start_time} - {item.end_time} |{' '}
+                        <strong>{(item.total_hours * generalPrice).toLocaleString()} VNĐ</strong>
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="d-flex justify-content-between border-top pt-2">
+                  <strong>Tổng giờ:</strong>
+                  <strong>{totalHours}h</strong>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <strong>Tổng tiền:</strong>
+                  <strong className="text-primary">{totalPrice.toLocaleString()} VNĐ</strong>
+                </div>
+              </div>
 
-              <Card.Text className="py-1 mb-0">
-                Tổng giờ: {totalHours}h
-              </Card.Text>
-              <Card.Text className="py-1 mb-0">
-                Tổng tiền: {totalPrice.toLocaleString()} VNĐ
-              </Card.Text>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>TÊN CỦA BẠN</Form.Label>
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">TÊN CỦA BẠN</Form.Label>
                 <Form.Control
                   type="text"
                   name="name"
                   onChange={handleChange}
                   value={userIn.name}
+                  placeholder="Nhập họ tên"
                 />
               </Form.Group>
-              <Form.Group
-                className="mb-3"
-                controlId="exampleForm.ControlInput1"
-              >
-                <Form.Label>SỐ ĐIỆN THOẠI</Form.Label>
+              
+              <Form.Group className="mb-3">
+                <Form.Label className="fw-bold">SỐ ĐIỆN THOẠI</Form.Label>
                 <Form.Control
-                  type="text"
+                  type="tel"
                   name="phone"
                   onChange={handleChange}
                   value={userIn.phone}
                   maxLength={10}
+                  placeholder="Nhập số điện thoại"
                 />
               </Form.Group>
-              <Form.Group className="mb-3">
-                <Form.Label>GHI CHÚ CHO CHỦ SÂN</Form.Label>
+              
+              <Form.Group className="mb-4">
+                <Form.Label className="fw-bold">GHI CHÚ CHO CHỦ SÂN</Form.Label>
                 <Form.Control
                   as="textarea"
                   name="note"
                   onChange={handleChange}
                   value={userIn.note}
                   rows={3}
+                  placeholder="Nhập ghi chú (nếu có)"
                 />
               </Form.Group>
+              
+              <Button
+                variant="primary"
+                onClick={paymentConfirmation}
+                className="w-100 fw-bold py-2"
+              >
+                XÁC NHẬN & THANH TOÁN
+              </Button>
             </Card.Body>
-            <Button
-              variant="warning"
-              onClick={paymentConfirmation}
-              className="my-3"
-            >
-              XÁC NHẬN & THANH TOÁN
-            </Button>
           </Card>
         </Offcanvas.Body>
       </Offcanvas>
-    </Container>
+    </div>
   );
 }
 

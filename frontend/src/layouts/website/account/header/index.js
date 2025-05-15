@@ -20,7 +20,7 @@ function AccountHeader() {
         <Card.Body>
           <Card.Title>ALoBO - Đặt lịch online sân thể thao</Card.Title>
           <Card.Text>Tạo tài khoản để dễ dàng quản lý lịch đặt</Card.Text>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end postion">
             {user ? (
               // <Button variant="danger" onClick={logout}>
               //   Hiển thị menu
@@ -34,7 +34,7 @@ function AccountHeader() {
                   👤 Tài khoản
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu className="my-2 shadow border-0 rounded-3 animate__animated animate__fadeIn">
+                <Dropdown.Menu className="my-2 shadow border-0 rounded-3 animate__animated animate__fadeIn pd-p">
                   <Dropdown.Item href="#/profile" className="py-2">
                     📝 Chỉnh sửa thông tin cá nhân
                   </Dropdown.Item>

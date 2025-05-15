@@ -23,7 +23,7 @@ class RegisterFormRequest extends FormRequest
     {
         return [
             'full_name' => 'required|string|max:30',
-            'email' => 'required|string',
+            'email' => 'required|string|unique:users',
             'phone' => 'required|string|max:10',
             'password' => 'required|string',
             'confirm_password' => 'required|string|same:password',
@@ -35,6 +35,7 @@ class RegisterFormRequest extends FormRequest
         return [
             'full_name.required' => 'Vui lòng nhập họ và tên',
             'email.required' => 'Vui lòng nhập email',
+            'email.unique' => 'Email đã tồn tại trong hệ thống',
             'phone.required' => 'Vui lòng nhập số điện thoại',
             'password.required' => 'Vui lòng nhập mật khẩu',
             'confirm_password.required' => 'Vui lòng nhập lại mật khẩu',

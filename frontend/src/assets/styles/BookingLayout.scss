@@ -1,0 +1,140 @@
+.booking-layout {
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.booking-header {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.date-picker-container {
+  position: relative;
+  // width: 150px;
+}
+
+.date-picker-input {
+  padding-left: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.date-picker-input:hover, 
+.date-picker-input:focus {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: white;
+  color: white;
+}
+
+.date-picker-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.date-picker-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  // color: white;
+  pointer-events: none;
+}
+
+.schedule-table {
+  font-size: 0.85rem;
+}
+
+.schedule-table th {
+  padding: 0.3rem;
+  font-weight: normal;
+}
+
+.time-slot {
+  width: 20px;
+  height: 30px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.time-slot.available {
+  background-color: #e9f5ff;
+  border: 1px solid #cfe8ff;
+}
+
+.time-slot.selected {
+  background-color: #ffc107;
+  border: 1px solid #e0a800;
+}
+
+.time-slot.booked {
+  background-color: #dc3545;
+  border: 1px solid #c82333;
+  cursor: not-allowed;
+}
+
+.time-slot.past {
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  cursor: not-allowed;
+}
+
+.legend-box {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+}
+
+.booking-summary {
+  position: absolute;
+  bottom: 20px;
+  z-index: 1010;
+  left: 0;
+  right: 0;
+}
+
+.booking-offcanvas {
+  height: auto;
+  max-height: 90vh;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.booking-offcanvas .offcanvas-header {
+  padding: 1rem 1.5rem;
+}
+
+.booking-offcanvas .offcanvas-body {
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .schedule-table {
+    font-size: 0.75rem;
+  }
+  
+  .schedule-table th {
+    padding: 0.2rem;
+  }
+  
+  .time-slot {
+    width: 15px;
+    height: 25px;
+  }
+}
+
+.tr-w {
+    width: 25px;
+}
+
+.fs-12 {
+    font-size: 12px !important;
+}
+
+.hg {
+  // min-height: 800px !important;
+  position: relative;
+  min-height: 100vh;
+  bottom: 20px;
+}

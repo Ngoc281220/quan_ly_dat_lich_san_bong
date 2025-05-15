@@ -1,0 +1,76 @@
+.payment-page {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.bank-transfer-section {
+  border: 1px dashed #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.momo-payment {
+  border: 1px dashed #dc3545;
+  background-color: rgba(220, 53, 69, 0.05);
+}
+
+.qr-code {
+  transition: transform 0.2s;
+}
+
+.qr-code:hover {
+  transform: scale(1.05);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.list-group-item {
+  padding: 0.75rem 0;
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+.card {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffecb5;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+  border-color: #0a58ca;
+}
+
+.text-primary {
+  color: #0d6efd !important;
+}
+
+.badge-warning {
+  background-color: #ffc107;
+  color: #212529;
+}
+
+.progress-bar {
+  height: 8px;
+  border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+  .bank-transfer-section, .momo-payment {
+    padding: 1.5rem !important;
+  }
+  
+  .qr-code {
+    width: 120px;
+    margin-bottom: 1rem !important;
+  }
+}
