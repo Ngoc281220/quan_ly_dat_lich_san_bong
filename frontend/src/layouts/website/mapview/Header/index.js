@@ -98,7 +98,7 @@ function HeaderMap() {
           ) : (
             <Row>
               {cardData.map((data, index) => (
-                <Col key={index} className="mb-3">
+                <Col key={index} sm={12} className="mb-3">
                   <CommonCard {...data} />
                 </Col>
               ))}
