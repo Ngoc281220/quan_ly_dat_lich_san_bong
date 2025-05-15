@@ -46,3 +46,5 @@ php artisan migrate
 // thanh toán
 payment
 id madon date_payment total_price, total_hour , hình ảnh_chuyển khoản status
+
+

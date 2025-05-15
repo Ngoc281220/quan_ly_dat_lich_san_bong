@@ -74,7 +74,7 @@ class PaymentMomo
                 . "&requestId=" . $this->requestId
                 . "&requestType=" . $this->requestType;
 
-            $signature = hash_hmac("sha256", $rawHash, $secretKey);
+            $signature = hash_hmac("sha256", $rawHash, $secretKey);//tao chu ki
 
             $data = [
                 'partnerCode' => $partnerCode,
