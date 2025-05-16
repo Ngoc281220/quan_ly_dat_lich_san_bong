@@ -35,9 +35,9 @@ function AccountHeader() {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="my-2 shadow border-0 rounded-3 animate__animated animate__fadeIn pd-p">
-                  <Dropdown.Item href="#/profile" className="py-2">
+                  {/* <Dropdown.Item href="#/profile" className="py-2">
                     📝 Chỉnh sửa thông tin cá nhân
-                  </Dropdown.Item>
+                  </Dropdown.Item> */}
                   <Dropdown.Item onClick={handleShowPass}  className="py-2">
                     🔒 Thay đổi mật khẩu
                   </Dropdown.Item>

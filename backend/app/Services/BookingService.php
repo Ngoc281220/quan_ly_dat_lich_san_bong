@@ -262,4 +262,15 @@ class BookingService extends BaseService
         ]);
         return $payment;
     }
+
+    public function cancelPaymentById($id)
+    {
+        $payment = Payment::find($id);
+
+        $payment->update([
+            'status' => 4 // Xác nhận hủy đặt sân 
+        ]);
+
+        return $payment;
+    }
 }

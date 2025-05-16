@@ -70,5 +70,6 @@ Route::prefix('admin')->group(function () {
     Route::prefix('booking')->group(function () {
         Route::get('/', [BookingController::class, 'listAllBooking']);
         Route::get('/{id}', [BookingController::class, 'updatePaymentById']);
+        Route::post('/{id}', [BookingController::class, 'cancelPaymentById']);
     });
 });

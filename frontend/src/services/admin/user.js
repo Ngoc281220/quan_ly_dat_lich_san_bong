@@ -1,7 +1,7 @@
 import api from '../../config/api';
 
-export async function getAllUser() {
-  return await api.get('admin/users');
+export async function getAllUser(page) {
+  return await api.get(`admin/users?page=${page}`);
 }
 
 export async function deleteUser(id) {

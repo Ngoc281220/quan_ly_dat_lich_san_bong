@@ -42,4 +42,21 @@ class BookingController extends Controller
             'message' => 'Cập nhật thanh toán thất bại hoặc không tìm thấy bản ghi'
         ], 404);
     }
+
+    public function cancelPaymentById($id) {
+       $data = $this->bookingService->cancelPaymentById($id);
+       if ($data) {
+            return response()->json([
+                'status' => true,
+                'message' => 'Hủy đặt sân thành công!',
+                'data' => $data
+            ], 200);
+        }
+        else {
+            return response()->json([
+            'status' => false,
+            'message' => 'Hủy đặt sân thất bại!'
+        ], 404);
+        }
+    }
 }

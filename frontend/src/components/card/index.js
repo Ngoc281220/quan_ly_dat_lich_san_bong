@@ -212,7 +212,7 @@ import {
 } from 'react-icons/fa';
 import '../../assets/styles/CommonCard.scss'; // Create this CSS file for custom styles
 
-function CommonCard({ id, image, title, location, time, phone, rating, sportType = "Cầu lông" }) {
+function CommonCard({ id, image, title, location, time, phone, rating, category_name = "Cầu lông" }) {
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [activeTab, setActiveTab] = useState('info');
@@ -270,7 +270,7 @@ function CommonCard({ id, image, title, location, time, phone, rating, sportType
               </Card.Text>
             </div>
             <Badge bg="light" text="success" className="border border-success">
-              {sportType}
+              {category_name}
             </Badge>
           </div>
 
@@ -335,7 +335,7 @@ function CommonCard({ id, image, title, location, time, phone, rating, sportType
             <div className="venue-info mt-3">
               <h4 className="mb-2">{title}</h4>
               <Badge bg="light" text="success" className="border border-success mb-3">
-                {sportType}
+                {category_name}
               </Badge>
               
               <div className="venue-details">

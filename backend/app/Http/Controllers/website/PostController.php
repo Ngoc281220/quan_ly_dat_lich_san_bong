@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\website;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Services\PostService;
 use App\Transformers\Website\PostTransformer;
 use App\Utils\ApiResponder;
+use App\Models\Post;
 class PostController extends Controller
 {
     protected $postService;
@@ -20,5 +20,10 @@ class PostController extends Controller
     {
         $data = $this->postService->listPost();
         return(new ApiResponder($data, new PostTransformer()))->collection();
+    }
+
+    public function postDetail($id) {
+        $data = Post::find($id);
+         return(new ApiResponder($data, new PostTransformer()))->data();
     }
 }

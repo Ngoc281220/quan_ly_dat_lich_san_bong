@@ -309,7 +309,8 @@ const RevenueChart = () => {
           <Form.Select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(Number(e.target.value))}
-            className="me-2"
+            className="me-2 w-130"
+            size="md"
             // size="sm"
           >
             {Array.from({ length: 12 }, (_, i) => (
@@ -321,7 +322,7 @@ const RevenueChart = () => {
           <Form.Select
             value={selectedYear}
             onChange={(e) => setSelectedYear(Number(e.target.value))}
-            size="sm"
+            size="md"
           >
             {years.map((year) => (
               <option key={year} value={year}>

@@ -30,6 +30,7 @@ Route::prefix('web')->group(function(){
 
     Route::prefix('posts')->group(function() {{
         Route::get('/', [PostController::class, 'listPost']);
+        Route::get('/{id}', [PostController::class, 'postDetail']);
     }});
 
     Route::prefix('payment')->group(function(){

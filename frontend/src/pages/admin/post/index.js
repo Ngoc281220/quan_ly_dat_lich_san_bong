@@ -52,7 +52,7 @@ function PostList() {
         </Button>
       </div>
       <div className="data-table-container">
-        <h2>Danh sách sân</h2>
+        <h2>Danh sách bài viết</h2>
         <div className="table-wrapper">
           <table className="data-table">
             <thead>

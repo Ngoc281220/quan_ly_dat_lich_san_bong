@@ -92,25 +92,16 @@ function Header() {
           {/* Các icon điều hướng */}
           <Nav className="ms-auto d-flex align-items-center">
             <Nav.Link
-              href="#"
+              href="/map"
               className="text-light d-flex align-items-center fs-6 fw-light"
             >
               <FaMapMarkedAlt className="me-1" color="white" /> Bản đồ
             </Nav.Link>
             <Nav.Link
-              href="#"
+              href="/account"
               className="text-light d-flex align-items-center fs-6 fw-light"
             >
               <FaCalendarCheck className="me-1" color="white" /> Sân đã đặt
-            </Nav.Link>
-            <Nav.Link
-              href="#"
-              className="text-light d-flex align-items-center fs-6 fw-light"
-            >
-              <FaHeart className="me-1" color="white" /> Yêu thích
-            </Nav.Link>
-            <Nav.Link href="#" className="text-light">
-              <FaBell color="white" />
             </Nav.Link>
           </Nav>
         </Container>

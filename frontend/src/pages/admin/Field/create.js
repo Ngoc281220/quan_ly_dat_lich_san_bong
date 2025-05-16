@@ -108,7 +108,7 @@ function CreateFields() {
             </Form.Control.Feedback>
             <CommonInput
               type="text"
-              label="Giá thuê theo giời"
+              label="Giá thuê theo giờ"
               value={formData.price}
               onChange={handleChange("price")}
               error={!!errors.price}

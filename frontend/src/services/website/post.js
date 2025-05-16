@@ -4,3 +4,7 @@ import api from "../../config/api";
 export async function listPost() {
     return await api.get('/web/posts');
 }
+
+export async function detailPost(id) {
+    return await api.get(`/web/posts/${id}'`);
+}
