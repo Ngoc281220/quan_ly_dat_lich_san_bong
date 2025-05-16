@@ -5,6 +5,7 @@ import { register } from '../../services/website/auth';
 import OffCanvasLoign from '../login';
 import Spinner from 'react-bootstrap/Spinner';
 import '../../assets/styles/RegisterForm.scss';
+import Alert from 'react-bootstrap/Alert';
 
 function OffCanvasRegister({ isShow, handleClose }) {
   const [show, setShow] = useState(isShow);
@@ -18,6 +19,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
   const [errors, setErrors] = useState({});
   const [isLogin, setIsLogin] = useState(false);
   const [showLoading, setShowLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -53,7 +55,7 @@ function OffCanvasRegister({ isShow, handleClose }) {
     try {
       const data = await register(formData);
       if (data) {
-        console.log('Đăng ký thành công', formData);
+        setSuccess(true);
       }
     } catch (error) {
       if (error.errors) {
@@ -89,6 +91,11 @@ function OffCanvasRegister({ isShow, handleClose }) {
           <Form onSubmit={handleSubmit} className="register-form">
             <h2 className="text-header fs-3">Đăng ký</h2>
             <p className="text-title">ALOBO - Đặt lịch online sân thể thao</p>
+
+             {success && (
+              <Alert variant="primary">Đăng ký tài khoản thành công hãy vui lòng vào gmail để xác nhận!</Alert>
+            )}
+
             <Form.Group className="mt-5">
               <Form.Label className="lable-color">Tên đầy đủ</Form.Label>
               <Form.Control
