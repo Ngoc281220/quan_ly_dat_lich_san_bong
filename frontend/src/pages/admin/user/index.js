@@ -15,7 +15,7 @@ function ListUser() {
   const loadUsers = async () => {
     setLoading(true);
     try {
-      const { data, pagination } = await getAllUser();
+      const { data, pagination } = await getAllUser(currentPage);
       setUsers(data);
       setPagination(pagination);
     } catch (error) {
@@ -43,6 +43,12 @@ function ListUser() {
       }
     }
   };
+
+  const handlePageChange = async (page) => {
+    const { data, pagination } = await getAllUser(page);
+    setUsers(data);
+    setPagination(pagination);
+  };
   return (
     <>
       <div>
@@ -56,7 +62,7 @@ function ListUser() {
                   <th>Tên</th>
                   <th>email</th>
                   <th>Phone</th>
-                  <th>Actions</th>
+                  <th>Hành động</th>
                 </tr>
               </thead>
               <tbody>
@@ -110,7 +116,7 @@ function ListUser() {
               </tbody>
             </table>
           </div>
-          <Pagination pagination={pagination} onPageChange={setCurrentPage} />
+          <Pagination pagination={pagination} onPageChange={handlePageChange} />
         </div>
       </div>
     </>

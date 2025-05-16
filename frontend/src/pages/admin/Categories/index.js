@@ -3,16 +3,20 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import { loadCategory } from '../../../services/admin/categories';
 import { Pencil} from 'react-bootstrap-icons';
+import Pagination from '../../../components/Pagination';
 
 export default function Categories() {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const loadData = async () => {
     try {
-      const { data } = await loadCategory();
+      const { data, pagination } = await loadCategory(currentPage);
       setData(data || []);
+      setPagination(pagination);
     } catch (error) {
     } finally {
       setLoading(false);
@@ -21,7 +25,7 @@ export default function Categories() {
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <div>
@@ -78,6 +82,7 @@ export default function Categories() {
             </tbody>
           </table>
         </div>
+        <Pagination pagination={pagination} onPageChange={setCurrentPage} />
       </div>
     </div>
   );

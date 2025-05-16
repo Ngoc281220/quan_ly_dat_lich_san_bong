@@ -17,10 +17,10 @@ class CategoriesController extends Controller
         $this->categoriesService = $categoriesService;
     }
 
-    public function loadCategory()
+    public function loadCategory(Request $request)
     {
-        $data = $this->categoriesService->loadCategory();
-        return (new ApiResponder($data, new CategoriesTranformer()))->collection();
+        $data = $this->categoriesService->loadCategory($request);
+        return (new ApiResponder($data, new CategoriesTranformer()))->pagination();
     }
 
     public function create(Request $request) {

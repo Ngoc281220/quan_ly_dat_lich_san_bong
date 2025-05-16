@@ -34,7 +34,7 @@ const Pagination = ({ pagination, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="btn btn-outline-primary mx-1"
+        className="btn btn-outline-primary"
       >
         Prev
       </button>
@@ -44,7 +44,7 @@ const Pagination = ({ pagination, onPageChange }) => {
         <button
           key={index}
           onClick={() => typeof page === 'number' && onPageChange(page)}
-          className={`btn mx-1 ${
+          className={`btn ${
             page === currentPage ? 'btn-primary active' : 'btn-outline-primary'
           }`}
           disabled={page === '...'}
@@ -57,7 +57,7 @@ const Pagination = ({ pagination, onPageChange }) => {
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === lastPage}
-        className="btn btn-outline-primary mx-1"
+        className="btn btn-outline-primary"
       >
         Next
       </button>

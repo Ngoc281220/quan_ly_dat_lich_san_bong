@@ -10,9 +10,19 @@ class CategoriesService extends BaseService
 
     public function __construct() {}
 
-    public function loadCategory()
+    public function loadCategory($request)
     {
-        return Category::get();
+        $search = $request->search ?? '';
+        $perPage = 10;
+
+        // Khởi tạo query builder
+        $query = Category::query();
+
+        if (!empty($search)) {
+            $query->where('users.name', 'like', "%{$search}%");
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function create($request)
