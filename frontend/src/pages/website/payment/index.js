@@ -211,7 +211,7 @@
 
 import { useState, useEffect } from 'react';
 import QRCodeImage from '../../../assets/image/QRCODE.png';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { getBookingByOrderCode } from '../../../services/website/booking';
 import { formatCurrencyVND } from '../../../components/common';
 import { paymentMomo, paymentCard } from '../../../services/website/payment';
@@ -240,6 +240,7 @@ import {
 import '../../../assets/styles/PaymentPage.scss'; // Create this CSS file for custom styles
 
 export default function PaymentPage() {
+  const navigate = useNavigate();
   const { order_code } = useParams();
   const [showQRModal, setShowQRModal] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -312,6 +313,7 @@ export default function PaymentPage() {
       const response = await paymentCard(formData);
       if (response.data) {
         showToast('Thanh toán thành công!', 'success');
+        navigate("/")
       } else {
         showToast('Thanh toán thất bại', 'error');
       }

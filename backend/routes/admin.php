@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\admin\PostController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\CategoriesController;
+use App\Http\Controllers\admin\BookingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,5 +65,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/create', [CategoriesController::class, 'create']);
         Route::get('/find/{id}', [CategoriesController::class, 'find']);
         Route::post('/update/{id}', [CategoriesController::class, 'update'])->name('admin.categories.update');
+    });
+
+    Route::prefix('booking')->group(function () {
+        Route::get('/', [BookingController::class, 'listAllBooking']);
+        Route::get('/{id}', [BookingController::class, 'updatePaymentById']);
     });
 });

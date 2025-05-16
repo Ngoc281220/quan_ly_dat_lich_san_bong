@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Exceptions\HttpApiException;
 use Carbon\Carbon;
 use App\Models\SubField;
 use App\Models\Booking;
@@ -10,7 +9,8 @@ use App\Models\BookingDetail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
+use App\Models\Payment;
+
 
 
 class BookingService extends BaseService
@@ -90,6 +90,16 @@ class BookingService extends BaseService
                     'status' => 0
                 ]);
             }
+
+            Payment::create([
+                'booking_id' => $bookings->id,
+                'order_code' => $bookings->order_code,
+                'total_price' => $request->totalPrice,
+                'payment_method' => 0,
+                'image_payment' =>  null,
+                'date_payment' => Carbon::now()->toDateString(),
+                'status' => 0
+            ]);
 
             DB::commit(); // Xác nhận transaction
 
@@ -189,8 +199,7 @@ class BookingService extends BaseService
 
     public function listAllBooking($request)
     {
-        // Truy vấn cơ sở dữ liệu với phân trang
-        $bookings = Booking::join('booking_details', 'booking_details.booking_id', '=', 'bookings.id')
+        $rawBookings = Booking::join('booking_details', 'booking_details.booking_id', '=', 'bookings.id')
             ->leftJoin('payments', 'payments.booking_id', '=', 'bookings.id')
             ->select(
                 'bookings.*',
@@ -201,44 +210,54 @@ class BookingService extends BaseService
                 'booking_details.end_time',
                 'payments.id as payment_id',
                 'payments.status as payment_status',
-                'payments.date as payment_date' // Lấy ngày thanh toán từ bảng payments
+                'payments.date_payment as payment_date',
+                'payments.image_payment'
             )
-            ->paginate(10);  // Phân trang với 10 bản ghi mỗi trang
+            ->orderByDesc('payments.date_payment')  // Ưu tiên order ngay trong query
+            ->paginate(10);
 
-        // Map kết quả đã nhóm
-        $bookings->getCollection()->transform(function ($bookings) {
-            // Lấy thông tin chung từ booking đầu tiên trong nhóm
-            $booking = $bookings->first();
+        // Group theo booking id
+        $grouped = $rawBookings->getCollection()->groupBy('id');
 
-            // Trả về kết quả format lại
+        // Chuyển đổi lại collection
+        $formatted = $grouped->map(function ($items, $bookingId) {
+            $first = $items->first(); // Lấy thông tin chung từ bản ghi đầu tiên
+
             return [
-                'id' => $booking->id,
-                'user_id' => $booking->user_id,
-                'field_id' => $booking->field_id,
-                'total_hours' => $booking->total_hours,
-                'total_price' => $booking->total_price,
-                'status' => $booking->status,
-                'payment_id' => $booking->payment_id,
-                'payment_status' => $booking->payment_status,
-                'payment_date' => $booking->payment_date, // Thêm ngày thanh toán
-                'booking_details' => $bookings->map(function ($detail) {
-                    // Mỗi chi tiết booking
+                'id' => $first->id,
+                'user_id' => $first->user_id,
+                'field_id' => $first->field_id,
+                'total_hours' => $first->total_hours,
+                'total_price' => $first->total_price,
+                'status' => $first->status,
+                'payment_id' => $first->payment_id,
+                'payment_status' => $first->payment_status,
+                'payment_date' => $first->payment_date,
+                'image_payment' => $first->image_payment,
+                'booking_details' => $items->map(function ($item) {
                     return [
-                        'id_booking_detail' => $detail->id_booking_detail,
-                        'sub_field_id' => $detail->sub_field_id,
-                        'date' => $detail->date,
-                        'start_time' => $detail->start_time,
-                        'end_time' => $detail->end_time,
+                        'id_booking_detail' => $item->id_booking_detail,
+                        'sub_field_id' => $item->sub_field_id,
+                        'date' => $item->date,
+                        'start_time' => $item->start_time,
+                        'end_time' => $item->end_time,
                     ];
-                })->values()  // Đảm bảo trả về mảng các chi tiết
+                })->values()
             ];
-        });
+        })->values(); // Đảm bảo trả về danh sách, không phải associative array
 
-        // Sắp xếp theo ngày thanh toán (payment_date) mới nhất trước
-        $bookings->getCollection()->sortByDesc(function ($booking) {
-            return $booking['payment_date'];
-        });
+        // Gán lại collection vào paginator
+        $rawBookings->setCollection($formatted);
 
-        return $bookings;  // Trả về kết quả phân trang đã sắp xếp
+        return $rawBookings;
+    }
+
+    public function updatePayment($id)
+    {
+        $payment = Payment::find($id);
+        $payment->update([
+            'status' => 3 // Xác nhận thanh toán thành công
+        ]);
+        return $payment;
     }
 }
