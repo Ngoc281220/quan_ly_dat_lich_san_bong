@@ -14,6 +14,8 @@ class FieldTransformer extends TransformerAbstract
     public function transform($field): array
     {
         $images = $this->getImages($field->image);
+        
+        
         return [
             'id'            => $field->id,
             'title'          => $field->name,
@@ -30,10 +32,23 @@ class FieldTransformer extends TransformerAbstract
 
     public function getImages($images)
     {
-        return  collect(json_decode($images))->map(function ($image) {
+        // Nếu $images không tồn tại hoặc không phải JSON hợp lệ, trả ảnh mặc định
+        $decoded = json_decode($images, true);
+
+        if (!is_array($decoded) || count($decoded) === 0) {
             return [
-                'name' => is_object($image) && !empty($image) ? $image->name : null,
-                'path' => is_object($image) && !empty($image) ? asset($image->path) : null
+                [
+                    'name' => 'https://tvmfloors.com/wp-content/uploads/2021/04/1.jpg',
+                    'path' => 'https://tvmfloors.com/wp-content/uploads/2021/04/1.jpg'
+                ]
+            ];
+        }
+
+        // Map lại nếu có dữ liệu
+        return collect($decoded)->map(function ($image) {
+            return [
+                'name' => isset($image['name']) ? $image['name'] : null,
+                'path' => isset($image['path']) ? asset($image['path']) : null
             ];
         });
     }
