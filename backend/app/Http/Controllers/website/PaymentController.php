@@ -29,5 +29,6 @@ class PaymentController
     public function paymentCard(Request $request) 
     {
         $data = $this->paymentService->paymentCard($request);
+        return response()->json($data);
     }
 }

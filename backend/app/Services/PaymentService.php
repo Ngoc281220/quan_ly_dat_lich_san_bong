@@ -86,30 +86,38 @@ class PaymentService extends BaseService
 
     public function paymentCard($request)
     {
-        $payment = Payment::where('order_code', $request->order_code)->first();
-        if ($payment) {
-            throw new HttpApiException('Bản ghi đã tồn tại', $request->order_code);
-        }
-        $booking = Booking::where('order_code', $request->order_code)->first();
-
-        if (! $booking) {
-            throw new HttpApiException('booking_id không tồn tại', $$booking);
+        $orderCode = $request->order_code;
+        $booking = Booking::where('order_code', $orderCode)->first();
+        if (!$booking) {
+            throw new HttpApiException('booking_id không tồn tại', $orderCode);
         }
 
-        $image_payment = null;
+        $imagePayment = null;
 
-        if ($request->hasFile('images')) {
-            $image_payment = $this->saveFile($request->file('images'), 'fields');
+        if ($request->hasFile('image_payment') && $request->file('image_payment')->isValid()) {
+            $imagePayment = $this->saveFile($request->file('image_payment'), 'fields');
+        }
+        
+        $payment = Payment::where('order_code', $orderCode)->first();
+        if (!$payment) {
+            return Payment::create([
+                'booking_id' => $booking->id,
+                'order_code' => $request->order_code,
+                'total_price' => $request->amount,
+                'payment_method' => $imagePayment ? 1 : 0,
+                'image_payment' => $imagePayment ? json_encode($imagePayment) : null,
+                'date_payment' => Carbon::now()->toDateString(),
+                'status' => $imagePayment ? 2 : 0
+            ]);
         }
 
-        return Payment::create([
-            'booking_id' => $booking->id,
-            'order_code' => $request->order_code,
-            'total_price' => $request->amount,
-            'payment_method' => $image_payment ? 1 : 0,
-            'image_payment' => $image_payment ? json_encode($image_payment) : null,
+        $payment->update([
+            'payment_method' => $imagePayment ? 1 : 0,
+            'image_payment' => $imagePayment ? json_encode($imagePayment) : null,
             'date_payment' => Carbon::now()->toDateString(),
-            'status' => 0
+            'status' => $imagePayment ? 2 : 0
         ]);
+
+        return $payment;
     }
 }
