@@ -1,18 +1,31 @@
 import { useEffect, useState } from 'react';
-import { listAllBooking, updatePaymentById } from '../../../services/admin/booking';
+import {
+  listAllBooking,
+  updatePaymentById,
+  cancelPaymentById,
+} from '../../../services/admin/booking';
 import { formatCurrencyVND } from '../../../components/common';
 import { Badge, Button } from 'react-bootstrap';
 import { showToast } from '../../../components/common';
 
 function statusField(status) {
-  if (status !== 0) {
+  if (status === 4)
+  {
+     return (
+      <Badge bg="secondary" title="Sân đặt đã hủy">
+        Đã hủy đặt sân
+      </Badge>
+    );
+  }
+  else if (status !== 0) {
     // return "Hoạt động";
     return (
       <Badge bg="success" title="Đặt sân thành công">
         Đặt sân thành công
       </Badge>
     );
-  } else {
+  }
+  else {
     return (
       <Badge bg="danger" title="Đặt sân thất bại">
         Đặt sân thất bại
@@ -42,7 +55,14 @@ function statusPayment(status) {
         Thanh toán qua thẻ ngân hàng
       </Badge>
     );
-  } else {
+  } else if (status === 4) {
+    return (
+      <Badge bg="secondary" title="Đã hủy đặt sân">
+        Đã hủy đặt sân
+      </Badge>
+    );
+  }
+   else {
     return (
       <Badge bg="success" title="Thanh toán thành công">
         Thanh toán thành công
@@ -70,11 +90,21 @@ export default function ManagementBookingField() {
     if (res?.status) {
       showToast('Cập nhật thanh toán thành công');
       // window.location.reload();
-    }
-    else {
+    } else {
       showToast('Cập nhật thanh toán thất bại', 'warning');
     }
-  }
+  };
+
+  const handleCancelPayment = async (id) => {
+    const res = await cancelPaymentById(id);
+
+    if (res?.status) {
+      showToast('Hủy đặt sân thành công!');
+      // window.location.reload();
+    } else {
+      showToast('Hủy đặt sân thất bại', 'warning');
+    }
+  };
 
   return (
     <>
@@ -127,6 +157,14 @@ export default function ManagementBookingField() {
                         onClick={() => handleUpdatePayment(item.payment_id)}
                       >
                         Xác nhận
+                      </Button>
+
+                      <Button
+                        variant="danger"
+                        disabled={item.payment_status === 0}
+                        onClick={() => handleCancelPayment(item.payment_id)}
+                      >
+                        Hủy
                       </Button>
                     </td>
                   </tr>
