@@ -77,6 +77,10 @@ class AuthService extends BaseService
             throw new HttpApiException('Mật khẩu không đúng!', 'password', 400);
         }
 
+        if (empty($user->email_verified_at)) {
+            throw new HttpApiException('Tài khoản chưa được xác nhận!. Xin vui lòng vào gmail để xác nhận', 'email_verified_at', 400);
+        }
+
         $credentials = $request->only(['email', 'password']);
         if (!($token = auth()->attempt($credentials))) {
             return response()->json(['error' => 'Unauthorized'], 401);

@@ -167,7 +167,8 @@ class BookingService extends BaseService
                 'booking_details.start_time',
                 'booking_details.end_time',
                 'payments.id as payment_id',
-                'payments.status as payment_status'
+                'payments.status as payment_status',
+                'payments.image_payment'
             )
             ->get() // ✅ Đây là điểm kết thúc query
             ->groupBy('id')
@@ -182,6 +183,7 @@ class BookingService extends BaseService
                     'status' => $booking->status,
                     'payment_id' => $booking->payment_id,
                     'payment_status' => $booking->payment_status,
+                    'image_payment' => $booking->image_payment,
                     'booking_details' => $bookings->map(function ($detail) {
                         return [
                             'id_booking_detail' => $detail->id_booking_detail,

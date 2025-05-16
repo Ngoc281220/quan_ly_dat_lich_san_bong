@@ -1,7 +1,24 @@
 import { useState, useEffect } from 'react';
-import { Card, Container,  Button } from 'react-bootstrap';
+import { Card, Container,  Button, Badge } from 'react-bootstrap';
 import {  Trash } from 'lucide-react';
 import { listBookingBYIDUSER } from '../../../services/website/booking';
+
+function statusField(status) {
+  if (status !== 0) {
+    // return "Hoạt động";
+    return (
+      <Badge bg="success" title="Đặt sân thành công">
+        Đặt sân thành công
+      </Badge>
+    );
+  } else {
+    return (
+      <Badge bg="danger" title="Đặt sân thất bại">
+        Đặt sân thất bại
+      </Badge>
+    );
+  }
+}
 
 function AccountPage() {
   const [data, setData] = useState([]);
@@ -32,9 +49,7 @@ function AccountPage() {
               <strong>Địa chỉ:</strong> {item.location}
             </p>
             <div className="text-end text-danger">
-              <Button variant="outline-danger" size="sm">
-                {item.status} <Trash size={16} />
-              </Button>
+              {statusField(item.payment_status)}
             </div>
           </Card>
         ))

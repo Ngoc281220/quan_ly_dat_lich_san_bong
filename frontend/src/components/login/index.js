@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import Offcanvas from "react-bootstrap/Offcanvas";
-import { Form, Button } from "react-bootstrap";
-import Spinner from "react-bootstrap/Spinner";
-import { login } from "../../services/website/auth";
-import useAuthStore from "../../store";
-import { showToast } from "../common";
-import "../../assets/styles/RegisterForm.scss";
-import { PERMISSION } from "../../const";
-import OffCanvasRegister from "../register";
-
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import { Form, Button } from 'react-bootstrap';
+import Spinner from 'react-bootstrap/Spinner';
+import { login } from '../../services/website/auth';
+import useAuthStore from '../../store';
+import { showToast } from '../common';
+import '../../assets/styles/RegisterForm.scss';
+import { PERMISSION } from '../../const';
+import OffCanvasRegister from '../register';
+import Alert from 'react-bootstrap/Alert';
 
 function OffCanvasLoign({ isShow, handleClose }) {
   const navigate = useNavigate();
   const { setUser } = useAuthStore();
   const [show, setShow] = useState(isShow);
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = useState({});
   const [showLoading, setShowLoading] = useState(false);
@@ -30,10 +30,10 @@ function OffCanvasLoign({ isShow, handleClose }) {
   const validate = () => {
     let newErrors = {};
     if (!formData.email) {
-      newErrors.email = "Vui lòng nhập email";
+      newErrors.email = 'Vui lòng nhập email';
     }
     if (!formData.password) {
-      newErrors.password = "Vui lòng nhập mật khẩu";
+      newErrors.password = 'Vui lòng nhập mật khẩu';
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -50,13 +50,12 @@ function OffCanvasLoign({ isShow, handleClose }) {
       if (data) {
         const { user, access_token } = data;
         setUser(user, access_token);
-        showToast("🚀 Đăng nhập thành công!", "success");
+        showToast('🚀 Đăng nhập thành công!', 'success');
         setTimeout(() => {
           if (user && user.role === PERMISSION.ROLE_ADMIN) {
-            navigate("/admin/dashboard");
-          }
-          else {
-            navigate("/");
+            navigate('/admin/dashboard');
+          } else {
+            navigate('/');
           }
         }, 2000);
       }
@@ -94,6 +93,11 @@ function OffCanvasLoign({ isShow, handleClose }) {
           <Form onSubmit={handleSubmit} className="register-form">
             <h2 className="text-header fs-3">Đăng nhập</h2>
             <p className="text-title">ALOBO - Đặt lịch online sân thể thao</p>
+
+            {errors.email_verified_at && (
+              <Alert variant="danger">{errors.email_verified_at}</Alert>
+            )}
+
             <Form.Group className="mt-5">
               <Form.Label className="lable-color">Email</Form.Label>
               <Form.Control
@@ -134,18 +138,21 @@ function OffCanvasLoign({ isShow, handleClose }) {
                   <Spinner animation="border" size="md" className="me-2" />
                 </>
               ) : (
-                "Đăng nhập"
+                'Đăng nhập'
               )}
             </Button>
             <p className="mt-4 text-center">
-              Bạn chưa có tài khoản?{" "}
+              Bạn chưa có tài khoản?{' '}
               <a className="text-login" onClick={() => setIsShowRegister(true)}>
                 Đăng ký ngay
               </a>
             </p>
           </Form>
         </div>
-        <OffCanvasRegister isShow={isShowRegister} handleClose={() => setIsShowRegister(false)} />
+        <OffCanvasRegister
+          isShow={isShowRegister}
+          handleClose={() => setIsShowRegister(false)}
+        />
       </Offcanvas.Body>
     </Offcanvas>
   );
