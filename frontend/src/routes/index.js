@@ -13,6 +13,7 @@ import PaymentSuccess from "@pages/website/payment/success";
 
 // post
 import BlogList from "@pages/website/post";
+import BlogDetail from "../pages/website/post/BlogDetail";
 
 // admin route
 import Dashboard from "@pages/admin/Dashboard";
@@ -66,6 +67,10 @@ const WEBSITE_ROUTES = [
   {
     path: "/posts",
     component: BlogList
+  },
+  {
+    path: "/posts/:id",
+    component: BlogDetail
   },
   {
     path: "/payment/:order_code",
