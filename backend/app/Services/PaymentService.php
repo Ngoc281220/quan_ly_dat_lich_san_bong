@@ -60,7 +60,7 @@ class PaymentService extends BaseService
             DB::raw('YEAR(date_payment) as year'),
             DB::raw('SUM(total_price) as total_revenue')
         )
-            ->where('status', '!=', 0);
+        ->whereNotIn('status', [0, 4]);
 
         // Nếu có lọc theo năm
         if ($year) {
