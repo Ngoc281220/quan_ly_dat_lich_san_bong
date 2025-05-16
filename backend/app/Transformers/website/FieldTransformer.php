@@ -23,19 +23,25 @@ class FieldTransformer extends TransformerAbstract
             'status'        => $field->status,
             'rating'        => 5,
             'image'         =>  !empty($images) ? $images[0]['path'] : null,
-            'time'          => $this->getTime($field->open_time) . '-'.  $this->getTime($field->close_time),
+            'time'          => $this->getTime($field->open_time) . '-' .  $this->getTime($field->close_time),
             'phone' => $field->contact_phone,
         ];
     }
 
     public function getImages($images)
     {
-        return  collect(json_decode($images))->map(function ($image) {
+        if (!$images) {
+            return [
+                'name' => 'https://bizweb.dktcdn.net/100/017/070/files/kich-thuoc-san-bong-da-1-jpeg.jpg?v=1671246300021',
+                'path' => 'https://bizweb.dktcdn.net/100/017/070/files/kich-thuoc-san-bong-da-1-jpeg.jpg?v=1671246300021'
+            ];
+        }
+        return collect(json_decode($images))->map(function ($image) {
             return [
                 'name' => is_object($image) && !empty($image) ? $image->name : null,
                 'path' => is_object($image) && !empty($image) ? asset($image->path) : null
             ];
-        });
+        })->toArray();
     }
 
     public function getTime(string $time)
