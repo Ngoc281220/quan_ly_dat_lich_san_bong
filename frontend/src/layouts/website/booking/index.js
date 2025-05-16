@@ -58,6 +58,7 @@ const TodayOrFuture = (date) => {
   // Reset giờ phút giây để chỉ so sánh ngày
   inputDate.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
+  if (inputDate < today) return -1;
   if (inputDate > today) return 1 // Ngày chọn lớn hơn ngày hiện tại
   return 0 // Ngày chọn bằng ngày hiện tại;
 };
