@@ -4,14 +4,23 @@ import {  Trash } from 'lucide-react';
 import { listBookingBYIDUSER } from '../../../services/website/booking';
 
 function statusField(status) {
-  if (status !== 0) {
+  if (status === 4)
+  {
+     return (
+      <Badge bg="secondary" title="Sân đặt đã hủy">
+        Đã hủy đặt sân
+      </Badge>
+    );
+  }
+  else if (status !== 0) {
     // return "Hoạt động";
     return (
       <Badge bg="success" title="Đặt sân thành công">
         Đặt sân thành công
       </Badge>
     );
-  } else {
+  }
+  else {
     return (
       <Badge bg="danger" title="Đặt sân thất bại">
         Đặt sân thất bại

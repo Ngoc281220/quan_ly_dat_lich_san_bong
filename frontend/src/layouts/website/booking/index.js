@@ -119,7 +119,7 @@ function BookingLayout() {
       setIsLoading(false);
     }
   };
-
+//khung h
   const toggleSlot = (subFieldId, time, pricePerHour) => {
     const slot = `${subFieldId}-${time}`;
     let updatedSlots = selectedSlots.includes(slot)
